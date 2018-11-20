@@ -1,0 +1,112 @@
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>Student Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="profile_view">
+  	<div class="big_profile_image">
+		<img *ngIf="!getProfileData?.profile_pic" class="profile_pic_big" src="img/user.jpg">
+		<img *ngIf="getProfileData?.profile_pic" class="profile_pic_big" src="{{getProfileData?.profile_pic}}">
+	</div>
+	<div class="name_image_area center">
+		<img  *ngIf="!getProfileData?.profile_pic" src="img/ash.jpg" alt="" class="user_image" />
+		<img  *ngIf="getProfileData?.profile_pic" src="{{getProfileData?.profile_pic}}" alt="" class="user_image" />
+		<h1>{{getProfileData?.first_name}} {{getProfileData?.last_name}}, {{getProfileData?.age}}</h1>
+
+		<span *ngIf="getProfileData?.student_type == 'US'" class="white_text">University Student</span>
+		<span *ngIf="getProfileData?.student_type == 'SS'" class="white_text">School Student</span>
+		<span *ngIf="getProfileData?.student_type == 'WP'" class="white_text">Working Professional</span>
+		<span *ngIf="getProfileData?.student_type == 'GR'" class="white_text">Graduate</span>
+	</div>
+	<div padding>
+		<div class="white_box">
+			<p class="bio">{{getProfileData?.bio}}</p>
+			<ul>
+				<li>
+					<img src="img/address_icon.png" alt="" />
+					<h3>Address</h3>
+					<p>{{getProfileData?.address}}</p>
+				</li>
+
+				<li *ngIf="getProfileData?.student_type == 'SS'">
+					<img src="img/school_icon.png" alt="" />
+					<h3>School Name</h3>
+					<p>{{getProfileData?.school_name}}</p>
+				</li>
+				<li *ngIf="getProfileData?.student_type == 'SS'">
+					<img src="img/grade_icon.png" alt="" />
+					<h3>Grade</h3>
+					<p>{{getProfileData?.grade}}</p>
+				</li>
+				
+
+				<li *ngIf="getProfileData?.stydent_type == 'US'">
+					<img src="img/university_icon.png" alt="" />
+					<h3>University Name</h3>
+					<p>{{getProfileData?.university_name}}</p>
+				</li>
+				<li *ngIf="getProfileData?.stydent_type == 'US'">
+					<img src="img/qualification_icon.png" alt="" />
+					<h3>Course Title</h3>
+					<p>{{getProfileData?.course_title}}</p>
+				</li>
+				
+
+				<li *ngIf="getProfileData?.stydent_type == 'GR'">
+					<img src="img/university_icon.png" alt="" />
+					<h3>School/University Name</h3>
+					<p>{{getProfileData?.school_university_name}}</p>
+				</li>
+				<li *ngIf="getProfileData?.stydent_type == 'GR'">
+					<img src="img/qualification_icon.png" alt="" />
+					<h3>Qualification</h3>
+					<p>{{getProfileData?.qualification}}</p>
+				</li>
+
+
+				<li *ngIf="getProfileData?.stydent_type == 'WP'">
+					<img src="img/company_icon.png" alt="" />
+					<h3>Company Name</h3>
+					<p>{{getProfileData?.company_name}}</p>
+				</li>
+				<li *ngIf="getProfileData?.stydent_type == 'WP'">
+					<img src="img/service_icon.png" alt="" />
+					<h3>Occupation</h3>
+					<p>{{getProfileData?.occupation}}</p>
+				</li>
+				<li *ngIf="getProfileData?.stydent_type == 'WP'">
+					<img src="img/university_icon.png" alt="" />
+					<h3>School/University Name</h3>
+					<p>{{getProfileData?.school_university_name}}</p>
+				</li>
+				<li *ngIf="getProfileData?.stydent_type == 'WP'">
+					<img src="img/qualification_icon.png" alt="" />
+					<h3>Qualification</h3>
+					<p>{{getProfileData?.qualification}}</p>
+				</li>
+				
+
+				<li>
+					<img src="img/appointments_icon_active.png" alt="" />
+					<h3>Date of Birth</h3>
+					<p>{{getProfileData?.dob | date:'dd/MM/yyyy'}}</p>
+				</li>
+				<li>
+					<img src="img/gender_icon.png" alt="" />
+					<h3>Gender</h3>
+					<p>{{getProfileData?.gender}}</p>
+				</li>
+				<li>
+					<img src="img/mobile_icon.png" alt="" />
+					<h3>Mobile Number</h3>
+					<p>{{getProfileData?.mobile_number}}</p>
+				</li>
+				<li>
+					<img src="img/globe_icon.png" alt="" />
+					<h3>Languages Spoken</h3>
+					<p style="display: inline-block;" *ngFor="let lang of getProfileData?.user_languages; let isLast=last">{{lang.name}} {{isLast ? '' : ', '}}</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</ion-content>

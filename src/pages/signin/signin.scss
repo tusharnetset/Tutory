@@ -1,0 +1,53 @@
+page-signin {
+.scroll-content
+    {
+        padding-bottom: 0px !important;
+    }
+	.content
+	{
+		.logo
+		{
+			height:114px;
+			margin-bottom:15px;
+		}
+		p
+		{
+			text-decoration:underline;
+			padding-top:15px;
+		}
+		p.skip
+		{
+			font-size:1.6rem;
+		}
+	}
+	.transparent_footer
+	{
+		&:before
+		{
+			display:none;
+		}
+		.toolbar-background
+		{
+			background:rgba(0,0,0,0.3);
+			border:none;
+		}
+		.toolbar-content
+		{
+			p
+			{
+				color:#fff;
+				font-size:1.6rem;
+				margin: 12px 0;
+			}
+			.btn
+			{
+				max-width:100%;
+				background:#fff;
+				box-shadow:none;
+				color:$pink-color;
+				margin:0;
+				height: 4.5rem;
+			}
+		}
+	}
+}

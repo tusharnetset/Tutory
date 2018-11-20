@@ -1,0 +1,82 @@
+<ion-header>
+    <ion-navbar>
+    	<ion-title>My Appointments</ion-title>
+    	<ion-buttons right>
+        	<button ion-button (click)="goToNotifications()">
+          		<ion-icon><img src="img/notification_icon.png" alt="" /></ion-icon>
+          		 <ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 0 && getBadgeCount?.count <= 10">{{getBadgeCount?.count}}</ion-badge>
+ 			 	<ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 10">10+</ion-badge>
+        	</button>
+    	</ion-buttons>
+    </ion-navbar>
+  	<ion-segment [(ngModel)]="appointments" class="appointments_tab">
+		<ion-segment-button value="scheduled">
+    		Scheduled
+    	</ion-segment-button>
+    	<ion-segment-button value="completed">
+    		Completed
+	    </ion-segment-button>
+	</ion-segment>
+</ion-header>
+<ion-content padding class="appointments_box">
+	<div [ngSwitch]="appointments" swipeSegment [tabsList]="categories" [(currentTab)]="appointments" (tabChanged)="onTabChanged($event)" class="swipe-area">
+		<div *ngSwitchCase="'scheduled'">
+			<ion-list no-lines>
+				<ion-item *ngFor="let sheduled of sheduledData">
+			        <ion-avatar (click)="goToDetail(sheduled.appointment_id)" item-start>
+			        	<img src="{{sheduled.profile_pic}}">
+			        </ion-avatar>
+			        <h2 (click)="goToDetail(sheduled.appointment_id)" class="bold_font">{{sheduled.first_name}} {{sheduled.last_name}}, {{sheduled.gender}}, {{sheduled.age}}</h2>
+			        <p (click)="goToDetail(sheduled.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{sheduled.start_time}} to {{sheduled.end_time}}, {{sheduled.date | date:'dd/MM/yyyy'}} </p>
+			        <p (click)="goToDetail(sheduled.appointment_id)">{{sheduled.category_name}} - <span>{{sheduled.subcategory_name}}</span></p>
+
+              <p *ngIf=" sheduled.student_status == 'EXP' && sheduled.tutor_status ==  'EXP'" class="pink_color">Your appointment has expired</p>
+		         	<p *ngIf=" sheduled.student_status == 'R_AC_BT'" class="blue">Appointment accepted by you.</p>
+			        <p *ngIf=" sheduled.student_status == 'R_RJ_BT'" class="pink_color">Appointment Rejected by you.</p>
+			        <p *ngIf=" sheduled.student_status == 'A_ST_BT'" class="blue">Request sent to student for start appointment.</p>
+			        <p *ngIf=" sheduled.student_status == 'R_CA_BT'" class="blue">Appointment cancelled by you.</p>
+			        <p *ngIf=" sheduled.student_status == 'S_CN_BS'" class="green">Appointment in process.</p>
+			        <p *ngIf=" sheduled.student_status == 'R_CA_BS'" class="blue">Appointment cancelled by Student.</p>
+              <p *ngIf=" sheduled.student_status == 'S_NCN_BS'"  class="green">Student is not ready for this appointment</p>
+              <p *ngIf=" sheduled.student_status == 'A_EN_BT'"  class="green">Waiting student's response for appointment completed or not.</p>
+              <p *ngIf=" sheduled.student_status == 'END'" class="green">Appointment has been completed.</p>
+
+	         		<button *ngIf="sheduled.student_status == 'R_AC_BT'" class="btn btn-text" ion-button (click)="actionClick(sheduled.appointment_id,'start')">Start</button>
+            		<button *ngIf="sheduled.student_status == 'R_AC_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(sheduled.appointment_id,'cancel')">Cancel</button>
+			        <button *ngIf="sheduled.student_status == 'S_CN_BS'" class="btn btn-text" ion-button (click)="goToEnd(sheduled.appointment_id,'end')">End Appointment</button>
+			    </ion-item>
+			    <p style="text-align: center;" *ngIf="sheduleSh">There is no data found.</p>
+			</ion-list>
+		</div>
+
+		<div *ngSwitchCase="'completed'">
+			<ion-list no-lines>
+				<ion-item *ngFor="let compApp of completeAppoint">
+			        <ion-avatar (click)="goToDetail(compApp.appointment_id)" item-start>
+			        	<img src="{{compApp.profile_pic}}">
+			        </ion-avatar>
+			        <h2 (click)="goToDetail(compApp.appointment_id)" class="bold_font">{{compApp.first_name}} {{compApp.last_name}}, {{compApp.gender}}, {{compApp.age}}</h2>
+			        <p (click)="goToDetail(compApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{compApp.start_time}} to {{compApp.end_time}}, {{compApp.date | date:'dd/MM/yyyy'}} </p>
+			        <p (click)="goToDetail(compApp.appointment_id)">{{compApp.category_name}} - <span>{{compApp.subcategory_name}}</span></p>
+
+			        <p *ngIf="compApp.student_status == 'END'" class="green">Your appointment has been completed.</p>
+
+			        <div *ngIf=" compApp.student_status == 'END' && compApp.feedback_given != 'N'" class="your_feedback">
+			        	<h3 class="bold_font">Student Feedback:</h3>
+			        	<span class="rating">
+                  <rating *ngIf="compApp.rating != null" [(ngModel)]="compApp.rating"
+                    readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+                  </rating>
+                  <rating *ngIf="compApp.rating == null"
+                    readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+                  </rating>
+			        	</span>
+			        	<p>{{compApp.feedback}}</p>
+			        </div>
+			    </ion-item>
+			    <p style="text-align: center;" *ngIf="comSh">There is no data found.</p>
+			</ion-list>
+		</div>
+
+	</div>
+</ion-content>

@@ -1,0 +1,21 @@
+page-reject-reason-popup {
+	.pop_outer
+	{
+		padding: 30px 15px;
+		h3
+		{
+			text-transform:uppercase;
+			color:$pink-color;
+			font-size: 1.4rem;
+		}
+		p
+		{
+			font-size:1.8rem;
+			margin-top:0;
+		}
+		.btn
+		{
+			max-width:100%;
+		}
+	}
+}

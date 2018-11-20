@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>My Profile</ion-title>
+    <ion-buttons right>
+        <button ion-button (click)="goToNotifications()">
+          <ion-icon><img src="img/notification_icon.png" alt="" /></ion-icon>
+           <ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 0 && getBadgeCount?.count <= 10">{{getBadgeCount?.count}}</ion-badge>
+ 			 	<ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 10">10+</ion-badge>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="profile_view">
+  	<div class="big_profile_image">
+		<img  *ngIf="!getProfileData?.profile_pic" class="profile_pic_big" src="img/user.jpg">
+		<img *ngIf="getProfileData?.profile_pic" class="profile_pic_big" src="{{getProfileData?.profile_pic}}">
+	</div>
+
+	<div class="name_image_area center">
+		<img *ngIf="!getProfileData?.profile_pic" src="img/user.jpg" alt="" class="user_image" />
+		<img *ngIf="getProfileData?.profile_pic" src="{{getProfileData?.profile_pic}}" alt="" class="user_image" />
+
+		<h1>{{getProfileData?.first_name}} {{getProfileData?.last_name}}, {{getProfileData?.gender}}, {{getProfileData?.age}}</h1>
+		<span class="rating">
+			<!-- <img src="img/star-yellow.png" alt="" />
+			<img src="img/star-yellow.png" alt="" />
+			<img src="img/star-yellow.png" alt="" />
+			<img src="img/star-yellow.png" alt="" />
+			<img src="img/star-light.png" alt="" /> -->
+			<rating *ngIf="ratingData != null" [(ngModel)]="ratingData"
+	        	readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+			</rating>
+			<rating *ngIf="ratingData == null"
+	        	readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+			</rating>
+		</span>
+		<span class="white_text underline" (click)="goToReviews(getProfileData?.id)">({{getProfileData?.reviews_count}} reviews)</span>
+	</div>
+
+	<div padding>
+		<div class="white_box">
+			<div class="edit_icon"><img src="img/edit_icon.png" alt="" (click)="goToTeacherEditProfile()" /></div>
+			<p class="bio">{{getProfileData?.bio}}.</p>
+			<ul>
+				<li>
+					<img src="img/address_icon.png" alt="" />
+					<h3>Address</h3>
+					<p>{{getProfileData?.address}}</p>
+				</li>
+				<li>
+					<img src="img/mobile_icon.png" alt="" />
+					<h3>Phone Number</h3>
+					<p>{{getProfileData?.mobile_number}}</p>
+				</li>
+				<li>
+					<img src="img/calendar_icon.png" alt="" />
+					<h3>Date of Birth</h3>
+					<p>{{getProfileData?.dob | date:'dd/MM/yyyy'}}</p>
+				</li>
+				<li>
+					<img src="img/service_icon.png" alt="" />
+					<h3>Services Offered</h3>
+					<p (click)="goToServices()"><span class="bold_font underline">View, Delete and Add New Services</span></p>
+				</li>
+				<li>
+					<img src="img/riyal_icon.png" alt="" />
+					<h3>Rate Per Hour</h3>
+					<p><span>{{getProfileData?.rate}} Q.R/hr</span> for individual students</p>
+					<p><span>{{getProfileData?.group_rate}} Q.R/hr</span> for group of students</p>
+				</li>
+				<li>
+					<img src="img/calendar_icon.png" alt="" />
+					<h3>Schedule Availability</h3>
+					<p (click)="goToViewAvailability()"><span class="bold_font underline">View Availability</span></p>
+        </li>
+        <li>
+					<img src="img/university_icon.png" alt="" />
+					<h3>Teaching Levels</h3>
+					<p style="display: inline-block;" *ngFor="let lang of getProfileData?.teaching_levels; let isLast=last">{{lang.name}}{{isLast ? '' : ' , '}}</p>
+				</li>
+				<li>
+					<img src="img/globe_icon.png" alt="" />
+					<h3>Languages Spoken</h3>
+					<p style="display: inline-block;" *ngFor="let lang of getProfileData?.user_languages; let isLast=last">{{lang.name}}{{isLast ? '' : ' , '}}</p>
+				</li>
+				<li>
+					<img src="img/address_icon.png" alt="" />
+					<h3>Preferred Service Location</h3>
+					<p *ngIf="getProfileData?.location_preference == 'TL'">Tutor Location</p>
+					<p *ngIf="getProfileData?.location_preference == 'SH'">Student Location</p>
+					<p *ngIf="getProfileData?.location_preference == 'AO'">Any other public location</p>
+					<p *ngIf="getProfileData?.location_preference == 'NP'">No preference</p>
+        </li>
+
+        <li *ngIf="getProfileData?.location_preference == 'AO'">
+          <img src="img/address_icon.png" alt="" />
+          <h3>Other Location</h3>
+          <p>{{getProfileData?.other_location}}</p>
+        </li>
+
+				<li>
+					<img src="img/qualification_icon.png" alt="" />
+					<h3>Qualifications</h3>
+					<p>{{getProfileData?.qualification}}</p>
+				</li>
+				<li>
+					<img src="img/university_icon.png" alt="" />
+					<h3>University Name</h3>
+					<p>{{getProfileData?.university_name}}</p>
+				</li>
+				<li>
+					<img src="img/info_icon.png" alt="" />
+					<h3>Other Information</h3>
+					<p>{{getProfileData?.other_info}}.</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</ion-content>

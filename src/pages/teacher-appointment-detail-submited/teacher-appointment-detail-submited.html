@@ -1,0 +1,121 @@
+
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>Appointment Details</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="appointment_details">
+	<div class="white_box">
+		<div class="user_detail">
+			<img src="{{detailData?.profile_pic}}" class="user_img" (click)="goToProfile(detailData?.student_id)">
+			<h2 (click)="goToProfile(detailData?.student_id)" >{{detailData?.first_name}} {{detailData?.last_name}}, {{detailData?.gender}}, {{detailData?.age}}</h2>
+			<p (click)="goToProfile(detailData?.student_id)" class="location"><img src="img/location_icon.png" alt="" />{{detailData?.address}}</p>
+			<p class="bold_font underline view_map" (click)="viewMap(detailData?.latitude,detailData?.longitude)" >View on map</p>
+			<h3 *ngIf="detailData?.student_type == 'US'" class="bold_font">University Student</h3>
+			<h3 *ngIf="detailData?.student_type == 'SS'" class="bold_font">School Student</h3>
+			<h3 *ngIf="detailData?.student_type == 'WP'" class="bold_font">Working Professional</h3>
+			<h3 *ngIf="detailData?.student_type == 'GR'" class="bold_font">Graduate</h3>
+			<div class="contacts">
+				<img *ngIf=" detailData?.student_status == 'R_AC_BT'" src="img/message_icon.png" alt="" (click)="messageClick(detailData?.mobile_number)" />
+				<img *ngIf=" detailData?.student_status == 'R_AC_BT'" src="img/call_icon.png" alt="" (click)="callClick(detailData?.mobile_number)"/>
+
+				<img *ngIf=" detailData?.student_status == 'A_ST_BT'" src="img/message_icon.png" alt="" (click)="messageClick(detailData?.mobile_number)" />
+				<img *ngIf=" detailData?.student_status == 'A_ST_BT'" src="img/call_icon.png" alt="" (click)="callClick(detailData?.mobile_number)"/>
+
+				<img *ngIf=" detailData?.student_status == 'S_CN_BS'" src="img/message_icon.png" alt="" (click)="messageClick(detailData?.mobile_number)" />
+				<img *ngIf=" detailData?.student_status == 'S_CN_BS'" src="img/call_icon.png" alt="" (click)="callClick(detailData?.mobile_number)"/>
+
+			</div>
+		</div>
+
+		<div class="appointment_info">
+			<h3 class="bold_font">Time & Date</h3>
+			<p>{{detailData?.start_time}} to {{detailData?.end_time}}, {{detailData?.date | date:'dd/MM/yyyy'}} </p>
+			<hr/>
+			<h3 class="bold_font">Subject</h3>
+			<p>{{detailData?.category_name}} - <span>{{detailData?.subcategory_name}}</span> - <span>{{detailData?.level_name}}</span></p>
+			<hr/>
+			<ion-row>
+				<ion-col col-5>
+					<h3 class="bold_font">Location</h3>
+					<p *ngIf="detailData?.location_preference == 'TL'">Tutor's Location</p>
+					<p *ngIf="detailData?.location_preference == 'SH'">Student's Home</p>
+					<p *ngIf="detailData?.location_preference == 'AO'">Any other public location</p>
+					<p *ngIf="detailData?.location_preference == 'NP'">No preference</p>
+				</ion-col>
+				<ion-col col-7>
+					<h3 class="bold_font">Number of Students</h3>
+					<p>{{detailData?.no_of_students}}</p>
+				</ion-col>
+      </ion-row>
+      <h3 *ngIf="detailData?.location_preference == 'AO'" class="bold_font">Other Location</h3>
+			<p *ngIf="detailData?.location_preference == 'AO'">{{detailData?.other_location}}</p>
+			<hr/>
+			<h3 class="bold_font">Special Instructions</h3>
+			<p>{{detailData?.special_instructions}}</p>
+			<hr/>
+			<h3 class="bold_font">Price</h3>
+			<p>{{detailData?.total_cost}} Q.R</p>
+		</div>
+
+	</div>
+	<div class="center status_area">
+		<!-- <button class="btn btn-text" ion-button full (click)="acceptRequest(detailData?.appointment_id)">Accept Appointment</button>
+		<button class="btn btn-text blue_btn" ion-button full (click)="goToReject(detailData?.appointment_id);">Reject Appointment</button> -->
+
+
+		<p *ngIf=" detailData?.student_status == 'EXP' && detailData?.tutor_status ==  'EXP'" class="pink_color">Your appointment has expired</p>
+		<p *ngIf=" detailData?.student_status == 'R_AC_BT'" class="blue">Appointment accepted by you.</p>
+    <p *ngIf=" detailData?.student_status == 'R_RJ_BT'" class="pink_color">Appointment Rejected by you.</p>
+    <p *ngIf=" detailData?.student_status == 'A_ST_BT'" class="blue">Request sent to student for start appointment.</p>
+    <p *ngIf=" detailData?.student_status == 'R_CA_BT'" class="blue">Appointment cancelled by you.</p>
+    <p *ngIf=" detailData?.student_status == 'S_CN_BS'" class="green">Appointment in process.</p>
+    <p *ngIf=" detailData?.student_status == 'R_CA_BS'" class="blue">Appointment cancelled by Student.</p>
+    <p *ngIf=" detailData?.student_status == 'S_NCN_BS'"  class="green">Student is not ready for this appointment</p>
+    <p *ngIf=" detailData?.student_status == 'A_EN_BT'"  class="green">Waiting student's response for appointment complete or not.</p>
+
+    <p *ngIf=" detailData?.student_status == 'E_NCN_BS'"  class="green">Student is not ready to and this appointment .</p>
+
+    <p *ngIf=" detailData?.student_status == 'END'" class="green">Your appointment has been completed.</p>
+
+
+    <h5 *ngIf=" detailData?.student_status == 'R_CA_BS'"   class="bold_font">Reason:</h5>
+    <p *ngIf=" detailData?.student_status == 'R_CA_BS'"   class="reason">{{detailData?.reason}}</p>
+
+    <h5 *ngIf=" detailData?.student_status == 'R_RJ_BT'"  class="bold_font">Reason:</h5>
+		 <p *ngIf=" detailData?.student_status == 'R_RJ_BT'"  class="reason">{{detailData?.reason}}</p>
+
+     <h5 *ngIf=" detailData?.student_status == 'R_CA_BT'"  class="bold_font">Reason:</h5>
+		 <p *ngIf=" detailData?.student_status == 'R_CA_BT'"  class="reason">{{detailData?.reason}}</p>
+
+      <h5 *ngIf=" detailData?.student_status == 'S_NCN_BS'"  class="bold_font">Reason:</h5>
+		  <p *ngIf=" detailData?.student_status == 'S_NCN_BS'"  class="reason">{{detailData?.reason}}</p>
+
+      <h5 *ngIf=" detailData?.student_status == 'E_NCN_BS'"  class="bold_font">Reason:</h5>
+      <p *ngIf=" detailData?.student_status == 'E_NCN_BS'"  class="reason">{{detailData?.reason}}</p>
+
+
+
+		<button *ngIf=" detailData?.student_status == 'R_SE_BS'" class="btn btn-text" ion-button full (click)="actionClick(detailData?.appointment_id,'accept')">Accept</button>
+        <button  *ngIf=" detailData?.student_status == 'R_SE_BS'" class="btn btn-text blue_btn" ion-button full (click)="goToReject(detailData?.appointment_id,'reject');">Reject</button>
+
+        <button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text" ion-button full (click)="actionClick(detailData?.appointment_id,'start')" >Start</button>
+		<button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text blue_btn" ion-button full (click)="cancelClick(detailData?.appointment_id,'cancel')">Cancel</button>
+
+
+        <button *ngIf=" detailData?.student_status == 'S_CN_BS'" class="btn btn-text blue_btn" ion-button full (click)="goToEnd(detailData?.appointment_id,'end')">End Appointment</button>
+
+
+		<div *ngIf=" detailData?.student_status == 'END' && detailData?.feedback_given != 'N' " class="center status_area">
+			<h5 class="bold_font">Your Feedback:</h5>
+			<span class="rating">
+	    		<rating *ngIf="detailData?.rating != null"  [(ngModel)]="rating"
+		        readOnly="true" max="5" value="3" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)"></rating>
+	        	<rating *ngIf="detailData?.rating == null"
+		        readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false">
+				</rating>
+	    	</span>
+			<p>{{detailData?.feedback}}</p>
+		</div>
+	</div>
+</ion-content>

@@ -1,0 +1,21 @@
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>Notifications</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+	<div class="white_box">
+		<ul>
+			<li *ngFor="let notification of notificationD" (click)="goApointmentDetail(notification.appointment_id)">
+				<h3 *ngIf="notification.label == 'accept'"><span class="bold_font">{{notification.tutor_name}}</span> has accepted your appointment for <span class="bold_font">“{{notification.service_name}}”.</span></h3>
+				<h3 *ngIf="notification.label == 'end'">Your appointment is completed by <span class="bold_font">{{notification.tutor_name}}</span> for  <span class="bold_font">“{{notification.service_name}}”.</span></h3>
+				<h3 *ngIf="notification.label == 'reject'">Your appointment is rejected by <span class="bold_font">{{notification.tutor_name}}</span> for  <span class="bold_font">“{{notification.service_name}}”.</span></h3>
+				<h3 *ngIf="notification.label == 'start'"><span class="bold_font">{{notification.tutor_name}}</span> has started your appointment for <span class="bold_font">“{{notification.service_name}}”.</span></h3>
+
+        <h3 *ngIf="notification.label == 'tutor cancelled'"><span class="bold_font">{{notification.tutor_name}}</span> has cancelled your appointment for <span class="bold_font">“{{notification.service_name}}”.</span></h3>
+
+        <p>{{notification.created_at | timeAgo}}</p>
+			</li>
+		</ul>
+	</div>
+</ion-content>

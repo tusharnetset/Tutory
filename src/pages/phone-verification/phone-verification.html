@@ -1,0 +1,39 @@
+<ion-header class="transparent_header with_back">
+  <ion-navbar>
+    <ion-title>Phone Verification</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="bg center">
+	<p padding>We’ve sent a 4-digit code to <span class="bold_font">(+91) {{mobileNumber}}</span> Enter the code below.</p>
+	<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
+	<ion-list class="input_forms" no-lines>
+
+    <ion-row>
+			<ion-col col-3>
+				<ion-item>
+			    	<ion-input type="tel" [formControl]="authForm.controls['one']" id="myText" placeholder=""  maxlength="1" tabindex="1" #a (keyup)="moveInput($event,b,a)" ></ion-input>
+			    </ion-item>
+			</ion-col>
+			<ion-col col-3>
+				<ion-item>
+			    	<ion-input type="tel" [formControl]="authForm.controls['two']"  id="val2" placeholder="" maxlength="1" tabindex="2" #b (keyup)="moveInput($event,c,a)"></ion-input>
+			    </ion-item>
+			</ion-col>
+			<ion-col col-3>
+				<ion-item>
+			    	<ion-input type="tel" [formControl]="authForm.controls['three']"  id="val3" placeholder="" maxlength="1" tabindex="3" #c (keyup)="moveInput($event,d,b)" ></ion-input>
+			    </ion-item>
+			</ion-col>
+			<ion-col col-3>
+				<ion-item>
+			    	<ion-input type="tel" [formControl]="authForm.controls['four']"  id="val4" placeholder="" maxlength="1" tabindex="4" #d (keyup)="moveInput($event,d,c)"></ion-input>
+			    </ion-item>
+			</ion-col>
+		</ion-row>
+
+
+	</ion-list>
+	<button class="btn btn-text" ion-button full type="submit">Verify Number</button>
+	</form>
+	<p class="resend" (click)="resendOtp()"><span>Resend Code?</span></p>
+</ion-content>

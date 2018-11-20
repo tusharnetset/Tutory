@@ -1,0 +1,22 @@
+page-reject-popup {
+	h3
+	{
+    	margin: 0 !important;
+    	font-size: 1.8rem;
+		line-height: 2.6rem;
+    	span
+    	{
+    		color:$pink-color;
+    	}
+	}
+	p
+	{
+		color:#535353;
+		font-size:1.6rem;
+		span
+		{
+			color:#000;
+			display:block;
+		}
+	}
+}	

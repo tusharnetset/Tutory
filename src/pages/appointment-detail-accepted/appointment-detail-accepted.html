@@ -1,0 +1,63 @@
+
+<ion-header class="with_back">
+
+  <ion-navbar>
+    <ion-title>Appointment Details</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="appointment_details">
+	<div class="white_box">
+		<div class="user_detail">
+			<img src="img/user3.jpg" class="user_img" (click)="goToProfile()">
+			<h2>Ria Khan, 32
+				<span class="rating">
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-light.png" alt="" />
+	        	</span>
+			</h2>
+			<p class="location"><img src="img/location_icon.png" alt="" />1231 Best Zone, San Francisco, CA, USA</p>
+			<p class="bold_font underline view_map">View on map</p>
+			<h3 class="bold_font">15 Q.R/hr</h3>
+			<div class="contacts">
+				<img src="img/message_icon.png" alt="" />
+				<img src="img/call_icon.png" alt="" />
+			</div>
+		</div>
+
+		<div class="appointment_info">
+			<h3 class="bold_font">Time & Date</h3>
+			<p>12:00 to 13:00, 22/06/2018 </p>
+			<hr/>
+			<h3 class="bold_font">Subject</h3>
+			<p>Music - <span>Drums</span></p>
+			<hr/>
+			<ion-row>
+				<ion-col col-5>
+					<h3 class="bold_font">Location</h3>
+					<p>Tutor Home</p>
+				</ion-col>
+				<ion-col col-7>
+					<h3 class="bold_font">Number of Students</h3>
+					<p>2</p>
+				</ion-col>
+			</ion-row>
+			<hr/>
+			<h3 class="bold_font">Special Instructions</h3>
+			<p>Generate Lorem Ipsum placeholder text for use in your graphic.</p>
+			<hr/>
+			<h3 class="bold_font">Total Cost</h3>
+			<p>15 15 Q.R</p>
+		</div>
+
+	</div>
+	<div class="center status_area">
+		<p class="blue">Your appointment has been accepted by your tutor.</p>
+		<button class="btn btn-text" ion-button full>Cancel Appointment</button>
+	</div>
+</ion-content>

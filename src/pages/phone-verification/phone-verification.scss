@@ -1,0 +1,32 @@
+page-phone-verification {
+.scroll-content
+    {
+        padding-bottom: 0px !important;
+    }
+	.content
+	{
+		p
+		{
+			margin-bottom:0;
+		}
+		.input_forms
+		{
+			margin-top:0;
+		}
+		.resend
+		{
+			margin-top:20px;
+			span
+			{
+				text-decoration:underline;
+			}
+		}
+		.input
+		{
+			.text-input
+			{
+				text-align:center;
+			}
+		}
+	}
+}

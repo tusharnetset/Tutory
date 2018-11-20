@@ -1,0 +1,17 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Terms and Condition</ion-title>
+    <ion-buttons right>
+        <button ion-button (click)="dismissCan()">
+             <ion-icon><img src="img/close_icon.png" alt="" /></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="white_box" padding *ngIf="show">
+    <div class="content-detail" [innerHTML]="getTerm | keepHtml"></div>
+  </div>
+</ion-content>

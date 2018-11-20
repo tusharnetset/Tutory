@@ -1,0 +1,90 @@
+page-reviews {
+	.content
+	{
+		.scroll-content
+		{
+			.white_box
+			{
+				min-height:100%;
+				.list
+				{
+					margin:0;
+					.item
+					{
+						padding: 5px 12px;
+						border-bottom: 1px solid #e5e5e5;
+						-webkit-align-items: flex-start;
+						align-items: flex-start;
+						.item-inner
+						{
+							padding-right:0;
+							.label
+							{
+								margin-right:0;
+								white-space:normal;
+								h2
+								{
+									margin: 0;
+									font-size:1.5rem;
+									position:relative;
+									padding-right:70px;
+									font-weight: bold;
+									.date
+									{
+										position:absolute;
+										right:0;
+										top:0;
+										color: #535353;
+										font-size: 1.2rem;
+									}
+								}
+							}
+						}
+						ion-avatar
+						{
+							min-width: 70px;
+							margin-right: 10px;
+							min-height: 70px;
+							img
+							{
+								width:70px;
+								height:70px;
+								border: 2px solid #deddd4;
+								box-shadow: 0px 2px 5px rgba(0,0,0,0.15);
+							}
+						}
+						&:last-child
+						{
+							border:none;
+						}
+					}
+				}
+			}
+    }
+    .rating
+    {
+      display: inline;
+      margin: 12px 0;
+      img
+      {
+        height: 34px;
+        margin: 0 3px;
+      }
+      ul {
+          padding: 0px;
+          &.rating{
+            margin-left: 10px;
+            margin-bottom: 2px;
+          }
+          &.rating li {
+            padding: 0 !important;
+            background: none;
+            color: #ffb400;
+            ion-icon {
+                font-size: 20px;
+            }
+          }
+      }
+    }
+	}
+}

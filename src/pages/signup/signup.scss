@@ -1,0 +1,24 @@
+page-signup {
+	.scroll-content
+    {
+        padding-bottom: 0px !important;
+    }
+	.content
+	{
+		p.fill
+		{
+			font-size:1.6rem;
+		}
+		p.agree
+		{
+			padding:10px;
+			span
+			{
+				color:$pink-color;
+				text-decoration:underline;
+			}
+    }
+
+	}
+
+}

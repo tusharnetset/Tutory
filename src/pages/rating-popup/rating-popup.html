@@ -1,0 +1,28 @@
+<ion-content padding>
+	<div class="table_box">
+		<div class="table_box_inner">
+			<div class="pop_outer center">
+				<h3 class="bold_font">Give Feedback</h3>
+				<span class="rating">
+					<!-- <img src="img/star-light.png" alt="" />
+					<img src="img/star-light.png" alt="" />
+					<img src="img/star-light.png" alt="" />
+					<img src="img/star-light.png" alt="" />
+					<img src="img/star-light.png" alt="" />
+					<img src="img/star-light.png" alt="" /> -->
+
+					<rating [(ngModel)]="rate" 
+			        readOnly="false" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+					</rating>
+				</span>
+				<ion-list class="input_forms" no-lines>
+					<ion-item>
+				    	<ion-textarea placeholder="Enter Message" [(ngModel)]="feedback"></ion-textarea>
+				    </ion-item>
+				</ion-list>
+				<button class="btn btn-text" ion-button full (click)="submit(feedback)">Submit</button>
+			</div>
+			<div class="close_icon"><ion-icon name="close-circle" (click)="dismiss()"></ion-icon></div>
+		</div>
+	</div>
+</ion-content>

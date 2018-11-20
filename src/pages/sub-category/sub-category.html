@@ -1,0 +1,20 @@
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>{{catName}}</ion-title>
+    <!-- <ion-buttons right class="only_text">
+        <button ion-button (click)="goToLevel()">
+          <ion-label>Done</ion-label>
+        </button>
+    </ion-buttons> -->
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+	<div class="white_box">
+		<ion-list radio-group class="category_listview">
+			<ion-item *ngFor="let subCat of subCateArr;let i=index">
+			    <ion-label>{{subCat.name}}</ion-label>
+			    <ion-radio [value]="i" (ionSelect)="subCateSelect(subCat.id,subCat.name)"></ion-radio>
+			</ion-item>
+		</ion-list>
+	</div>
+</ion-content>

@@ -1,0 +1,73 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Services Offered</ion-title>
+    <ion-buttons right class="only_text">
+        <button ion-button (click)="dismiss(data)">
+          <ion-label>Done</ion-label>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<div class="blue_box">
+		<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
+			<ion-list class="input_forms" no-lines>
+				<ion-item class="drops">
+			    	<ion-label>Select Category</ion-label>
+				 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+				  	<ion-select formControlName="category" placeholder="Category" (ngModelChange)="categorySelect($event)">
+				    	<ion-option *ngFor="let cat of getCategory" [value]="cat.id" (ionSelect)="levelSend(cat.levels_present)">{{cat.name}}</ion-option>
+				    </ion-select>
+				</ion-item>
+				<div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['category'].hasError('required') && authForm.controls['category'].touched">* Category is required!</div>
+			    <ion-item class="drops">
+			    	<ion-label>Select sub category</ion-label>
+				 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+				  	<ion-select formControlName="subcategory" placeholder="Sub category" (ngModelChange)="categorySelectSub($event)">
+				    	<ion-option *ngFor="let subCat of subCateArr" [value]="subCat.id">{{subCat.name}}</ion-option>
+				    </ion-select>
+				</ion-item>
+				<div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['subcategory'].hasError('required') && authForm.controls['subcategory'].touched">* Sub category is required!</div>
+				<ion-item *ngIf="showLevel" class="drops">
+			    	<ion-label>Level</ion-label>
+				 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+				  	<ion-select formControlName="levels" placeholder="Level" (ngModelChange)="levelsSelect($event)">
+				    	<ion-option *ngFor="let level of levelsArr" [value]="level.id">{{level.name}}</ion-option>
+				    </ion-select>
+				</ion-item>
+			</ion-list>
+			<button class="btn btn-text" ion-button full type="submit">Add</button>
+		</form>
+	</div>
+	<div padding>
+		<div class="white_box">
+			<!-- when no services-->
+			<!--<div class="no_services">
+				<div class="inner_services">
+					<h1 class="bold_font">OOPS!</h1>
+					<p>Please add services using the drop down menus above, and they will appear here.</p>
+				</div>
+			</div>-->
+			<!-- when no services-->
+
+			<!-- when services-->
+			<div class="services_box">
+				<h3 class="bold_font"><img src="img/service_icon.png" alt="" />My Services</h3>
+				<ion-list no-lines>
+					<ion-item *ngFor="let services of getCategoriesDataa">
+				    	<ion-label>{{services.category}} - <span>{{services.subcategory}}</span><br><span *ngIf="services.level_id != 0" class="btn btn-text">{{services.level}}</span></ion-label>
+					 	<ion-icon (click)="deleteServ(services.service_id)" item-end><img src="img/cross_icon.png" alt=""/></ion-icon>
+					</ion-item>
+					<p *ngIf="show" style="text-align: center;">Please add service using the drop down menus above, and they will appear here.</p>
+				</ion-list>
+			</div>
+			<!-- when services-->
+
+		</div>
+	</div>
+</ion-content>

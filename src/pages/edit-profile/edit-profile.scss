@@ -1,0 +1,76 @@
+page-edit-profile {
+.scroll-content
+    {
+        padding-bottom: 0px !important;
+    }
+	.header
+	{
+		.toolbar
+		{
+			.toolbar-content-md
+			{
+				padding-left:40px;
+			}
+			.toolbar-background
+			{
+				border:none;
+			}
+		}
+	}
+	.content
+	{
+		.upload_outer
+		{
+			background:$blue-color;
+			padding:10px;
+			p
+			{
+				margin-top:5px;
+				color:#fff;
+			}
+			.upload_inner
+			{
+				background: #fff;
+				border-radius: 100%;
+				width: 114px;
+				height: 114px;
+				border: 2px solid #fff;
+				line-height: 120px;
+				position: relative;
+				overflow: hidden;
+				display: inline-block;
+				img.camera_icon
+				{
+					height: 44px;
+					position: absolute;
+					left: 28px;
+					top: 30px;
+				}
+				.user_image
+				{
+					width: 120px;
+					height: 120px;
+					border-radius: 100%;
+					margin-left: -3px;
+					margin-top: -3px;
+					max-width: inherit;
+					position: relative;
+				}
+				input
+				{
+					position:absolute;
+					top:0;
+					left:0;
+					width:100%;
+					height:100%;
+					opacity:0;
+					z-index:1;
+				}
+			}
+		}
+		.input_forms
+		{
+			margin-top:0;
+		}
+	}
+}

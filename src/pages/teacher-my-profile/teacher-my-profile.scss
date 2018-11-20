@@ -1,0 +1,76 @@
+page-teacher-my-profile {
+	.header
+	{
+		.toolbar
+		{
+			.toolbar-background
+			{
+				/*background:none;*/
+				border:none;
+			}
+			.toolbar-content-md
+			{
+				padding-left:40px;
+			}
+		}
+	}
+	.content
+	{
+		.white_box
+		{
+			.edit_icon
+			{
+				text-align:right;
+				padding:0 10px;
+				img
+				{
+					height: 66px;
+					margin-top: -33px;
+					vertical-align: top;
+				}
+			}
+			.edit_icon + p
+			{
+				padding-top:0;
+			}
+			li
+			{
+				p
+				{
+					span
+					{
+						color:$pink-color;
+						font-size: 1.2rem;
+					}
+				}
+			}
+		}
+  }
+  .rating
+  {
+    display: inline;
+    margin: 12px 0;
+    img
+    {
+      height: 34px;
+      margin: 0 3px;
+    }
+    ul {
+        padding: 0px;
+        &.rating{
+          margin-left: 10px;
+          margin-bottom: 0px;
+          position: relative;
+          top: 2px;
+        }
+        &.rating li {
+          padding: 0 !important;
+          background: none;
+          color: #ffb400;
+          ion-icon {
+              font-size: 20px;
+          }
+        }
+    }
+  }
+}

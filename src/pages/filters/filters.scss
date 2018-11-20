@@ -1,0 +1,151 @@
+page-filters {
+.scroll-content
+    {
+        padding-bottom: 0px !important;
+    }
+	.header
+	{
+		.toolbar
+		{
+			.bar-buttons
+			{
+				.button-inner
+				{
+					ion-icon
+					{
+						img
+						{
+							height:10px;
+						}
+					}
+				}
+			}
+			.back-button
+			{
+				display:none;
+			}
+			.toolbar-content-md
+			{
+				padding-left:40px;
+			}
+		}
+	}
+	.content
+	{
+		background:#275f87;
+		.input_forms
+		{
+			.item
+			{
+				.item-inner
+				{
+					.label
+					{
+						color: #fff;
+						margin: 0px;
+						width: 100%;
+						text-transform: uppercase;
+						font-family: 'Avenir 85';
+						font-size:1.4rem;
+						span
+						{
+							font-size:1rem;
+						}
+					}
+				}
+			}
+			.range_text
+			{
+				margin: 0 15px 20px;
+				color: #fff;
+				font-size: 1rem;
+				span
+				{
+					float:right;
+				}
+			}
+			p.label
+			{
+				font-size:1.4rem;
+				text-transform:uppercase;
+				color:#fff;
+				margin: 10px 15px;
+			}
+			.item.drops
+			{
+				margin:0 15px;
+				width: auto;
+			}
+			.item.drops
+			{
+				.item-inner
+				{
+					.input
+					{
+						.text-input
+						{
+							padding-right:25px;
+						}
+					}
+				}
+			}
+			.item.item-block.range_slider
+			{
+				background:none;
+				box-shadow: none !important;
+				.item-inner
+				{
+					.range
+					{
+						padding-top:0;
+						padding-bottom:0;
+						padding-left:0px;
+						.range-slider
+						{
+							height:42px;
+							.range-bar
+							{
+								background:#fff;
+								height: 4px;
+								border-radius: 5px;
+							}
+							.range-bar-active
+							{
+								background:$pink-color;
+							}
+							.range-knob-handle
+							{
+								.range-knob
+								{
+									background:url(../img/gradient_bg.jpg) center no-repeat;
+									background-size:100% 100%;
+									border:none;
+									width: 28px;
+									height: 28px;
+									top: 9px;
+									transform:none;
+									left:7px;
+								}
+								.range-pin
+								{
+									transform:none;
+									background:none;
+									border-radius: 5px;
+									top: 12px;
+									padding: 2px 0;
+									color:#fff;
+									height: auto;
+									z-index:10;
+									&:before
+									{
+										display:none;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

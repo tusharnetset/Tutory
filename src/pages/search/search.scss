@@ -1,0 +1,134 @@
+page-search {
+	.header
+	{
+		.back-button
+		{
+			display:none;
+		}
+		.toolbar
+		{
+			.searchbar
+			{
+				.searchbar-search-icon
+				{
+					background:url(../img/searh_icon_light.png) center center no-repeat;
+					background-size: 18px;
+					left: 10px;
+					top: 11px;
+					width: 21px;
+					height: 21px;
+				}
+				.searchbar-input
+				{
+					background:#fff;
+					border-radius:5px;
+					padding: 6px 45px;
+					color: #000;
+					font-size: 1.6rem;
+					height: 4rem;
+				}
+			}
+		}
+		.segment
+		{
+			display:block;
+			white-space:nowrap;
+			overflow:auto;
+			border-bottom: 1px solid #527f9f;
+			padding: 0 10px;
+			margin-top: 10px;
+			/*background: #0f4d79;*/
+			.segment-button
+			{
+				border:none;
+				border-bottom:2px solid transparent;
+				color:#6694b5;
+				display: inline-block;
+				width: auto;
+				font-size: 1.6rem;
+				text-transform: none;
+				opacity: 1;
+				padding: 0 10px;
+				height: 4.2rem;
+				line-height: 4rem;
+				border-radius:0;
+				background:none !important;
+        vertical-align: top;
+        touch-action: inherit !important;
+        user-select: inherit !important;
+        -webkit-user-drag: inherit !important;
+			}
+			.segment-activated
+			{
+				border-bottom:2px solid #fff;
+				color:#fff;
+			}
+			&::-webkit-scrollbar
+			{
+		        width: 0;
+		        height: 0;
+		        display: none;
+		    }
+		}
+  }
+
+  .fixed-content, .scroll-content
+  {
+      margin-top:110px !important;
+  }
+	.content
+	{
+		background:#275f87;
+		p
+		{
+			color:#001e34;
+			margin-left:15px;
+			margin-right:15px;
+			font-size: 1.2rem;
+			margin-top: 20px;
+		}
+		.list
+		{
+			margin-top:0;
+			margin-bottom: 15px;
+			.item
+			{
+				background:transparent;
+				border: none;
+				.item-inner
+				{
+					margin-right:15px;
+					padding-right:20px;
+					border-bottom: 1px solid #527f9f;
+					background:none;
+					&:after
+					{
+						content:"";
+						background:url(../img/right_arrow_white.png) center no-repeat;
+						position: absolute;
+						top: 13px;
+						right: 20px;
+						width: 10px;
+						height: 19px;
+						background-size: 10px;
+					}
+					.label
+					{
+						color:#fff;
+					}
+				}
+			}
+		}
+		.btn
+		{
+			max-width: 100%;
+			margin: 0;
+		}
+		.border_btn
+		{
+			background:none;
+			box-shadow:none;
+			border: 1px solid #fff;
+		}
+	}
+}

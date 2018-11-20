@@ -1,0 +1,19 @@
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>Address</ion-title>
+    <!--<ion-buttons right>
+	    <button ion-button (click)="dismissCan()">
+	         <ion-icon><img src="img/close_icon.png" alt="" /></ion-icon>
+	    </button>
+	  </ion-buttons> -->
+  </ion-navbar>
+  <ion-searchbar id="txtHome1" [(ngModel)]="autocomplete.query" (keyup)="updateSearch()" placeholder="Search here" ></ion-searchbar>
+  <ion-list>
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="chooseItem(item)">
+      {{ item }}
+    </ion-item>
+  </ion-list>
+</ion-header>
+<ion-content>
+	<div id="map" style="height: 100%;width: 100%;"></div>
+</ion-content>

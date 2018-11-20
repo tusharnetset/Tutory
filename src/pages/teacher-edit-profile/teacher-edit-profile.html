@@ -1,0 +1,163 @@
+
+<ion-header class="with_back">
+
+  <ion-navbar>
+    <ion-title>Edit Profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<div class="upload_outer center">
+		<div class="upload_inner">
+			<!-- <img *ngIf="!getProfileData?.profile_image" (click)="imagePopOver()" src="img/camera_icon.png" alt="" class="camera_icon" /> -->
+			<img *ngIf="!imgData" src="{{getProfileData?.profile_pic}}" (click)="imagePopOver()" class="upload_inner">
+			<img *ngIf="imgData" src="{{imgData}}" (click)="imagePopOver()" class="upload_inner">
+		</div>
+		<p>Update Profile Picture</p>
+	</div>
+	<div padding>
+			<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
+		<ion-list class="input_forms" no-lines>
+			<ion-row>
+				<ion-col col-50>
+					<ion-item>
+				    	<ion-input type="text" placeholder="First Name" formControlName="first_name"></ion-input>
+					</ion-item>
+					<div style="color: red" *ngIf="authForm.controls['first_name'].hasError('required') && authForm.controls['first_name'].touched">* Firstname is required!</div>
+
+				</ion-col>
+				<ion-col col-50>
+				    <ion-item>
+				    	<ion-input type="text" placeholder="Last Name" formControlName="last_name"></ion-input>
+					</ion-item>
+					<div style="color: red" *ngIf="authForm.controls['last_name'].hasError('required') && authForm.controls['last_name'].touched">* Lastname is required!</div>
+
+				</ion-col>
+			</ion-row>
+			<ion-item>
+				<ion-textarea placeholder="Biography" formControlName="bio"></ion-textarea>
+				<div style="color: red" *ngIf="authForm.controls['bio'].hasError('required') && authForm.controls['bio'].touched">* Biography is required!</div>
+		    </ion-item>
+
+		    <ion-row>
+				<ion-col col-50>
+					<ion-item>
+				    	<ion-input type="tel" placeholder="Q.R/hr (Single)" formControlName="rate"></ion-input>
+				    </ion-item>
+				    <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['rate'].hasError('required') && authForm.controls['rate'].touched">* Individual price is required!</div>
+				</ion-col>
+				<ion-col col-50>
+				    <ion-item>
+			    		<ion-input type="tel" placeholder="Q.R/hr (Group)" formControlName="group_rate"></ion-input>
+			    	</ion-item>
+			     <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['group_rate'].hasError('required') && authForm.controls['group_rate'].touched">* Group price is required!</div>
+				</ion-col>
+			</ion-row>
+			<p style="text-align: center;">Please enter rates for teaching single students and group of students above</p>
+
+
+			<ion-item (tap)="addressMap()">
+				<ion-input id="txtHome1" type="text" placeholder="Address" formControlName="address"></ion-input>
+				<div style="color: red" *ngIf="authForm.controls['address'].hasError('required') && authForm.controls['address'].touched">* Address is required!</div>
+
+		    </ion-item>
+		    <ion-item class="drops">
+					<ion-label>City</ion-label>
+					 <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+					  <ion-select formControlName="city_id" placeholder="City">
+						<ion-option *ngFor="let city of getCitiesData" [value]="city.id">{{city.name}}</ion-option>
+					</ion-select>
+				</ion-item>
+				<div style="color: red" *ngIf="authForm.controls['city_id'].hasError('required') && authForm.controls['city_id'].touched">* City is required!</div>
+
+			<ion-item>
+        <ion-input disabled="true" type="text"  placeholder="Mobile Number" formControlName="mobile_number"></ion-input>
+      </ion-item>
+			<ion-item class="drops">
+			  	<ion-icon item-end><img src="img/calendar_icon.png" alt=""/></ion-icon>
+			  	<ion-datetime displayFormat="MMM DD, YYYY" placeholder="Date of Birth"  formControlName="dob" (ionChange)="dobChange($event,dob)"></ion-datetime>
+			</ion-item>
+			<div style="color: red" *ngIf="authForm.controls['dob'].hasError('required') && authForm.controls['dob'].touched">* Date of birth is required!</div>
+
+			<ion-item>
+		    <ion-input type="text" placeholder="Qualification" formControlName="qualification"></ion-input>
+			</ion-item>
+			<div style="color: red" *ngIf="authForm.controls['qualification'].hasError('required') && authForm.controls['qualification'].touched">* Qualification is required!</div>
+
+			<ion-item>
+		    	<ion-input type="text" placeholder="University Name" formControlName="university_name"></ion-input>
+        </ion-item>
+
+        <ion-item class="drops">
+					<ion-label>Teaching levels</ion-label>
+					  <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+					  <ion-select formControlName="teaching_levels" placeholder="Teaching levels" multiple="true">
+						<ion-option *ngFor="let level of getCatLevels" [value]="level.id">{{level.name}}</ion-option>
+					</ion-select>
+				</ion-item>
+        <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['teaching_levels'].hasError('required') && authForm.controls['teaching_levels'].touched">* Teaching levels is required!</div>
+
+		    <ion-item class="drops">
+					<ion-label>Languages Spoken</ion-label>
+					 <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+					  <ion-select formControlName="languages" placeholder="Languages Spoken" multiple="true">
+						<ion-option *ngFor="let lang of getLang" [value]="lang.id">{{lang.name}}</ion-option>
+					</ion-select>
+				</ion-item>
+				<div style="color: red" *ngIf="authForm.controls['languages'].hasError('required') && authForm.controls['languages'].touched">* Language  is required!</div>
+
+			<ion-item class="drops">
+		    	<ion-label>Location Preferences</ion-label>
+			 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+			  	<ion-select formControlName="location_preference" placeholder="Location Preferences" (ionChange)="eventFire($event)">
+              <ion-option value="TL">Tutor Location</ion-option>
+              <ion-option value="SH">Student Location</ion-option>
+            <ion-option value="AO">Any other public location</ion-option>
+			    	<ion-option value="NP">No preference</ion-option>
+			    </ion-select>
+			</ion-item>
+			<div style="color: red" *ngIf="authForm.controls['location_preference'].hasError('required') && authForm.controls['location_preference'].touched">* Location Preference is required!</div>
+
+      <ion-item class="check_point" *ngIf="showiNPUT" (tap)="suggestClick()">
+          <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+          <ion-input type="text" placeholder="Other location"  formControlName="other_location" readonly></ion-input>
+        </ion-item>
+        <div class="dd" *ngIf="show">
+          <ion-list class="input_forms" no-lines style="margin-bottom: 0;">
+              <div class="droparea">
+                <h3 class="bold_font">Suggested Locations</h3>
+                <ul>
+                  <li (click)="clickSuggest(sugestLocation.address,sugestLocation.id)" *ngFor="let sugestLocation of suggestedLocations">
+                    <img src="img/address_icon.png" alt=""/>
+                    <h4 class="bold_font">CCD</h4>
+                    <p>{{sugestLocation.address}}</p>
+                  </li>
+                </ul>
+              </div>
+          </ion-list>
+        </div>
+
+		    <ion-item class="drops">
+		    	<ion-label>Gender</ion-label>
+			 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+			  	<ion-select formControlName="gender" placeholder="Gender">
+			    	<ion-option value="M">Male</ion-option>
+			    	<ion-option value="F">Female</ion-option>
+			    </ion-select>
+			</ion-item>
+			<div style="color: red" *ngIf="authForm.controls['gender'].hasError('required') && authForm.controls['gender'].touched">* Gender is required!</div>
+
+			<ion-item>
+		    	<ion-textarea placeholder="Other Information" formControlName="other_info"></ion-textarea>
+			</ion-item>
+			<div style="color: red" *ngIf="authForm.controls['other_info'].hasError('required') && authForm.controls['other_info'].touched">* Other Information is required!</div>
+
+		</ion-list>
+		<button class="btn btn-text" ion-button full type="submit" >Update profile</button>
+		</form>
+	</div>
+
+</ion-content>

@@ -1,0 +1,35 @@
+page-services-popup {
+	.pop_outer
+	{
+		.gradient_bg
+		{
+			span
+			{
+				display: inline-block;
+				width: 36px;
+				height: 36px;
+				background: #fff;
+				border-radius: 100%;
+				margin: 10px 10px 10px 15px;
+				vertical-align: middle;
+				text-align: center;
+				line-height: 44px;
+				img
+				{
+					height:16px;
+				}
+			}
+		}
+		.pop_content
+		{
+			p
+			{
+				margin:0;
+			}
+		}
+		.pop_content + .gradient_bg
+		{
+			border-radius:0 !important;
+		}
+	}
+}

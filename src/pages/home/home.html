@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+        <button ion-button (click)="goToSearch()">
+          <ion-icon><img src="img/search_icon.png" alt="" /></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+    <ion-buttons right>
+        <button ion-button (click)="goToNotifications()">
+          <ion-icon><img src="img/notification_icon.png" alt="" /></ion-icon>
+          <ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 0 && getBadgeCount?.count <= 10">{{getBadgeCount?.count}}</ion-badge>
+        <ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 10">10+</ion-badge>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="blue_bg">
+  <h2 class="center">Select Category</h2>
+  <ul>
+      <li *ngFor="let cate of getCategory" (click)="goToSubCategory(cate.id,cate.name,cate.levels_present)"><img src="{{cate.image}}" alt="" />{{cate.name}}</li>
+  </ul>
+  <p style="text-decoration: underline;text-align: center;margin-top: 15px;margin-bottom: 10px;color: #fff;font-size: 17px;" (click)="skipTutorProfile()">Skip to tutors listing screen</p>
+
+</ion-content>

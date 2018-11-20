@@ -1,0 +1,32 @@
+<ion-header class="transparent_header with_back">
+  <ion-navbar>
+    <ion-title></ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="bg center">
+	<img src="img/logo.png" alt="" class="logo" />
+	<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
+		<ion-list class="input_forms" no-lines>
+			<ion-item>
+				<ion-input type="text" placeholder="Enter Email Address or Phone Number" [formControl]="authForm.controls['user_identity']"></ion-input>
+			</ion-item>
+			<div style="margin-top: 6px;color: red;"   *ngIf="authForm.controls['user_identity'].hasError('required') && authForm.controls['user_identity'].touched">* Email or Phone is required!</div>
+			<ion-item>
+				<ion-input type="password" placeholder="Enter Password"  [formControl]="authForm.controls['password']"></ion-input>
+			</ion-item>
+			<div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['password'].hasError('required') && authForm.controls['password'].touched">* Password is required!</div>
+		</ion-list>
+		<button class="btn btn-text" type="submit" ion-button full>Login</button>
+	</form>
+	<p><span (click)="goToForgotPassword()">Forgot Password?</span></p>
+	<p class="skip" style="display: inline-block;"><span (click)="viewTutorial()">View Tutorial</span>
+	<p *ngIf="uType == 'S'" class="skip" style="display: inline-block;margin-left: 10px;"><span (click)="skip()">Skip</span></p>
+</ion-content>
+<ion-footer class="transparent_footer">
+	<ion-toolbar>
+		<ion-row>
+			<ion-col col-7><p>Don’t have an account?</p></ion-col>
+			<ion-col col-5><button class="btn btn-text" ion-button full (click)="goToSignUp()">Sign Up</button></ion-col>
+		</ion-row>
+	</ion-toolbar>
+</ion-footer>

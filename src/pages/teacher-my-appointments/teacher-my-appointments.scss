@@ -1,0 +1,29 @@
+page-teacher-my-appointments {
+	.swipe-area {
+	    height:100%;
+	    width:100%;
+    }
+    .rating
+		{
+			display: block;
+			margin: 6px 0;
+			img
+			{
+				height: 34px;
+				margin: 0 3px;
+			}
+			ul {
+			  	padding: 0px;
+			  	&.rating li {
+				    padding: 5px 0px !important;
+				    background: none;
+				    color: #ffb400;
+				    ion-icon {
+              font-size: 30px;
+			    	}
+			  	}
+			}
+
+
+		}
+}

@@ -1,0 +1,52 @@
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>View Availability</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="calShow" class="blue_box">
+    <ion-calendar #calendar [(ngModel)]="dateRange"
+      [options]="optionsRange"
+      [type]="type"
+      [format]="'YYYY-MM-DD'"
+      (onDaySelect)="onDaySelect($event)"
+      (dateSelected)="onDateSelected($event)"
+      (onSelectStart)="onSelectStart($event)"
+      (onChange)="onChange($event)"
+      step="30">
+    </ion-calendar>
+	</div>
+	<div padding >
+		<div class="white_box">
+			<div class="services_box">
+				<h3 class="bold_font"><img src="img/clockwd_icon.png" alt="" />Time Slots</h3>
+				<!-- <p>No time slot added for this dates yet.</p> -->
+				<ion-list *ngIf="dataCom" class="input_forms" no-lines>
+					<ion-item *ngFor="let slots of slotData">
+				    	<ion-label>{{slots.from_time}}:00 to {{slots.to_time}}:00</ion-label>
+					 	<ion-icon *ngIf="userType == 'T'" (click)="deleteSlot(slots.slot_id,slots.date)" item-end><img src="img/cross_icon.png" alt=""/></ion-icon>
+					</ion-item>
+					<p *ngIf="check" style="text-align: center;">No time slot added for this date yet.</p>
+					<ion-row style="padding: 0 15px;" *ngFor="let att of anArray;let i = index">
+						<ion-col col-50>
+							<ion-item class="drops">
+							  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
+							  	<ion-datetime displayFormat="HH:mm" minuteValues="0" placeholder="From" (ionChange)="fromTime($event,i)"></ion-datetime>
+							</ion-item>
+						</ion-col>
+						<ion-col col-50>
+						    <ion-item class="drops">
+							  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
+							  	<ion-datetime displayFormat="HH:mm" minuteValues="0" placeholder="To" (ionChange)="toTime($event,i)"></ion-datetime>
+							</ion-item>
+						</ion-col>
+						<ion-icon style="height: 20px;width: 20px;margin-top: 26px;" item-end (click)="remove(i)"><img src="img/cross_icon.png" alt=""/></ion-icon>
+					</ion-row>
+				</ion-list>
+				<p *ngIf="hide" class="add_more"><span class="underline" (click)="addMore()">+ Add More</span></p>
+			</div>
+			<button  class="btn btn-text" *ngIf="show && userType == 'T'" ion-button full (click)="addNewSlots()">Add New Slot</button>
+			<button  class="btn btn-text" *ngIf="hide && userType == 'T'" ion-button full (click)="submitSlot()">Submit</button>
+		</div>
+	</div>
+</ion-content>

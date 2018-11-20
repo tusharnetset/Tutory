@@ -1,0 +1,46 @@
+page-home {
+	.blue_bg
+	{
+		background:$blue-color;
+		h2
+		{
+			margin: 0 0 20px 0 !important;
+			color: #fff;
+			font-size: 2rem;
+		}
+		ul
+		{
+			margin:0;
+			padding:0;
+			list-style:none;
+			li
+			{
+				border-radius:15px;
+				background:#fff;
+				box-shadow:5px 0 10px rgba(0,0,0,0.1);
+				padding: 15px 20px;
+				position: relative;
+				margin-top: 10px;
+				font-size: 1.8rem;
+				img
+				{
+					height: 50px;
+					vertical-align: middle;
+					margin-right: 20px;
+				}
+				&:after
+				{
+					content:"";
+					background:url(../img/right_arrow.png) center center no-repeat;
+					position: absolute;
+					right: 12px;
+					top: 50%;
+					height: 20px;
+					width: 10px;
+					background-size: 10px;
+					margin-top: -10px;
+				}
+			}
+		}
+	}
+}

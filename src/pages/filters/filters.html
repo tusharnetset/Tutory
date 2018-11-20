@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Filters</ion-title>
+    <ion-buttons right>
+        <button ion-button (click)="goToTutorListClose()">
+          <ion-icon><img src="img/close_icon.png" alt="" /></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
+	<ion-list class="input_forms" no-lines>
+		<ion-item class="range_slider">
+			<ion-label>Price <span>(Per hour)</span></ion-label>
+		    <ion-range min="0" max="100" pin="true" formControlName="price" color="secondary">
+		    </ion-range>
+		</ion-item>
+		<p class="range_text">0 <span>100 Q.R</span></p>
+		<ion-item class="range_slider">
+			<ion-label>Rating</ion-label>
+		    <ion-range min="0" max="5" pin="true" formControlName="rating" color="secondary">
+		    </ion-range>
+		</ion-item>
+		<p class="range_text">0 <span>5</span></p>
+
+    <p class="label bold_font">City</p>
+		<ion-item class="drops">
+			<ion-label>Select City</ion-label>
+		 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+		  	<ion-select formControlName="category_id" placeholder="Select City">
+          <ion-option *ngFor="let city of getCitiesData" [value]="city.id">{{city.name}}</ion-option>
+		    </ion-select>
+		</ion-item>
+
+		<p class="label bold_font">Subject</p>
+		<ion-item class="drops">
+			<ion-label>Select Subject</ion-label>
+		 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+		  	<ion-select formControlName="category_id" placeholder="Select Subject" (ngModelChange)="categorySelect($event)">
+		    	<ion-option *ngFor="let cat of getCategory" [value]="cat.id" (ionSelect)="levelSend(cat.levels_present)">{{cat.name}}</ion-option>
+		    </ion-select>
+    </ion-item>
+    <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['category_id'].hasError('required') && authForm.controls['category_id'].touched">* Category is required!</div>
+
+		<p class="label bold_font">Subcategory</p>
+		<ion-item class="drops">
+			<ion-label>Select Subcategory</ion-label>
+		 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+		  	<ion-select formControlName="subcategory_id"placeholder="Select Subcategory" (ngModelChange)="categorySelectSub($event)">
+		    	<ion-option *ngFor="let subCat of subCateArr" [value]="subCat.id">{{subCat.name}}</ion-option>
+		    </ion-select>
+    </ion-item>
+    <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['subcategory_id'].hasError('required') && authForm.controls['subcategory_id'].touched">* Subcategory is required!</div>
+
+    <p *ngIf="showLevel" class="label bold_font">Level</p>
+		<ion-item class="drops" *ngIf="showLevel">
+			<ion-label>Select Level</ion-label>
+		 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+       <ion-select formControlName="levels" placeholder="Levels" (ngModelChange)="levelsSelect($event)">
+        <ion-option *ngFor="let level of levelsArr" [value]="level.id">{{level.name}}</ion-option>
+		    </ion-select>
+    </ion-item>
+
+	</ion-list>
+	<button class="btn btn-text" type="submit" ion-button full>Apply Filters</button>
+	</form>
+</ion-content>

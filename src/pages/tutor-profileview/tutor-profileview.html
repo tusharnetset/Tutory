@@ -1,0 +1,105 @@
+<ion-header *ngIf="screenShot">
+  	<ion-navbar>
+	    <ion-title>Tutor Profile</ion-title>
+	    <ion-buttons right>
+	        <button ion-button (click)="goToShareProfile()">
+	          <ion-icon><img src="img/share_icon.png" alt=""  /></ion-icon>
+	        </button>
+	        <button *ngIf="unFav" ion-button (click)="heartClick('F')">
+	          <ion-icon ><img src="img/heart_icon.png" alt="" /></ion-icon>
+	        </button>
+	        <button *ngIf="fav" ion-button (click)="heartClick('U')">
+	          <img src="img/heartfill_icon.png" alt="" />
+	        </button>
+	    </ion-buttons>
+  	</ion-navbar>
+</ion-header>
+<ion-content class="profile_view">
+  	<div class="big_profile_image">
+		<img class="profile_pic_big" src="{{getTutordata?.profile_pic}}">
+	</div>
+
+	<div class="name_image_area center">
+		<img src="{{getTutordata?.profile_pic}}" alt="" class="user_image" />
+		<h1>{{getTutordata?.first_name}} {{getTutordata?.last_name}}, {{getTutordata?.gender}}, {{getTutordata?.age}}</h1>
+		<!-- <span class="ratings"> -->
+        <span class="rating">
+			<rating [(ngModel)]="ratingData"
+	        readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+			</rating>
+		</span>
+		<span class="underline white_text" (click)="review(getTutordata?.tutor_id)">({{getTutordata?.reviews_count}} reviews)</span>
+		<span class="underline white_text">({{getTutordata?.recommendations}} recommendations)</span>
+	</div>
+
+	<div padding>
+		<div class="white_box">
+			<p class="bio">{{getTutordata?.bio}}</p>
+			<ul>
+				<li>
+					<img src="img/address_icon.png" alt="" />
+					<h3>Address</h3>
+					<p>{{getTutordata?.address}}</p>
+				</li>
+
+				<li>
+					<img src="img/service_icon.png" alt="" />
+					<h3>Services Offered</h3>
+					<ul class="skills">
+						<li *ngFor="let service of getTutordata?.categories">
+							{{service.category_name}}
+							<p *ngFor="let subService of service?.subcategories"><span>{{subService.subcategory_name}}</span> <span *ngIf="subService.level_id != 0" class="btn btn-text">{{subService.level}}</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<img src="img/dollar_icon.png" alt="" />
+					<h3>Rate Per Hour</h3>
+					<p><span>{{getTutordata?.rate}} Q.R/hr</span> for individual student</p>
+					<p><span>{{getTutordata?.group_rate}} Q.R/hr</span> for group of student</p>
+				</li>
+				<li (click)="checkAvail(getTutordata?.tutor_id)">
+					<img src="img/appointments_icon_active.png" alt="" />
+					<h3>Schedule Availability</h3>
+					<!-- <span class="links">Check Availability</span> -->
+					<p><span class="bold_font underline">Check Availability</span></p>
+        </li>
+        <li>
+					<img src="img/service_icon.png" alt="" />
+					<h3>Teaching Levels</h3>
+					<p style="display: inline-block;" *ngFor="let tLevel of getTutordata?.teaching_levels; let isLast=last">{{tLevel.name}} {{isLast ? '' : ', '}}</p>
+				</li>
+				<li>
+					<img src="img/globe_icon.png" alt="" />
+					<h3>Languages Spoken</h3>
+					<p style="display: inline-block;" *ngFor="let lang of getTutordata?.user_languages; let isLast=last">{{lang}} {{isLast ? '' : ', '}}</p>
+				</li>
+				<li>
+					<img src="img/address_icon.png" alt="" />
+					<h3>Preferred Service Location</h3>
+          <p *ngIf="getTutordata?.location_preference == 'TL'">Tutor Location</p>
+					<p *ngIf="getTutordata?.location_preference == 'SH'">Student Location</p>
+					<p *ngIf="getTutordata?.location_preference == 'AO'">Any other public location</p>
+					<p *ngIf="getTutordata?.location_preference == 'NP'">No preference</p>
+
+				</li>
+				<li>
+					<img src="img/qualification_icon.png" alt="" />
+					<h3>Qualifications</h3>
+					<p>{{getTutordata?.qualification}}</p>
+				</li>
+				<li>
+					<img src="img/service_icon.png" alt="" />
+					<h3>University Name</h3>
+					<p>{{getTutordata?.university_name}}</p>
+				</li>
+				<li>
+					<img src="img/info_icon.png" alt="" />
+					<h3>Other Information</h3>
+					<p>{{getTutordata?.other_info}}</p>
+				</li>
+			</ul>
+		</div>
+		<button *ngIf="!favDataS" class="btn btn-text" ion-button full (click)="goToBookAppointment(getTutordata?.tutor_id,getTutordata?.rate,getTutordata?.group_rate)">Book Appointment</button>
+	</div>
+</ion-content>

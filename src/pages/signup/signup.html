@@ -1,0 +1,48 @@
+<ion-header class="transparent_header with_back">
+  <ion-navbar>
+    <ion-title>Sign Up</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="bg center">
+	<p padding class="fill">Fill the information below to <br/>create a new account</p>
+	<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
+		<ion-list class="input_forms" no-lines>
+			<ion-item>
+		    	<ion-input type="email" [pattern]="emailValidate" placeholder="Enter Email Address" [formControl]="authForm.controls['email']"></ion-input>
+		    </ion-item>
+
+		    <div style="margin-top: 6px;color: red;" class="error-box" *ngIf="authForm.controls['email'].invalid && authForm.controls['email'].touched || authForm.controls['email'].dirty">
+				<div style="margin-top: 6px;color: red;" class="error-box" *ngIf="authForm.controls['email'].hasError('required')">
+					* Email is required
+				</div>
+				<div *ngIf="authForm.controls['email'].hasError('pattern') && authForm.controls['email'].touched">
+					<div class="error" *ngIf="authForm.controls['email'].hasError('pattern')  && authForm.controls['email'].touched ">
+						* Invalid Email Address
+					</div>
+				</div>
+			</div>
+
+			<ion-item>
+          <ion-label color="primary" style="margin-top:12px;">+974</ion-label>
+		    	<ion-input (keyup)="moveInput($event)" type="tel" limit-to="5" placeholder="Enter Phone Number" [formControl]="authForm.controls['mobile_number']"></ion-input>
+        </ion-item>
+		     <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['mobile_number'].hasError('required') && authForm.controls['mobile_number'].touched">* Mobile number is required!</div>
+         <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['mobile_number'].hasError('pattern')">
+          * Invalid phone number
+        </div>
+         <ion-item>
+		    	<ion-input type="password" placeholder="Enter Password" [formControl]="authForm.controls['password']"></ion-input>
+		    </ion-item>
+		    <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['password'].hasError('required') && authForm.controls['password'].touched">* Password is required!</div>
+        <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['password'].hasError('minlength')">
+          * Minimum of 5 characters
+      </div>
+        <ion-item>
+		    	<ion-input type="password" placeholder="Re-Enter Password" [formControl]="authForm.controls['rePassword']" validateEqual="password"></ion-input>
+		    </ion-item>
+		    <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['rePassword'].hasError('required') && authForm.controls['rePassword'].touched">* Re-password is required!</div>
+		</ion-list>
+    <p class="agree">By clicking the sign up button you agree to the <span (click)="termAndContions()" class="bold_font">Terms and Conditions</span> and <span (click)="privacyPolicy()" class="bold_font">Privacy Policy.</span></p>
+		<button class="btn btn-text" type="submit" ion-button full>Sign Up</button>
+	</form>
+</ion-content>

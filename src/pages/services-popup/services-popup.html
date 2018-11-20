@@ -1,0 +1,29 @@
+<ion-content padding>
+	<div class="table_box">
+		<div class="table_box_inner">
+			<div class="pop_outer">
+			<div *ngFor="let cate of ctData">
+				<div class="gradient_bg bold_font">
+					<span>
+						<img src="img/academic_icon.png" alt="" />
+					</span>
+					{{cate.category_name}}
+				</div>
+				<div class="pop_content" padding>
+					<p *ngFor="let sub of cate.subcategories; let isLast=last" style="display: inline-block;">{{sub}} {{isLast ? '' : ', '}}</p>
+				</div>
+				</div>
+				<!-- <div class="gradient_bg bold_font">
+					<span>
+						<img src="img/music_icon.png" alt="" />
+					</span>
+					Music
+				</div>
+				<div class="pop_content" padding>
+					<p>Drums, Classical Guitar, Piano, Violin</p>
+				</div> -->
+			</div>
+			<div class="close_icon"><ion-icon name="close-circle" (click)="dismiss()"></ion-icon></div>
+		</div>
+	</div>
+</ion-content>

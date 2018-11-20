@@ -1,0 +1,32 @@
+page-subject-detail {
+	.content
+	{
+		.subject_image
+		{
+			overflow: hidden;
+			max-height: 220px;
+			img
+			{
+				width:100%;
+			}
+		}
+		.white_box
+		{
+			padding:15px;
+			margin-top: -40px;
+			position: relative;
+			h2
+			{
+				margin-top:0 !important;
+				color: #535353;
+				font-size: 2rem;
+			}
+			h4
+			{
+				color:$pink-color;
+				font-size:1.4rem;
+				margin:0;
+			}
+		}
+	}
+}

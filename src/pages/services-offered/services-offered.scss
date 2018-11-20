@@ -1,0 +1,96 @@
+page-services-offered {
+	.header
+	{
+		.toolbar
+		{
+			.toolbar-background
+			{
+				border:none;
+			}
+		}
+	}
+	.blue_box
+	{
+		background:$blue-color;
+		padding:20px 20px 41px 20px;
+		.input_forms
+		{
+			margin-top:0;
+		}		
+	}
+
+	div[padding]
+	{
+		height: calc(100% - 227px);
+		padding-top: 0 !important;
+		margin-top: -25px;
+		.white_box
+		{
+			height:100%;
+			overflow:auto;
+			.no_services
+			{
+				display:table;
+				width:100%;
+				height:100%;
+				text-align:center;
+				.inner_services
+				{
+					display:table-cell;
+					vertical-align:middle;
+					h1
+					{
+						margin:0;
+						color:#dddddd;
+						font-size: 3.6rem;
+					}
+					p
+					{
+						margin:0 40px;
+					}
+				}
+			}
+			.services_box h3
+			{
+				font-size: 1.8rem;
+				margin: 0 !important;
+				padding: 15px 15px;
+				img
+				{
+					height: 22px;
+					vertical-align: middle;
+					margin-right: 8px;
+					margin-top: -3px;	
+				}
+			}
+			.list
+			{
+				margin:0;
+				.item
+				{
+					border-bottom:1px solid #e5e5e5;
+					.item-inner
+					{
+						.label
+						{
+							span
+							{
+								color:$pink-color;
+							}
+						}
+						.icon
+						{
+							margin-top:0;
+							margin-bottom:0;
+							img
+							{
+								height:30px;
+							}
+						}
+					}
+				}
+					
+			}
+		}
+	}
+}

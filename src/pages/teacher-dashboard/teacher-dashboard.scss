@@ -1,0 +1,44 @@
+page-teacher-dashboard {
+	.header
+	{
+		.toolbar
+		{
+			.toolbar-content-md
+			{
+				padding-left:40px;
+			}
+		}
+	}
+	.content
+	{
+		.scroll-content
+		{
+			padding-top:0 !important;
+			h3.header
+			{
+				background: #285f88;
+				margin: 0 -16px 15px;
+				padding: 8px 10px;
+				color: #fff;
+				font-size: 1.4rem;
+			}
+			.no_appointment
+			{
+				height: 100%;
+				width: 100%;
+				text-align: center;
+				padding: 30px;
+				display:table;
+				.inner
+				{
+					display: table-cell;
+					vertical-align: middle;
+					img
+					{
+						height: 85px;
+					}
+				}
+			}
+		}
+	}
+}

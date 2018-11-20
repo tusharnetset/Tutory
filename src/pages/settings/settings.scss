@@ -1,0 +1,67 @@
+page-settings {
+	.header
+	{
+		.toolbar
+		{
+			.toolbar-content-md
+			{
+				padding-left:40px;
+			}
+		}
+	}
+	.content
+	{
+		.white_box
+		{
+			min-height:100%;
+			.list
+			{
+				.item.item-block
+				{
+					border: none !important;
+					border-bottom:1px solid #e5e5e5 !important;
+					background: none;
+					padding-left: 0;
+					.item-inner
+					{
+						border:none;
+						padding:0;
+						.label
+						{
+							font-size: 1.8rem;
+							margin: 15px 0;
+							span
+							{
+								font-size:1.4rem;
+								display:block;
+								color:#a3a3a3;
+							}
+						}
+					}
+					&:last-child
+					{
+						border-bottom:none !important;
+					}
+					&::after {
+						content: "";
+						position: absolute;
+						background: url(../img/right_arrow.png) center center no-repeat;
+						width: 10px;
+						height: 16px;
+						background-size: 100%;
+						right: 2px;
+						top: 50%;
+						margin-top: -8px;
+					}
+				}
+				.item.item-block.no-rightarrow
+				{
+					&::after
+					{
+						display:none;
+					}
+				}
+			}
+		}
+	}
+}

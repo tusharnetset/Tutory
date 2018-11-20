@@ -1,0 +1,98 @@
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>Repeat Appointment</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
+	<ion-list class="input_forms" no-lines>
+		<ion-row>
+			<ion-col col-50>
+				<ion-item class="drops">
+				  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
+				  	<ion-datetime displayFormat="HH:mm" minuteValues="0" placeholder="From Time" formControlName="start_time" (ionChange)="fromTime($event)"></ion-datetime>
+				</ion-item>
+				 <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['start_time'].hasError('required') && authForm.controls['start_time'].touched">* From time is required!</div>
+			</ion-col>
+			<ion-col col-50>
+			    <ion-item class="drops">
+				  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
+				  	<ion-datetime displayFormat="HH:mm" minuteValues="0"  placeholder="To Time" formControlName="end_time" (ionChange)="toTime($event)"></ion-datetime>
+				</ion-item>
+				<div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['end_time'].hasError('required') && authForm.controls['end_time'].touched">* To time is required!</div>
+			</ion-col>
+		</ion-row>
+		<ion-item class="drops">
+		  	<ion-icon item-end><img src="img/calendar_icon.png" alt=""/></ion-icon>
+		  	<ion-datetime displayFormat="MMM DD, YYYY" placeholder="Date" formControlName="date" [min]="minDate"></ion-datetime>
+		</ion-item>
+		<div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['date'].hasError('required') && authForm.controls['date'].touched">* Date is required!</div>
+
+    <ion-item class="drops">
+      <ion-label>Select Category</ion-label>
+     <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+      <ion-select formControlName="category" placeholder="Category">
+        <ion-option *ngFor="let cat of getBookCategory" [value]="cat.category_id" (ionSelect)="selectCategory(cat.category_id,cat.levels_present,cat.category_name)">{{cat.category_name}}</ion-option>
+      </ion-select>
+  </ion-item>
+  <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['category'].hasError('required') && authForm.controls['category'].touched">* Category is required!</div>
+    <ion-item class="drops">
+      <ion-label>Select sub category</ion-label>
+     <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+      <ion-select formControlName="subcategory" placeholder="Sub category">
+        <ion-option *ngFor="let subCat of subCat" [value]="subCat.subcategory_id" (ionSelect)="categorySelectSub(subCat.subcategory_id,subCat.subcategory_name)">{{subCat.subcategory_name}}</ion-option>
+      </ion-select>
+  </ion-item>
+  <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['subcategory'].hasError('required') && authForm.controls['subcategory'].touched">* Sub category is required!</div>
+  <ion-item *ngIf="showLevel" class="drops">
+      <ion-label>Level</ion-label>
+     <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+      <ion-select formControlName="levels" placeholder="Level">
+        <ion-option *ngFor="let level of levelData" [value]="level.level_id" (ionSelect)="levelsSelect(level.level_id,level.level_name)">{{level.level_name}}</ion-option>
+      </ion-select>
+  </ion-item>
+
+    <ion-item class="drops">
+	    	<ion-label>Location Preferences</ion-label>
+		 	<ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+		  	<ion-select formControlName="location_preference" placeholder="Location Preferences" (ionChange)="eventFire($event)">
+          <ion-option value="TL">Tutor Location</ion-option>
+          <ion-option value="SH">Student Location</ion-option>
+          <ion-option value="AO">Any other public location</ion-option>
+          <ion-option value="NP">No preference</ion-option>
+		    </ion-select>
+		</ion-item>
+		<div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['location_preference'].hasError('required') && authForm.controls['location_preference'].touched">* Location Preferences is required!</div>
+
+		<ion-item class="check_point" *ngIf="showiNPUT" (tap)="suggestClick()">
+      <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+      <ion-input type="text" placeholder="Other location" value="{{va}}" formControlName="other_location" readonly></ion-input>
+  </ion-item>
+  <div class="dd" *ngIf="show">
+    <ion-list class="input_forms" no-lines style="margin-bottom: 0;">
+         <div class="droparea">
+           <h3 class="bold_font">Suggested Locations</h3>
+           <ul>
+             <li (click)="clickSuggest(sugestLocation.address,sugestLocation.id)" *ngFor="let sugestLocation of suggestedLocations">
+               <img src="img/address_icon.png" alt=""/>
+               <!-- <h4 class="bold_font">CCD</h4> -->
+               <p>{{sugestLocation.address}}</p>
+             </li>
+           </ul>
+           <h3 (click)="mapGo()" class="bold_font custom">Custom Locations <img src="img/drop_arrow.png" alt="" /></h3>
+         </div>
+    </ion-list>
+  </div>
+
+		<ion-item>
+	    	<ion-input formControlName="no_of_students" type="tel" placeholder="Number of Students"></ion-input>
+	    </ion-item>
+	    <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['no_of_students'].hasError('required') && authForm.controls['no_of_students'].touched">* Number of Students time is required!</div>
+	    <ion-item>
+	    	<ion-textarea formControlName="special_instructions" placeholder="Any Special Instructions" ></ion-textarea>
+	    </ion-item>
+	    <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['special_instructions'].hasError('required') && authForm.controls['special_instructions'].touched">* Any special instructions time is required!</div>
+	</ion-list>
+	<button class="btn btn-text" ion-button full type="submit">Done</button>
+	</form>
+</ion-content>

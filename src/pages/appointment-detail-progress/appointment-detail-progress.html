@@ -1,0 +1,61 @@
+
+<ion-header class="with_back">
+
+  <ion-navbar>
+    <ion-title>Appointment Details</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="appointment_details">
+	<div class="white_box">
+		<div class="user_detail">
+			<img src="img/user.jpg" class="user_img" (click)="goToProfile()">
+			<h2>Alex Gregorio, M, 36
+				<span class="rating">
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-yellow.png" alt="" />
+	        		<img src="img/star-light.png" alt="" />
+	        	</span>
+			</h2>
+			<p class="location"><img src="img/location_icon.png" alt="" />San Francisco, USA</p>
+			<h3 class="bold_font">15 Q.R/hr</h3>
+			<div class="contacts">
+				<img src="img/message_icon.png" alt="" />
+				<img src="img/call_icon.png" alt="" />
+			</div>
+		</div>
+
+		<div class="appointment_info">
+			<h3 class="bold_font">Time & Date</h3>
+			<p>10:00 to 12:00, 20/06/2018</p>
+			<hr/>
+			<h3 class="bold_font">Subject</h3>
+			<p>Academic - <span>Arabic</span></p>
+			<hr/>
+			<ion-row>
+				<ion-col col-5>
+					<h3 class="bold_font">Location</h3>
+					<p>Student Home</p>
+				</ion-col>
+				<ion-col col-7>
+					<h3 class="bold_font">Number of Students</h3>
+					<p>2</p>
+				</ion-col>
+			</ion-row>
+			<hr/>
+			<h3 class="bold_font">Special Instructions</h3>
+			<p>Generate Lorem Ipsum placeholder text for use in your graphic.</p>
+			<hr/>
+			<h3 class="bold_font">Total Cost</h3>
+			<p>30 Q.R</p>
+		</div>
+
+	</div>
+	<div class="center status_area">
+		<p class="green">Appointment in progress.</p>
+	</div>
+</ion-content>

@@ -1,0 +1,126 @@
+page-subscription {
+	.header
+	{
+		.blue_bg
+		{	
+			background:#275f87;
+			padding: 10px 5px;
+			color:#fff;
+			p
+			{
+				margin: 0;
+				font-size: 1.2rem;
+			}
+			h1
+			{
+				margin: 0;
+				text-transform: uppercase;
+				font-size: 3rem;
+			}
+			.text-right
+			{
+				text-align:right;
+			}
+		}
+
+	}
+	.content
+	{
+		.white_box
+		{
+			padding:10px 40px;
+			min-height:100%;
+			p
+			{
+				margin-bottom:25px;
+			}
+			p.best_offer
+			{
+				margin: -12px 0 0 0;
+				position: relative;
+				span
+				{
+					display: inline-block;
+					border-radius: 5px;
+					padding: 2px 10px;
+					font-size: 1rem;
+				}
+			}
+			.list
+			{
+				.item.item-block
+				{
+					border:1px solid #484848;
+					border-radius:10px;
+					padding:0;
+					margin-top:5px;
+					.item-inner
+					{
+						padding-right:0;
+						.label
+						{
+							font-size:2rem;
+							text-align:center;
+							color:#000;
+							margin: 10px 0;
+							span
+							{
+								display:block;
+							}
+							.price
+							{
+								color:$pink-color;
+							}
+							.per_month
+							{
+								color:#868686;
+								font-size:1.4rem;
+							}
+						}
+						.radio
+						{
+							margin:0;
+							.radio-icon
+							{
+								position: absolute;
+								top: 5px;
+								right: 5px;
+								left: initial;
+								border: none;
+								background: #fff;
+								width: 26px;
+								height: 26px;
+								border-radius: 100%;
+								.radio-inner
+								{
+									background: $pink-color;
+								}
+							}
+							.radio-icon.radio-checked
+							{
+								background: $pink-color;
+								.radio-inner
+								{
+									background:url(../img/check_icon.png) center center no-repeat;
+									left: 0;
+									top: 0;
+									border-radius: 0;
+									width: 26px;
+									height: 26px;
+									background-size: 15px;
+									border: none;
+									transform: none;
+									transition:none;
+								}
+							}
+						}
+					}
+				}
+				.item.item-block.item-radio-checked
+				{
+					border:1px solid $pink-color;
+				}
+			}
+		}
+	}
+}

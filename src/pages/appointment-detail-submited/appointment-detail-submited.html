@@ -1,0 +1,104 @@
+<ion-header class="with_back">
+  <ion-navbar>
+    <ion-title>Appointment Details</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="appointment_details">
+	<div class="white_box">
+		<div class="user_detail">
+			<img src="{{myAppointDetail?.profile_pic}}" class="user_img" (click)="goToProfile(myAppointDetail?.tutor_id)">
+			<h2>{{myAppointDetail?.first_name}} {{myAppointDetail?.last_name}}, {{myAppointDetail?.gender}} {{myAppointDetail?.age}}
+				<span class="rating">
+          <rating [(ngModel)]="avgRating"
+              readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+					</rating>
+        </span>
+			</h2>
+			<p class="location"><img src="img/location_icon.png" alt="" />{{myAppointDetail?.address}}</p>
+			<p class="bold_font underline view_map" (click)="viewMap(myAppointDetail?.latitude,myAppointDetail?.longitude)" >View on map</p>
+			<h3 class="bold_font">{{myAppointDetail?.tutor_rate}} Q.R/hr</h3>
+			<p *ngIf="myAppointDetail?.no_of_students <= 1">For individual student</p>
+			<p *ngIf="myAppointDetail?.no_of_students > 1">For group of students</p>
+		</div>
+
+		<div class="appointment_info">
+			<h3 class="bold_font">Time & Date</h3>
+			<p>{{myAppointDetail?.start_time}} to {{myAppointDetail?.end_time}}, {{myAppointDetail?.date | date:'dd/MM/yyyy'}}</p>
+			<hr/>
+			<h3 class="bold_font">Subject</h3>
+			<p>{{myAppointDetail?.category_name}} - <span>{{myAppointDetail?.subcategory_name}}</span> - <span>{{myAppointDetail?.level_name}}</span></p>
+			<hr/>
+			<ion-row>
+				<ion-col col-5>
+					<h3 class="bold_font">Location</h3>
+					<p *ngIf="myAppointDetail?.location_preference == 'TL'">Tutor's Location</p>
+					<p *ngIf="myAppointDetail?.location_preference == 'SH'">Student's Home</p>
+					<p *ngIf="myAppointDetail?.location_preference == 'AO'">Any other public location</p>
+					<p *ngIf="myAppointDetail?.location_preference == 'NP'">No preference</p>
+				</ion-col>
+				<ion-col col-7>
+					<h3 class="bold_font">Number of Students</h3>
+					<p>{{myAppointDetail?.no_of_students}}</p>
+				</ion-col>
+      </ion-row>
+      <h3 *ngIf="myAppointDetail?.location_preference == 'AO'" class="bold_font">Other Location</h3>
+			<p *ngIf="myAppointDetail?.location_preference == 'AO'">{{myAppointDetail?.other_location}}</p>
+			<hr/>
+			<h3 class="bold_font">Special Instructions</h3>
+			<p>{{myAppointDetail?.special_instructions}}</p>
+			<hr/>
+			<h3 class="bold_font">Total Cost</h3>
+			<p>{{myAppointDetail?.total_cost}} Q.R</p>
+		</div>
+
+	</div>
+	<div class="center status_area">
+		<p *ngIf=" myAppointDetail?.student_status == 'R_SE_BS'"  class="pink_color">Waiting for your tutor to respond.</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'R_AC_BT'"  class="blue">Your appointment has been accepted by your tutor.</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'R_RJ_BT'"  class="pink_color">Your appointment has been rejected by your tutor.</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'R_CA_BS'"  class="green">Appointment cancelled by you.</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'R_CA_BT'"  class="pink_color">Appointment cancelled by your tutor.</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'A_ST_BT'"  class="green">Tutor has started your appointment.</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'S_NCN_BS'" class="green">You are not ready for this appointment</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'S_CN_BS'" class="green">Appointment in process.</p>
+		<p *ngIf="myAppointDetail?.student_status == 'A_EN_BT'"  class="green">Please confirm the appointment has completed or not.</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'END'"  class="green">Your appointment has been completed</p>
+		<p *ngIf=" myAppointDetail?.student_status == 'EXP'" class="pink_color">Your appointment has expired</p>
+
+    <h5 *ngIf=" myAppointDetail?.student_status == 'R_CA_BS'" class="bold_font">Reason:</h5>
+		<p *ngIf=" myAppointDetail?.student_status == 'R_CA_BS'"  class="reason">{{myAppointDetail?.reason}}</p>
+
+    <h5 *ngIf=" myAppointDetail?.student_status == 'R_RJ_BT'"  class="bold_font">Reason:</h5>
+		<p  *ngIf=" myAppointDetail?.student_status == 'R_RJ_BT'"  class="reason">{{myAppointDetail?.reason}}</p>
+
+    <h5 *ngIf=" myAppointDetail?.student_status == 'R_CA_BT'" class="bold_font">Reason:</h5>
+		<p *ngIf=" myAppointDetail?.student_status == 'R_CA_BT'" class="reason">{{myAppointDetail?.reason}}</p>
+
+    <h5 *ngIf=" myAppointDetail?.student_status == 'S_NCN_BS'" class="bold_font">Reason:</h5>
+		<p *ngIf=" myAppointDetail?.student_status == 'S_NCN_BS'"  class="reason">{{myAppointDetail?.reason}}</p>
+
+		<button  *ngIf=" myAppointDetail?.student_status == 'A_ST_BT'" class="btn btn-text" ion-button full (click)="actionClick(myAppointDetail?.appointment_id,'yes')">Yes</button>
+    <button  *ngIf=" myAppointDetail?.student_status == 'A_ST_BT'" class="btn btn-text blue_btn" ion-button full (click)="noClickAppStart(myAppointDetail?.appointment_id,'no')">No</button>
+
+		<button *ngIf=" myAppointDetail?.student_status == 'R_AC_BT'"  class="btn btn-text" ion-button full (click)="cancelClick(myAppointDetail?.appointment_id,'cancel')">Cancel Appointment</button>
+		<button *ngIf=" myAppointDetail?.student_status == 'R_SE_BS'"  class="btn btn-text" ion-button full (click)="cancelClick(myAppointDetail?.appointment_id,'cancel')">Cancel Appointment</button>
+		<button *ngIf=" myAppointDetail?.student_status == 'END'  && myAppointDetail?.feedback_given == 'N' " class="btn btn-text" ion-button full (click)="giveFeedback(myAppointDetail?.appointment_id,myAppointDetail?.tutor_id)">Give Feedback</button>
+
+		<button *ngIf=" myAppointDetail?.student_status == 'A_EN_BT'"  class="btn btn-text" ion-button (click)="actionClick(myAppointDetail?.appointment_id,'end_yes')">Yes</button>
+		<button *ngIf=" myAppointDetail?.student_status == 'A_EN_BT'" class="btn btn-text blue_btn" ion-button (click)="noClick(myAppointDetail?.appointment_id,'end_no')">No</button>
+
+
+		<div *ngIf="myAppointDetail?.student_status == 'END' && myAppointDetail?.feedback_given != 'N' " class="center status_area">
+			<h5 class="bold_font">Your Feedback:</h5>
+			<span class="rating">
+	    		<rating *ngIf="myAppointDetail?.rating != null" [(ngModel)]="rating"
+		        readOnly="true" max="5" value="3" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false" (ngModelChange)="onModelChange($event)"></rating>
+	        	<rating *ngIf="myAppointDetail?.rating == null"
+		        readOnly="true" max="5" value="0" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+				</rating>
+	    	</span>
+			<p>{{myAppointDetail?.feedback}}</p>
+    </div>
+    <button *ngIf="myAppointDetail?.student_status == 'END' && myAppointDetail?.feedback_given != 'N' " class="btn btn-text" ion-button full (click)="repeatAppointment(myAppointDetail?.appointment_id,myAppointDetail?.tutor_id)">Repeat Appointment</button>
+	</div>
+</ion-content>

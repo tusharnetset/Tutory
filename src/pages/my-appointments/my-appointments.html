@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>My Appointments</ion-title>
+    <ion-buttons right>
+        <button ion-button (click)="goToNotifications()">
+            <ion-icon><img src="img/notification_icon.png" alt="" /></ion-icon>
+          <ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 0 && getBadgeCount?.count <= 10">{{getBadgeCount?.count}}</ion-badge>
+      <ion-badge class="gradient_bg" *ngIf="getBadgeCount?.count > 10">10+</ion-badge>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-segment [(ngModel)]="appointments" class="appointments_tab">
+    <ion-segment-button value="submitted">
+      Submitted
+    </ion-segment-button>
+    <ion-segment-button value="scheduled">
+      Scheduled
+    </ion-segment-button>
+    <ion-segment-button value="completed">
+      Completed
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+<ion-content padding class="appointments_box">
+	<div [ngSwitch]="appointments" swipeSegment [tabsList]="categories" [(currentTab)]="appointments" (tabChanged)="onTabChanged($event)" class="swipe-area">
+		<div *ngSwitchCase="'submitted'">
+			<ion-list no-lines>
+				<ion-item *ngFor="let submittedA of submittedData" >
+			        <ion-avatar (click)="goToDetailSubmit(submittedA.appointment_id)" item-start>
+			        	<img src="{{submittedA.profile_pic}}">
+			        </ion-avatar>
+			        <h2 (click)="goToDetailSubmit(submittedA.appointment_id)" class="bold_font">{{submittedA.first_name}} {{submittedA.last_name}},{{submittedA.gender}}, {{submittedA.age}}</h2>
+			        <p (click)="goToDetailSubmit(submittedA.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{submittedA.start_time}} to {{submittedA.end_time}}, {{submittedA.date | date:'dd/MM/yyyy'}} </p>
+			        <p (click)="goToDetailSubmit(submittedA.appointment_id)">{{submittedA.category_name}} - <span>{{submittedA.subcategory_name}}</span> - <span>{{submittedA.level_name}}</span></p>
+
+              <p *ngIf=" submittedA.student_status == 'R_SE_BS'"  class="pink_color">Waiting for your tutor to respond.</p>
+              <p *ngIf=" submittedA.student_status == 'R_AC_BT'"  class="blue">Your appointment has been accepted by your tutor.</p>
+              <p *ngIf=" submittedA.student_status == 'R_RJ_BT'"  class="pink_color">Your appointment has been rejected by your tutor.</p>
+              <p *ngIf=" submittedA.student_status == 'R_CA_BS'"  class="green">Appointment cancelled by you.</p>
+              <p *ngIf=" submittedA.student_status == 'R_CA_BT'"  class="pink_color">Appointment cancelled by your tutor.</p>
+              <p *ngIf=" submittedA.student_status == 'A_ST_BT'"  class="green">Tutor has started your appointment.</p>
+              <p *ngIf=" submittedA.student_status == 'S_NCN_BS'"  class="green">You are not ready for this appointment</p>
+              <p *ngIf=" submittedA.student_status == 'S_CN_BS'"  class="green">Appointment in process.</p>
+              <p *ngIf=" submittedA.student_status == 'END'"  class="green">Your appointment has been completed</p>
+              <p *ngIf=" submittedA.student_status == 'EXP' && submittedA.tutor_status ==  'EXP'" class="pink_color">Your appointment has expired</p>
+
+			        <button *ngIf=" submittedA.student_status == 'R_SE_BS'" class="btn btn-text" ion-button (click)="cancelAction(submittedA.appointment_id,'cancel')">Cancel Appointment</button>
+			        <button *ngIf=" submittedA.student_status == 'R_AC_BT'" class="btn btn-text" ion-button (click)="cancelAction(submittedA.appointment_id,'cancel')">Cancel Appointment</button>
+			    </ion-item>
+			    <p style="text-align: center;" *ngIf="submitS">There is no data found</p>
+			</ion-list>
+		</div>
+		<div *ngSwitchCase="'scheduled'">
+			<ion-list no-lines>
+				<ion-item *ngFor="let shedule of sheduledData" (click)="goToDetailSubmit(shedule.appointment_id)">
+          <ion-avatar item-start>
+            <img src="{{shedule.profile_pic}}">
+          </ion-avatar>
+          <h2 class="bold_font">{{shedule.first_name}} {{shedule.last_name}}, {{shedule.gender}}, {{shedule.age}}</h2>
+          <p class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{shedule.start_time}} to {{shedule.end_time}}, {{shedule.date | date:'dd/MM/yyyy'}} </p>
+          <p>{{shedule.category_name}} - <span>{{shedule.subcategory_name}}</span> - <span>{{shedule.level_name}}</span></p>
+
+					<p *ngIf="shedule.student_status == 'R_SE_BS'"  class="pink_color">Waiting for your tutor to respond.</p>
+					<p *ngIf="shedule.student_status == 'R_AC_BT'"  class="blue">Your appointment has been accepted by your tutor.</p>
+					<p *ngIf="shedule.student_status == 'R_RJ_BT'"  class="pink_color">Your appointment has been rejected by your tutor.</p>
+					<p *ngIf="shedule.student_status == 'R_CA_BS'"  class="green">Appointment cancelled by you.</p>
+					<p *ngIf="shedule.student_status == 'R_CA_BT'"  class="pink_color">Appointment cancelled by your tutor.</p>
+					<p *ngIf="shedule.student_status == 'A_ST_BT'"  class="green">Tutor has started your appointment.</p>
+					<p *ngIf="shedule.student_status == 'S_NCN_BS'"  class="green">You are not ready for this appointment</p>
+					<p *ngIf="shedule.student_status == 'S_CN_BS'"  class="green">Appointment in process.</p>
+					<p *ngIf="shedule.student_status == 'A_EN_BT'"  class="green">Please confirm the appointment has completed or not.</p>
+					<p *ngIf="shedule.student_status == 'END'"  class="green">Your appointment has been completed</p>
+					<p *ngIf=" shedule.student_status == 'EXP' && shedule.tutor_status ==  'EXP'" class="pink_color">Your appointment has expired</p>
+
+					<button *ngIf="shedule.student_status == 'R_SE_BS'" class="btn btn-text" ion-button (click)="cancelAction(shedule.appointment_id,'cancel')">Cancel Appointment</button>
+					<button *ngIf="shedule.student_status == 'R_AC_BT'" class="btn btn-text" ion-button (click)="cancelAction(shedule.appointment_id,'cancel')">Cancel Appointment</button>
+
+          <button *ngIf="shedule.student_status == 'A_ST_BT'" class="btn btn-text" ion-button (click)="actionClick(shedule.appointment_id,'yes')">Yes</button>
+          <button *ngIf="shedule.student_status == 'A_ST_BT'" class="btn btn-text blue_btn" ion-button (click)="noClickAppStart(shedule.appointment_id,'no')">No</button>
+
+					<button *ngIf="shedule.student_status == 'A_EN_BT'" class="btn btn-text" ion-button (click)="actionClick(shedule.appointment_id,'end_yes')">Yes</button>
+          <button *ngIf="shedule.student_status == 'A_EN_BT'" class="btn btn-text blue_btn" ion-button (click)="noClick(shedule.appointment_id,'end_no')">No</button>
+
+			    </ion-item>
+			    <p style="text-align: center;" *ngIf="shedulS">There is no data found.</p>
+			</ion-list>
+		</div>
+
+		<div *ngSwitchCase="'completed'">
+			<ion-list no-lines>
+				<ion-item *ngFor="let complete of completeAppoint" (click)="goToDetailSubmit(complete.appointment_id)">
+			        <ion-avatar item-start>
+			        	<img src="{{complete.profile_pic}}">
+			        </ion-avatar>
+			        <h2 class="bold_font">{{complete.first_name}} {{complete.last_name}}, {{complete.gender}}, {{complete.age}}</h2>
+			        <p class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{complete.start_time}} to {{complete.end_time}}, {{complete.date | date:'dd/MM/yyyy'}} </p>
+              <p>{{complete.category_name}} - <span>{{complete.subcategory_name}}</span> - <span>{{complete.level_name}}</span></p>
+					    <p *ngIf=" complete.student_status == 'END'"  class="green">Your appointment has been completed</p>
+
+			        <button *ngIf=" complete.student_status == 'END' && complete.feedback_given == 'N'"  class="btn btn-text" ion-button (click)="giveFeedBack(complete.appointment_id,complete.tutor_id)">Give Feedback</button>
+			        <div *ngIf=" complete.student_status == 'END'  && complete.feedback_given != 'N'" class="your_feedback">
+			        	<h3 class="bold_font">Your Feedback:</h3>
+			        	<span class="rating">
+			        		<rating *ngIf="complete.rating != null" [(ngModel)]="complete.rating"
+		        			readOnly="true" max="5" value="3" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false" (ngModelChange)="onModelChange($event)"></rating>
+		        			<rating *ngIf="complete.rating == null"
+					        readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+							</rating>
+			        	</span>
+			        	<p>{{complete.feedback}}</p>
+			        </div>
+			    </ion-item>
+			    <p style="text-align: center;" *ngIf="completeS">There is no data found</p>
+			</ion-list>
+		</div>
+	</div>
+</ion-content>

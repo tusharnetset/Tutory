@@ -1,0 +1,27 @@
+page-appointment-detail-submited {
+  .rating
+  {
+    display: inline;
+    margin: 12px 0;
+    img
+    {
+      height: 34px;
+      margin: 0 3px;
+    }
+    ul {
+        padding: 0px;
+        &.rating{
+          margin-left: 10px;
+          margin-bottom: 2px;
+        }
+        &.rating li {
+          padding: 0 !important;
+          background: none;
+          color: #ffb400;
+          ion-icon {
+              font-size: 20px;
+          }
+        }
+    }
+  }
+}

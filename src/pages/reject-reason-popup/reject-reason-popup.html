@@ -1,0 +1,22 @@
+<ion-content padding>
+	<div class="table_box">
+		<div class="table_box_inner">
+			<div class="pop_outer center">
+				<p *ngIf="poupText == 'teacher_reject'">Are you sure you want to reject this appointment?</p>
+				<p *ngIf="poupText == 'teacher_cancel'">Are you sure you want to cancel this appointment?</p>
+				<p *ngIf="poupText == 'student_no'">Are you sure you dont't want to start this appointment?</p>
+        <p *ngIf="poupText == 'student_cancel'">Are you sure you want to cancel this appointment?</p>
+        <p *ngIf="poupText == 'end_no'">Are you sure you dont't want to end this appointment?</p>
+        <p *ngIf="poupText == 'start_no'">Are you sure you dont't want to start this appointment?</p>
+				<h3 class="bold_font">Please specify reason</h3>
+				<ion-list class="input_forms" no-lines>
+					<ion-item>
+				    	<ion-textarea [(ngModel)]="reason" placeholder="Reason Description"></ion-textarea>
+				    </ion-item>
+				</ion-list>
+				<button class="btn btn-text" ion-button full (click)="clickAction(reason)">Submit</button>
+			</div>
+			<div class="close_icon"><ion-icon name="close-circle" (click)="dismiss()"></ion-icon></div>
+		</div>
+	</div>
+</ion-content>
