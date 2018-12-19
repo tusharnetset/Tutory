@@ -63,7 +63,7 @@ export class HomePage {
           this.alert = null;
         }else{
           this.showAlert();
-         }
+        }
       }
     })
   }

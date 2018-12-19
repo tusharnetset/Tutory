@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController,ToastController,Platform,NavParams,AlertController } from 'ionic-angular';
+import { NavController, ModalController,ToastController,Platform,NavParams,AlertController, App} from 'ionic-angular';
 import { StudentProfileview } from '../student-profileview/student-profileview';
 import { RejectReasonPopup } from '../reject-reason-popup/reject-reason-popup';
 import { EndPopup } from '../end-popup/end-popup';
@@ -13,6 +13,8 @@ import { CallNumber } from '@ionic-native/call-number';
 import { SMS } from '@ionic-native/sms';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import Swal from 'sweetalert2';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
+import { SignupType } from '../signup-type/signup-type';
 
 @Component({
   selector: 'page-teacher-appointment-detail-submited',
@@ -40,8 +42,9 @@ export class TeacherAppointmentDetailSubmited {
   appTime: any;
   dateF: string;
   localISOTime: string;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(private launchNavigator: LaunchNavigator,public sms:SMS, public call:CallNumber, public alertCtrl:AlertController, public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public platform:Platform, public toastCtrl:ToastController, public spinner: NgxSpinnerService,public tutorservices:TutorservicesProvider, public navCtrl: NavController, public modalCtrl: ModalController) {
+  constructor(public app:App, public authservices:AuthservicesProvider, private launchNavigator: LaunchNavigator,public sms:SMS, public call:CallNumber, public alertCtrl:AlertController, public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public platform:Platform, public toastCtrl:ToastController, public spinner: NgxSpinnerService,public tutorservices:TutorservicesProvider, public navCtrl: NavController, public modalCtrl: ModalController) {
 
     var tzoffset = (new Date()).getTimezoneOffset() * 60000;
     this.localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
@@ -121,7 +124,12 @@ export class TeacherAppointmentDetailSubmited {
 
         this.rating = this.detailData.rating;
       }else{
-        // this.presentToast(this.data1.message);
+        if(this.data1.message == 'Wrong token entered!.Please try again.'){
+          this.presentToast("Session expired Please login again");
+          this.sessionExpired();
+        }else{
+          // this.presentToast(this.data1.message);
+        }
       }
     }, (err) => {
       this.spinner.hide();
@@ -129,65 +137,123 @@ export class TeacherAppointmentDetailSubmited {
     })
   }
 
-  actionClick(appointmentId,action){
-    if(action == 'accept'){
-      this.title = "accept";
-      this.successMessage = 'Successfully Accepted'
-      this.content = "You want to accept the appointment ?"
-    }else if(action == 'start'){
-      this.title = "start";
-      this.successMessage = 'Successfully Started'
-      this.content = "You want to start the appointment"
-      this.dateF  = moment(this.localISOTime).format("YYYY-MM-DD");
-    }
-    Swal({
-      title: 'Are you sure?',
-      text: this.content,
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, '+this.title+' it!',
-      cancelButtonText: 'No, keep it'
-    }).then((result) => {
-      if (result.value) {
-        this.spinner.show();
-        this.actionData = {
-          tutor_id : this.userId,
-          login_token:this.token,
-          appointment_id:appointmentId,
-          action:action
-        }
-        this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
-          console.log(result);
-          this.spinner.hide();
-          this.data1 = result;
-          this.myAppoint = this.data1.data;
-          if(this.data1.status == 200){
-            Swal(
-              this.title,
-              this.successMessage,
-              'success'
-            )
-            this.getAppointmentDetail();
-          }else{
-            this.presentToast(this.data1.message);
+  actionClickAccept(appointmentId,action){
+    this.alert = this.alertCtrl.create({
+      title: 'Accept appointment',
+      message: 'Are you sure you want to accept this appointment?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log();
           }
-        }, (err) => {
-          this.spinner.hide();
-          console.log(err);
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          'Cancelled',
-          'Your dont '+this.title+' the appointment :)',
-          'error'
-        )
+        },
+        {
+          text: 'Accept',
+          handler: () => {
+            this.spinner.show();
+            this.actionData = {
+              tutor_id : this.userId,
+              login_token:this.token,
+              appointment_id:appointmentId,
+              action:action
+            }
+            this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
+              console.log(result);
+              this.spinner.hide();
+              this.data1 = result;
+              this.myAppoint = this.data1.data;
+              if(this.data1.status == 200){
+
+                this.getAppointmentDetail();
+              }else{
+                this.presentToast(this.data1.message);
+              }
+            }, (err) => {
+              this.spinner.hide();
+              console.log(err);
+            })
+          }
+        }
+      ]
+    });
+    this.alert.present();
+  }
+
+  actionClickSTart(appointmentId,action){
+    this.alert = this.alertCtrl.create({
+      title: 'Start appointment',
+      message: 'Are you sure you want to start this appointment?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log();
+          }
+        },
+        {
+          text: 'Accept',
+          handler: () => {
+            this.spinner.show();
+            this.actionData = {
+              tutor_id : this.userId,
+              login_token:this.token,
+              appointment_id:appointmentId,
+              action:action
+            }
+            this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
+              console.log(result);
+              this.spinner.hide();
+              this.data1 = result;
+              this.myAppoint = this.data1.data;
+              if(this.data1.status == 200){
+
+                this.getAppointmentDetail();
+              }else{
+                this.presentToast(this.data1.message);
+              }
+            }, (err) => {
+              this.spinner.hide();
+              console.log(err);
+            })
+          }
+        }
+      ]
+    });
+    this.alert.present();
+  }
+
+  actionClick(appointmentId,action){
+    this.spinner.show();
+    this.actionData = {
+      tutor_id : this.userId,
+      login_token:this.token,
+      appointment_id:appointmentId,
+      action:action
+    }
+    this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
+      console.log(result);
+      this.spinner.hide();
+      this.data1 = result;
+      this.myAppoint = this.data1.data;
+      if(this.data1.status == 200){
+
+        this.getAppointmentDetail();
+      }else{
+        this.presentToast(this.data1.message);
       }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
     })
   }
 
   messageClick(num){
-    this.sms.send(num, 'Hello!');
+    this.sms.send(num, '');
   }
+
   callClick(num){
     this.call.callNumber(num, true)
     .then(res => console.log('Launched dialer!', res))
@@ -201,8 +267,12 @@ export class TeacherAppointmentDetailSubmited {
   goToEnd(id,action){
     let modal = this.modalCtrl.create(EndPopup,{appointment_id:id,action:action});
     modal.onDidDismiss(data => {
-      this.apId = data;
-      this.getAppointmentDetail();
+      if(data){
+        this.apId = data;
+        this.getAppointmentDetail();
+      }else{
+        console.log("cross");
+      }
     })
     modal.present();
   }
@@ -210,8 +280,13 @@ export class TeacherAppointmentDetailSubmited {
   goToReject(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'teacher_reject'});
     modal.onDidDismiss(data => {
-      this.apId = data;
-      this.getAppointmentDetail();
+      // this.apId = data;
+      if(data){
+        this.apId = data;
+        this.getAppointmentDetail();
+      }else{
+        console.log("reject");
+      }
     })
     modal.present();
   }
@@ -219,21 +294,48 @@ export class TeacherAppointmentDetailSubmited {
   cancelClick(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'teacher_cancel'});
     modal.onDidDismiss(data => {
-      this.apId = data;
-      this.getAppointmentDetail();
+      if(data){
+        this.apId = data;
+        this.getAppointmentDetail();
+      }else{
+        console.log("cross");
+      }
+
     })
     modal.present();
   }
 
   viewMap(lat,lng){
     this.latLng  = lat.concat(','+lng);
-    let options: LaunchNavigatorOptions ={
-      // app: this.launchNavigator.APP.GOOGLE_MAPS
+    let options: LaunchNavigatorOptions = {
+
     }
     this.launchNavigator.navigate(this.latLng,options).then(()=>{
       console.log("launched successfully");
     }).catch(()=>{
       console.log("launch failed");
+    })
+  }
+
+  sessionExpired(){
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
     })
   }
 

@@ -26,7 +26,7 @@
 			<p>{{myAppointDetail?.start_time}} to {{myAppointDetail?.end_time}}, {{myAppointDetail?.date | date:'dd/MM/yyyy'}}</p>
 			<hr/>
 			<h3 class="bold_font">Subject</h3>
-			<p>{{myAppointDetail?.category_name}} - <span>{{myAppointDetail?.subcategory_name}}</span> - <span>{{myAppointDetail?.level_name}}</span></p>
+			<p>{{myAppointDetail?.category_name}} - <span>{{myAppointDetail?.subcategory_name}}</span> <span *ngIf="myAppointDetail?.level_name"> - {{myAppointDetail?.level_name}}</span></p>
 			<hr/>
 			<ion-row>
 				<ion-col col-5>

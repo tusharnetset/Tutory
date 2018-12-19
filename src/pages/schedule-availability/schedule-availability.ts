@@ -54,6 +54,7 @@ export class ScheduleAvailability {
     pickMode: 'range'
   };
   dateArr: any[];
+  fromTimeSend: any;
   constructor(public zone:NgZone,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public tutorservices:TutorservicesProvider,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
 
   }
@@ -124,33 +125,38 @@ export class ScheduleAvailability {
         console.log(result);
         this.spinner.hide();
         this.data1 = result;
-        console.log("this.currentEvents ",this.currentEvents)
+        console.log("this.currentEvents ",this.currentEvents);
         if(this.data1.status == 200){
           this.getdates = this.data1.dates;
-          this.zone.run(() => {
-            for (let i = 0; i < this.getdates.length; i++) {
-              let dat = this.getdates[i].split('-');
-              let check = moment(this.getdates[i], 'YYYY/MM/DD');
-              console.log(check);
-              // let event  = {
-              //   year: dat[0],
-              //   month: dat[1]-1,
-              //   date: dat[2]
-              // }
-              // this.currentEvents.push(event)
-              this.events = {
-                year: check.format('YYYY'),
-                month: check.format('M'),
-                date: check.format('D')
-              }
 
-              this.eventsDouble = {
-                year:this.events.year,
-                month:this.events.month-1,
-                date:this.events.date
-              }
-              this.currentEvents.push(this.eventsDouble);
-            }
+          let firstItem = this.getdates[0];
+          let lastItem = this.getdates[this.getdates.length-1];
+          let first = moment(firstItem).format('YYYY-MM-DD').toString();
+          var last = moment(lastItem).format('YYYY-MM-DD').toString();
+          this.dateRange = {
+            'from' : first,
+            'to' : last
+          };
+          console.log(this.dateRange);
+
+          this.zone.run(() => {
+            // for (let i = 0; i < this.getdates.length; i++) {
+            //   let dat = this.getdates[i].split('-');
+            //   let check = moment(this.getdates[i], 'YYYY/MM/DD');
+            //   console.log(check);
+            //   this.events = {
+            //     year: check.format('YYYY'),
+            //     month: check.format('M'),
+            //     date: check.format('D')
+            //   }
+
+            //   this.eventsDouble = {
+            //     year:this.events.year,
+            //     month:this.events.month-1,
+            //     date:this.events.date
+            //   }
+            //   this.currentEvents.push(this.eventsDouble);
+            // }
             this.calShow = true;
             this.getViewAvailbilityData = this.data1.data;
             for (var i = 0; i < this.getViewAvailbilityData.length; i++) {
@@ -281,6 +287,7 @@ export class ScheduleAvailability {
   }
 
   fromTime(event,i){
+    this.fromTimeSend = event.hour;
     console.log("eventevent",event,i);
     if(i != 0) {
       console.log("this.slotArr.length", this.slotArr.length);
@@ -343,11 +350,23 @@ export class ScheduleAvailability {
     }
     var dateArr = getDateArray(startDate, endDate);
     var check = moment(dateArr).format('YYYY-MM-DD');
-    this.dateArr = dateArr
+    this.dateArr = dateArr;
+    console.log("this.dateArrthis.dateArrthis.dateArrthis.dateArrthis.dateArr",this.dateArr);
   }
 
   submitSlot()
   {
+    console.log("this.dateArrthis.dateArrthis.dateArr",this.dateArr);
+    if(this.dateArr.length == 0){
+      this.presentToast('Please select start and end date in range');
+      return;
+    }
+
+    if(this.fromTimeSend == "" || this.fromTimeSend == undefined || this.fromTimeSend == null && this.toTimeVal == "" || this.toTimeVal == undefined || this.toTimeVal == null){
+      this.presentToast('Please add from time and to time');
+      return;
+    }
+
     for (let k = 0; k < this.dateArr.length; k++) {
       for(var j in this.slotArr) {
         var from = parseInt(this.slotArr[j].from_time);
@@ -361,28 +380,28 @@ export class ScheduleAvailability {
             to_time:to_time,
             date:moment(this.dateArr[k]).format('YYYY-MM-DD')
           };
+          if(this.slotArr[j].from_time == "" || this.slotArr[j].from_time == undefined || this.slotArr[j].from_time == null){
+            this.presentToast('Please select from time');
+            return;
+          }
+          if(this.slotArr[j].to_time == undefined || this.slotArr[j].to_time == "" || this.slotArr[j].to_time == null){
+            this.presentToast('Please select to time');
+            return;
+          }
+          if(this.newAttri2.from_time > this.newAttri2.to_time){
+            this.presentToast('Please select time greater than from time');
+            return;
+          }
           console.log('this.newAttri2',this.newAttri2)
           this.slotArr2.push(this.newAttri2);
         }
       }
-  }
-    // for(var j in this.slotArr) {
-    //   var from = parseInt(this.slotArr[j].from_time);
-    //   var to = parseInt(this.slotArr[j].to_time);
-    //     var to_time = from;
+    }
 
-    //     for(var i=from; i < to; i++) {
-    //       from = to_time;
-    //       to_time = from + 1;
-    //       this.newAttri2 = {
-    //         from_time: from,
-    //         to_time:to_time
-    //       };
-    //     console.log('this.newAttri2',this.newAttri2)
-    //       this.slotArr2.push(this.newAttri2);
-
-    //     }
-    // }
+    if(this.slotArr2.length == 0){
+      this.presentToast('Please add time slot');
+      return;
+    }
 
     if(!this.dateSend){
       this.currentDate = new Date();
@@ -412,6 +431,9 @@ export class ScheduleAvailability {
       this.data1 = result;
       if(this.data1.status == 200){
         this.zone.run(() => {
+          this.slotArr2 = []
+          this.anArray = [];
+          this.slotArr = [];
           this.getViewAvailbilityData = this.data1.data;
           for (var i = 0; i < this.getViewAvailbilityData.length; i++) {
             this.slotData.push({

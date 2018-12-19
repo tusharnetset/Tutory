@@ -52,7 +52,6 @@ export class AddressMapPage {
       this.lng = event.lng;
     });
     this.events.subscribe('hello', (data) => {
-      alert('subscribed to hello with data')
     });
   }
 
@@ -71,7 +70,26 @@ export class AddressMapPage {
     setTimeout(()=>{
       this.loadMap();
     },1000)
+    let tabs = document.querySelectorAll('.show-tabbar');
+    if (tabs !== null) {
+        Object.keys(tabs).map((key) => {
+            tabs[key].style.display = 'none';
+        });
+    }
   }
+
+  ionViewWillLeave() {
+    let tabs = document.querySelectorAll('.show-tabbar');
+    if (tabs !== null) {
+        Object.keys(tabs).map((key) => {
+            tabs[key].style.display = 'flex';
+        });
+
+    }
+}
+
+
+
 
   loadMap() {
     let mapOptions: GoogleMapOptions = {
@@ -112,7 +130,7 @@ geocodeCheck(lat,lng){
     maxResults: 5
   };
   this.nativeGeocoder.reverseGeocode(lat, lng, options)
-  .then((result: NativeGeocoderReverseResult[]) =>{
+  .then((result: NativeGeocoderReverseResult[]) => {
     console.log(JSON.stringify(result[0]));
     this.address = JSON.stringify(result[0])
   })
@@ -138,9 +156,15 @@ updateSearch() {
 }
 
   chooseItem(item: any) {
-    // this.viewCtrl.dismiss(this.geo);
     this.geo = item;
-    this.geoCode(this.geo);
+    let obj = {
+      address:this.geo,
+      lat:this.latitude,
+      lng:this.longitude
+    }
+    this.events.publish('user:created', obj, Date.now());
+    this.navCtrl.pop();
+    // this.geoCode(this.geo);
   }
 
   geoCode(address:any) {

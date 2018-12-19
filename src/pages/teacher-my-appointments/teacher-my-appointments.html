@@ -21,14 +21,14 @@
 <ion-content padding class="appointments_box">
 	<div [ngSwitch]="appointments" swipeSegment [tabsList]="categories" [(currentTab)]="appointments" (tabChanged)="onTabChanged($event)" class="swipe-area">
 		<div *ngSwitchCase="'scheduled'">
-			<ion-list no-lines>
+			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let sheduled of sheduledData">
 			        <ion-avatar (click)="goToDetail(sheduled.appointment_id)" item-start>
 			        	<img src="{{sheduled.profile_pic}}">
 			        </ion-avatar>
 			        <h2 (click)="goToDetail(sheduled.appointment_id)" class="bold_font">{{sheduled.first_name}} {{sheduled.last_name}}, {{sheduled.gender}}, {{sheduled.age}}</h2>
 			        <p (click)="goToDetail(sheduled.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{sheduled.start_time}} to {{sheduled.end_time}}, {{sheduled.date | date:'dd/MM/yyyy'}} </p>
-			        <p (click)="goToDetail(sheduled.appointment_id)">{{sheduled.category_name}} - <span>{{sheduled.subcategory_name}}</span></p>
+			        <p (click)="goToDetail(sheduled.appointment_id)">{{sheduled.category_name}} - <span>{{sheduled.subcategory_name}}</span> <span *ngIf="sheduled.level_name"> - {{sheduled.level_name}}</span></p>
 
               <p *ngIf=" sheduled.student_status == 'EXP' && sheduled.tutor_status ==  'EXP'" class="pink_color">Your appointment has expired</p>
 		         	<p *ngIf=" sheduled.student_status == 'R_AC_BT'" class="blue">Appointment accepted by you.</p>
@@ -50,14 +50,14 @@
 		</div>
 
 		<div *ngSwitchCase="'completed'">
-			<ion-list no-lines>
+			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let compApp of completeAppoint">
 			        <ion-avatar (click)="goToDetail(compApp.appointment_id)" item-start>
 			        	<img src="{{compApp.profile_pic}}">
 			        </ion-avatar>
 			        <h2 (click)="goToDetail(compApp.appointment_id)" class="bold_font">{{compApp.first_name}} {{compApp.last_name}}, {{compApp.gender}}, {{compApp.age}}</h2>
 			        <p (click)="goToDetail(compApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{compApp.start_time}} to {{compApp.end_time}}, {{compApp.date | date:'dd/MM/yyyy'}} </p>
-			        <p (click)="goToDetail(compApp.appointment_id)">{{compApp.category_name}} - <span>{{compApp.subcategory_name}}</span></p>
+			        <p (click)="goToDetail(compApp.appointment_id)">{{compApp.category_name}} - <span>{{compApp.subcategory_name}}</span><span> - {{compApp.level_name}}</span></p>
 
 			        <p *ngIf="compApp.student_status == 'END'" class="green">Your appointment has been completed.</p>
 

@@ -47,17 +47,17 @@ export class Subscription {
 			if(this.navCtrl.canGoBack()){
 				this.navCtrl.pop();
 			}else{
-				if(this.alert){ 
+				if(this.alert){
 					this.alert.dismiss();
-					this.alert = null;     
+					this.alert = null;
 				}else{
 					this.showAlert();
 				}
-			}        
+			}
 		})
 	}
 
-	
+
 	ionViewDidLeave()
 	{
 		this.connectSubscription.unsubscribe();
@@ -153,7 +153,7 @@ export class Subscription {
 			console.log(err);
 		})
 	}
-	
+
 
 	// purchaseSubScription(id,exAf)
 	// {
@@ -179,5 +179,5 @@ export class Subscription {
 		toast.present();
 	}
 
-	
+
 }

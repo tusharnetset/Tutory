@@ -17,3 +17,6 @@ export class AppointmentDetailAccepted {
   this.navCtrl.push(TutorProfileview);
   }
 }
+
+
+

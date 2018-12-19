@@ -103,8 +103,8 @@ export class RejectReasonPopup {
     })
   }
 
-  dismiss(data) {
-    this.viewCtrl.dismiss(data);
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 
   presentToast(message)

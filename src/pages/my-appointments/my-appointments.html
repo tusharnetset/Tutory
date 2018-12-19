@@ -24,7 +24,7 @@
 <ion-content padding class="appointments_box">
 	<div [ngSwitch]="appointments" swipeSegment [tabsList]="categories" [(currentTab)]="appointments" (tabChanged)="onTabChanged($event)" class="swipe-area">
 		<div *ngSwitchCase="'submitted'">
-			<ion-list no-lines>
+			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let submittedA of submittedData" >
 			        <ion-avatar (click)="goToDetailSubmit(submittedA.appointment_id)" item-start>
 			        	<img src="{{submittedA.profile_pic}}">
@@ -51,14 +51,14 @@
 			</ion-list>
 		</div>
 		<div *ngSwitchCase="'scheduled'">
-			<ion-list no-lines>
-				<ion-item *ngFor="let shedule of sheduledData" (click)="goToDetailSubmit(shedule.appointment_id)">
-          <ion-avatar item-start>
+			<ion-list no-lines style="margin-bottom:60px;">
+				<ion-item *ngFor="let shedule of sheduledData">
+          <ion-avatar  (click)="goToDetailSubmit(shedule.appointment_id)" item-start>
             <img src="{{shedule.profile_pic}}">
           </ion-avatar>
-          <h2 class="bold_font">{{shedule.first_name}} {{shedule.last_name}}, {{shedule.gender}}, {{shedule.age}}</h2>
-          <p class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{shedule.start_time}} to {{shedule.end_time}}, {{shedule.date | date:'dd/MM/yyyy'}} </p>
-          <p>{{shedule.category_name}} - <span>{{shedule.subcategory_name}}</span> - <span>{{shedule.level_name}}</span></p>
+          <h2  (click)="goToDetailSubmit(shedule.appointment_id)" class="bold_font">{{shedule.first_name}} {{shedule.last_name}}, {{shedule.gender}}, {{shedule.age}}</h2>
+          <p  (click)="goToDetailSubmit(shedule.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{shedule.start_time}} to {{shedule.end_time}}, {{shedule.date | date:'dd/MM/yyyy'}} </p>
+          <p  (click)="goToDetailSubmit(shedule.appointment_id)">{{shedule.category_name}} - <span>{{shedule.subcategory_name}}</span> <span *ngIf="shedule.level_name"> - {{shedule.level_name}}</span></p>
 
 					<p *ngIf="shedule.student_status == 'R_SE_BS'"  class="pink_color">Waiting for your tutor to respond.</p>
 					<p *ngIf="shedule.student_status == 'R_AC_BT'"  class="blue">Your appointment has been accepted by your tutor.</p>
@@ -87,14 +87,14 @@
 		</div>
 
 		<div *ngSwitchCase="'completed'">
-			<ion-list no-lines>
+			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let complete of completeAppoint" (click)="goToDetailSubmit(complete.appointment_id)">
 			        <ion-avatar item-start>
 			        	<img src="{{complete.profile_pic}}">
 			        </ion-avatar>
 			        <h2 class="bold_font">{{complete.first_name}} {{complete.last_name}}, {{complete.gender}}, {{complete.age}}</h2>
 			        <p class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{complete.start_time}} to {{complete.end_time}}, {{complete.date | date:'dd/MM/yyyy'}} </p>
-              <p>{{complete.category_name}} - <span>{{complete.subcategory_name}}</span> - <span>{{complete.level_name}}</span></p>
+              <p>{{complete.category_name}} - <span>{{complete.subcategory_name}}</span> - <span>{{complete.level_name}}</span> <span *ngIf="complete.level_name"> - {{complete.level_name}}</span></p>
 					    <p *ngIf=" complete.student_status == 'END'"  class="green">Your appointment has been completed</p>
 
 			        <button *ngIf=" complete.student_status == 'END' && complete.feedback_given == 'N'"  class="btn btn-text" ion-button (click)="giveFeedBack(complete.appointment_id,complete.tutor_id)">Give Feedback</button>

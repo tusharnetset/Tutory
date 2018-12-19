@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,ToastController,AlertController,Platform,ModalController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController, Platform, ModalController, App } from 'ionic-angular';
 import { AppointmentDetailSubmited } from '../appointment-detail-submited/appointment-detail-submited';
 import { AppointmentDetailRejected } from '../appointment-detail-rejected/appointment-detail-rejected';
 import { AppointmentDetailProgress } from '../appointment-detail-progress/appointment-detail-progress';
@@ -14,6 +14,7 @@ import { Network } from '@ionic-native/network';
 import { SignupType } from '../signup-type/signup-type';
 import { RejectReasonPopup } from '../reject-reason-popup/reject-reason-popup';
 import { RatingPopup } from '../rating-popup/rating-popup';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
 
 @Component({
   selector: 'page-my-appointments',
@@ -40,8 +41,9 @@ export class MyAppointments {
   public appointments: string = 'submitted';
   public categories: Array<string> = ['submitted', 'scheduled', 'completed']
   getBadgeCount:any;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(public modalCtrl:ModalController,public platform:Platform,public alertCtrl:AlertController,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public studentServices:StudentservicesProvider,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
+  constructor(public app:App, public authservices:AuthservicesProvider, public modalCtrl:ModalController,public platform:Platform,public alertCtrl:AlertController,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public studentServices:StudentservicesProvider,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
     // this.appointments="submitted";
 
   }
@@ -74,13 +76,6 @@ export class MyAppointments {
         }
       }
     })
-
-    let elements = document.querySelectorAll(".tabbar");
-    if (elements != null) {
-      Object.keys(elements).map((key) => {
-        elements[key].style.display = '';
-      });
-    }
   }
   showAlert() {
       this.alert = this.alertCtrl.create({
@@ -131,11 +126,11 @@ export class MyAppointments {
 
   getMyAppointments(){
     this.spinner.show();
-      this.getAppointmentsData = {
-        user_id : this.userId,
-        login_token:this.token,
-        user_type:this.userType
-      }
+    this.getAppointmentsData = {
+      user_id : this.userId,
+      login_token:this.token,
+      user_type:this.userType
+    }
 
     this.studentServices.myAppointmentsApi(this.getAppointmentsData).then((result) => {
       console.log(result);
@@ -163,7 +158,12 @@ export class MyAppointments {
           this.completeS = false;
         }
       }else{
-        this.presentToast(this.data1.message);
+        if(this.data1.message == 'Wrong token entered!.Please try again.'){
+          this.presentToast("Session expired Please login again");
+          this.sessionExpired();
+        }else{
+          this.presentToast(this.data1.message);
+        }
       }
     }, (err) => {
        this.spinner.hide();
@@ -197,12 +197,24 @@ export class MyAppointments {
   noClick(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'student_no'});
     modal.onDidDismiss(data => {
+      if(data){
+        this.getMyAppointments();
+        this.appointments = "scheduled";
+      }else{
+        console.log("cancel");
+      }
     })
     modal.present();
   }
   noClickAppStart(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'start_no'});
     modal.onDidDismiss(data => {
+      if(data){
+        this.appointments = "scheduled";
+        this.getMyAppointments();
+      }else{
+        console.log("cancel");
+      }
     })
     modal.present();
   }
@@ -210,12 +222,13 @@ export class MyAppointments {
   cancelAction(appointmentId,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:appointmentId,action:action,popup:'student_cancel'});
     modal.onDidDismiss(data => {
-      this.nativeStorage.getItem('userData').then((data) => {
-        this.userType = data.user_type;
-        this.userId = data.id;
-        this.token = data.login_token;
+      if(data){
+        this.appointments = "scheduled";
         this.getMyAppointments();
-      })
+      }else{
+        console.log("cancel");
+      }
+
     })
     modal.present();
   }
@@ -262,6 +275,28 @@ export class MyAppointments {
         this.presentToast(this.data1.message);
       }
     }, (err) => {
+      console.log(err);
+    })
+  }
+
+  sessionExpired(){
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
       console.log(err);
     })
   }

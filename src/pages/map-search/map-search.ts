@@ -1,3 +1,4 @@
+import { AutocompletePage } from './../autocomplete/autocomplete';
 import { Component,NgZone, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, ViewController, Events, LoadingController, MenuController } from 'ionic-angular';
 import { BookAppointment } from '../book-appointment/book-appointment';
@@ -14,7 +15,6 @@ declare var google: any;
 })
 export class MapSearchPage {
   autocompleteItems;
-  autocomplete;
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
   latitude: number = 0;
@@ -27,6 +27,7 @@ export class MapSearchPage {
   navTo: any;
   markData: any;
   markerArr: any[];
+  autocomplete: { query: string; };
 
   constructor(public events:Events, private nativeGeocoder: NativeGeocoder,public nativeStorage:NativeStorage, public mapsAPILoader:MapsAPILoader,public loadingCtrl:LoadingController,public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController, private zone: NgZone,public menuCtrl:MenuController) {
     this.autocompleteItems = [];
@@ -63,14 +64,24 @@ export class MapSearchPage {
       this.loadMap();
     },1000)
 
-    let elements = document.querySelectorAll(".tabbar");
-    if (elements != null) {
-      Object.keys(elements).map((key) => {
-          elements[key].style.display = 'none';
-      });
+    let tabs = document.querySelectorAll('.show-tabbar');
+    if (tabs !== null) {
+        Object.keys(tabs).map((key) => {
+            tabs[key].style.display = 'none';
+        });
     }
 
   }
+
+  ionViewWillLeave() {
+    let tabs = document.querySelectorAll('.show-tabbar');
+    if (tabs !== null) {
+        Object.keys(tabs).map((key) => {
+            tabs[key].style.display = 'flex';
+        });
+
+    }
+}
 
   loadMap() {
     let mapOptions: GoogleMapOptions = {
@@ -116,16 +127,16 @@ export class MapSearchPage {
         setTimeout(()=>{
           let markers = this.map.addMarker({
           icon: {
-              // url: this.apiUrl+this.loadEventdata[i].eventImage,
-              size: {
-                width: 50,
-                height: 50
-              }
-            },
-            position: {
-              lat: this.markData[i].latitude,
-              lng: this.markData[i].longitude
+            // url: this.apiUrl+this.loadEventdata[i].eventImage,
+            size: {
+              width: 50,
+              height: 50
             }
+          },
+          position: {
+            lat: this.markData[i].latitude,
+            lng: this.markData[i].longitude
+          }
         })
         .then(marker => {
           this.markerArr.push(marker);
@@ -169,30 +180,16 @@ updateSearch() {
     });
   });
 }
-
-  chooseItem(item: any) {
-    // this.viewCtrl.dismiss(this.geo);
-    this.geo = item;
-    this.geoCode(this.geo);
-    // let obj = {
-    //   address:this.geo
-    // }
-    // this.events.publish('user:created', obj, Date.now());
-    // this.navCtrl.pop();
-
-    // if(this.navTo == 'student_create'){
-    //   this.navCtrl.push(CreateProfile,{val:obj});
-    // }else if(this.navTo == 'tutor_create'){
-    //   this.navCtrl.push(TeacherCreateProfile,{val:obj});
-    // }else if(this.navTo == 'student_edit'){
-    //   this.navCtrl.push(EditProfile,{val:obj});
-    // }else if(this.navTo == 'tutor_edit'){
-    //   this.navCtrl.push(TeacherEditProfile,{val:obj});
-    // }else{
-    //   this.navCtrl.push(Filters,{val:obj});
-    // }
-
-  }
+chooseItem(item: any)
+{
+  console.log("chla");
+  this.geo = item;
+  this.autocomplete = {
+    query: this.geo
+  };
+  this.autocompleteItems = [];
+  this.geoCode(this.geo);
+}
 
   geoCode(address:any) {
     let geocoder = new google.maps.Geocoder();
@@ -200,12 +197,6 @@ updateSearch() {
       this.latitude = results[0].geometry.location.lat();
       this.longitude = results[0].geometry.location.lng();
       this.mapCam(this.latitude,this.longitude);
-      let obj = {
-        address:address,
-        lat:this.latitude,
-        lng:this.longitude
-      }
-      this.events.publish('user:created', obj, Date.now());
       // this.navCtrl.pop();
     });
   }

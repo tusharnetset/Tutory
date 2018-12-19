@@ -66,6 +66,7 @@ export class AuthservicesProvider {
 
   loginApi(data) {
     this.deviceInfo.platform = this.device.platform;
+    console.log("this.deviceInfo.platform", this.deviceInfo.platform);
     if(this.deviceInfo.platform == 'Android'){
       this.deviceType = "A";
     }else{
@@ -162,7 +163,7 @@ export class AuthservicesProvider {
   forgotPassApi(data) {
     let body = this.StringQuery({
       email:data.email
-   });
+    });
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     let options = new RequestOptions({
@@ -324,6 +325,24 @@ export class AuthservicesProvider {
     });
     return new Promise((resolve, reject) => {
       this.http.get(this.baseUrl+'categories_subcategories/'+data.user_id+'/'+data.login_token+'/'+this.appVersion,options)
+      .subscribe(res => {
+        resolve(res.json());
+      }, (err) => {
+        resolve(err.json());
+        reject(err);
+      });
+    });
+  }
+
+  getCategorySubCategoryDistinctLevels(data)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    let options = new RequestOptions({
+      headers: headers
+    });
+    return new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl+'distinct_levels/'+data.user_id+'/'+data.login_token+'/'+this.appVersion,options)
       .subscribe(res => {
         resolve(res.json());
       }, (err) => {

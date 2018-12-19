@@ -140,8 +140,8 @@ export class TeacherEditProfile {
       this.userType = data.user_type;
       this.userId = data.id;
       this.token = data.login_token;
-      this.getProfile();
       this.getTechLevels();
+      this.getProfile();
       this.getLanguages();
       this.getSuggestLocations();
     })
@@ -226,15 +226,18 @@ export class TeacherEditProfile {
         this.authForm.get('other_info').setValue(this.getProfileData.other_info);
         for (let i = 0; i < this.levelCheck.length; i++) {
           this.levelPush.push(this.levelCheck[i].level_id)
-          this.authForm.get('teaching_levels').setValue(this.langPush);
+          console.log("this.levelPushthis.levelPush", this.levelPush);
         }
+        this.authForm.get('teaching_levels').setValue(this.levelPush);
+
         for (let i = 0; i < this.languagescheck.length; i++) {
           this.langPush.push(this.languagescheck[i].language_id)
-          this.authForm.get('languages').setValue(this.langPush);
         }
+        this.authForm.get('languages').setValue(this.langPush);
+
         if(this.getProfileData.location_preference == 'AO'){
-          this.authForm.get('other_location').setValue(this.getProfileData.other_location);
           this.showiNPUT = true;
+          this.authForm.get('other_location').setValue(this.getProfileData.other_location);
         }else{
           this.showiNPUT = false;
         }
@@ -280,23 +283,25 @@ export class TeacherEditProfile {
       user_id : this.userId,
       login_token:this.token
     }
-    this.authServices.getCategorySubCategory(this.getLevels).then((result) => {
+    console.log("this.getLevelssssssssss",this.getLevels);
+    this.authServices.getCategorySubCategoryDistinctLevels(this.getLevels).then((result) => {
       console.log("levels dataaaaa",result);
       this.data1 = result;
       this.getD = this.data1.data;
       if(this.data1.status == 200){
         this.getCatLevels = this.getD.levels;
-        // for (let i = 0; i < this.getCatLevels.length; i++) {
-        //   this.arrPush.push(this.getCatLevels[i]);
-        // }
-        var obj = {};
-          for ( var i = 0, len = this.getCatLevels.length; i < len; i++ )
-            obj[this.getCatLevels[i]['name']] = this.getCatLevels[i];
-            this.getCatLevels = new Array();
-            for ( var key in obj )
-              this.getCatLevels.push(obj[key]);
-            this.arrPush = this.getCatLevels;
-            console.log('this.arrPushthis.arrPushthis.arrPush',this.arrPush);
+
+        for (let i = 0; i < this.getCatLevels.length; i++) {
+          this.arrPush.push(this.getCatLevels[i]);
+        }
+        // var obj = {};
+        //   for ( var i = 0, len = this.getCatLevels.length; i < len; i++ )
+        //     obj[this.getCatLevels[i]['name']] = this.getCatLevels[i];
+        //     this.getCatLevels = new Array();
+        //     for ( var key in obj )
+        //       this.getCatLevels.push(obj[key]);
+        //     this.arrPush = this.getCatLevels;
+        //     console.log('this.arrPushthis.arrPushthis.arrPush',this.arrPush);
       }else{
         this.presentToast(this.data1.message);
       }

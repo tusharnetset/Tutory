@@ -233,12 +233,12 @@ export class MyApp {
     });
     const options: PushOptions = {
       android: {
-        senderID: '313049827281',
+        senderID: '987410780081',
       },
       ios: {
         alert: 'true',
         badge: true,
-        sound: 'false'
+        sound: true
       },
       windows: {},
       browser: {

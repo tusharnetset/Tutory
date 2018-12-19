@@ -40,9 +40,6 @@ export class Signup {
     });
   }
 
-  ionViewWillEnter(){
-
-  }
 
   ionViewDidEnter() {
     this.getPrivacy();

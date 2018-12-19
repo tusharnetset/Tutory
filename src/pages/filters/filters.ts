@@ -348,7 +348,6 @@ export class Filters {
     }else{
       this.validateAllFormFields(this.authForm)
     }
-
   }
   validateAllFormFields(formGroup: FormGroup)
   {

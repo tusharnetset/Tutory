@@ -279,6 +279,7 @@ export class RepeatAppointmentPage {
       this.showiNPUT  = true;
     }else{
       this.show = false;
+      this.showiNPUT  = false;
     }
   }
 
@@ -294,8 +295,9 @@ export class RepeatAppointmentPage {
   }
 
   mapGo(){
-    this.navCtrl.push(MapSearchPage);
+    this.navCtrl.push(MapSearchPage,{mapData:this.suggestedLocations});
   }
+
 
   fromTime(event){
     console.log("eventevent",event);
@@ -403,12 +405,12 @@ export class RepeatAppointmentPage {
       from_time: this.sTime,
       to_time:this.endT
     };
-    console.log('this.newAttri',this.newAttri)
+    console.log('this.newAttri',this.newAttri);
     this.slotArr.push(this.newAttri);
 
     if(valid){
       console.log(this.toTimeVal,this.frTime);
-      if(this.toTimeVal < this.frTime) {
+      if(this.frTime > this.toTimeVal) {
         this.presentToast("From time must be less than to time");
         return;
       }

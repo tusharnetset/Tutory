@@ -35,22 +35,22 @@
               </ion-avatar>
               <h2 (click)="goToDetailSubmit(newApp.appointment_id)" class="bold_font">{{newApp.first_name}} {{newApp.last_name}}, {{newApp.gender}}, {{newApp.age}}</h2>
               <p (click)="goToDetailSubmit(newApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{newApp.start_time}} to {{newApp.end_time}}, {{newApp.date | date:'dd/MM/yyyy'}}</p>
-              <p (click)="goToDetailSubmit(newApp.appointment_id)">{{newApp.category_name}} - <span>{{newApp.subcategory_name}}</span></p>
+              <p (click)="goToDetailSubmit(newApp.appointment_id)">{{newApp.category_name}} - <span>{{newApp.subcategory_name}}</span> <span *ngIf="newApp.level_name"> - {{newApp.level_name}}</span></p>
 
-              <p *ngIf=" newApp.student_status == 'R_AC_BT' && newApp.prev_student_status == 'R_SE_BS' && newApp.tutor_status ==  'R_AC_BT' && newApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
+              <p *ngIf="newApp.student_status == 'R_AC_BT' && newApp.prev_student_status == 'R_SE_BS' && newApp.tutor_status ==  'R_AC_BT' && newApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
               <p *ngIf=" newApp.student_status == 'R_RJ_BT' && newApp.prev_student_status == 'R_SE_BS' && newApp.tutor_status ==  'R_RJ_BT' && newApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
 
-              <p *ngIf=" newApp.student_status == 'A_ST_BT' && newApp.prev_student_status == 'R_AC_BT' && newApp.tutor_status ==  'A_ST_BT' && newApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
+              <p *ngIf="newApp.student_status == 'A_ST_BT' && newApp.prev_student_status == 'R_AC_BT' && newApp.tutor_status ==  'A_ST_BT' && newApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
               <p *ngIf=" newApp.student_status == 'R_CA_BT' && newApp.prev_student_status == 'R_AC_BT' && newApp.tutor_status ==  'R_CA_BT' && newApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>
               <p *ngIf=" newApp.student_status == 'S_CN_BS' && newApp.prev_student_status == 'A_ST_BT' && newApp.tutor_status ==  'S_CN_BS' && newApp.prev_tutor_status == 'A_ST_BT'" class="green" >Appointment in progress.</p>
 
-              <button *ngIf=" newApp.student_status == 'R_SE_BS' && newApp.prev_student_status == 'NONE' && newApp.tutor_status ==  'R_RE_BT' && newApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButton(newApp.appointment_id,'accept')">Accept</button>
-              <button  *ngIf=" newApp.student_status == 'R_SE_BS' && newApp.prev_student_status == 'NONE' && newApp.tutor_status ==  'R_RE_BT' && newApp.prev_tutor_status == 'NONE'" class="btn btn-text blue_btn" ion-button (click)="rejectClick(newApp.appointment_id,'reject')">Reject</button>
+              <button *ngIf="newApp.student_status == 'R_SE_BS' && newApp.prev_student_status == 'NONE' && newApp.tutor_status ==  'R_RE_BT' && newApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButtonAccept(newApp.appointment_id,'accept', newApp.date, newApp.start_time)">Accept</button>
+              <button  *ngIf="newApp.student_status == 'R_SE_BS' && newApp.prev_student_status == 'NONE' && newApp.tutor_status ==  'R_RE_BT' && newApp.prev_tutor_status == 'NONE'" class="btn btn-text blue_btn" ion-button (click)="rejectClick(newApp.appointment_id,'reject')">Reject</button>
 
-              <button *ngIf=" newApp.student_status == 'R_AC_BT' && newApp.prev_student_status == 'R_SE_BS' && newApp.tutor_status ==  'R_AC_BT' && newApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButton(newApp.appointment_id,'start')">Start</button>
-              <button *ngIf=" newApp.student_status == 'R_AC_BT' && newApp.prev_student_status == 'R_SE_BS' && newApp.tutor_status ==  'R_AC_BT' && newApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(newApp.appointment_id,'cancel')">Cancel</button>
+              <button *ngIf="newApp.student_status == 'R_AC_BT' && newApp.prev_student_status == 'R_SE_BS' && newApp.tutor_status ==  'R_AC_BT' && newApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButtonStart(newApp.appointment_id,'start')">Start</button>
+              <button *ngIf="newApp.student_status == 'R_AC_BT' && newApp.prev_student_status == 'R_SE_BS' && newApp.tutor_status ==  'R_AC_BT' && newApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(newApp.appointment_id,'cancel')">Cancel</button>
 
-              <button *ngIf=" newApp.student_status == 'S_CN_BS' && newApp.prev_student_status == 'A_ST_BT' && newApp.tutor_status ==  'S_CN_BS' && newApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text" ion-button (click)="endClick(newApp.appointment_id,'end')">End Appointment</button>
+              <button *ngIf="newApp.student_status == 'S_CN_BS' && newApp.prev_student_status == 'A_ST_BT' && newApp.tutor_status ==  'S_CN_BS' && newApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text" ion-button (click)="endClick(newApp.appointment_id,'end')">End Appointment</button>
 
           </ion-item>
       </ion-list>
@@ -63,22 +63,21 @@
               </ion-avatar>
              <h2 (click)="goToDetailSubmit(todayApp.appointment_id)" class="bold_font">{{todayApp.first_name}} {{todayApp.last_name}}, {{todayApp.gender}}, {{todayApp.age}}</h2>
                <p (click)="goToDetailSubmit(todayApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{todayApp.start_time}} to {{todayApp.end_time}}, {{todayApp.date | date:'dd/MM/yyyy'}}</p>
-              <p (click)="goToDetailSubmit(todayApp.appointment_id)">{{todayApp.category_name}} - <span>{{todayApp.subcategory_name}}</span></p>
+              <p (click)="goToDetailSubmit(todayApp.appointment_id)">{{todayApp.category_name}} - <span>{{todayApp.subcategory_name}}</span> <span *ngIf="todayApp.level_name"> - {{todayApp.level_name}}</span></p>
 
-              <p *ngIf=" todayApp.student_status == 'R_AC_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_AC_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
-              <p *ngIf=" todayApp.student_status == 'R_RJ_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_RJ_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
-              <p *ngIf=" todayApp.student_status == 'A_ST_BT' && todayApp.prev_student_status == 'R_AC_BT' && todayApp.tutor_status ==  'A_ST_BT' && todayApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
-              <p *ngIf=" todayApp.student_status == 'R_CA_BT' && todayApp.prev_student_status == 'R_AC_BT' && todayApp.tutor_status ==  'R_CA_BT' && todayApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>
-              <p *ngIf=" todayApp.student_status == 'S_CN_BS' && todayApp.prev_student_status == 'A_ST_BT' && todayApp.tutor_status ==  'S_CN_BS' && todayApp.prev_tutor_status == 'A_ST_BT'" class="green" >Appointment in progress.</p>
+              <p *ngIf="todayApp.student_status == 'R_AC_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_AC_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
+              <p *ngIf="todayApp.student_status == 'R_RJ_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_RJ_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
+              <p *ngIf="todayApp.student_status == 'A_ST_BT' && todayApp.prev_student_status == 'R_AC_BT' && todayApp.tutor_status ==  'A_ST_BT' && todayApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
+              <p *ngIf="todayApp.student_status == 'R_CA_BT' && todayApp.prev_student_status == 'R_AC_BT' && todayApp.tutor_status ==  'R_CA_BT' && todayApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>
+              <p *ngIf="todayApp.student_status == 'S_CN_BS' && todayApp.prev_student_status == 'A_ST_BT' && todayApp.tutor_status ==  'S_CN_BS' && todayApp.prev_tutor_status == 'A_ST_BT'" class="green" >Appointment in progress.</p>
 
-             <button *ngIf=" todayApp.student_status == 'R_SE_BS' && todayApp.prev_student_status == 'NONE' && todayApp.tutor_status ==  'R_RE_BT' && todayApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButton(todayApp.appointment_id,'accept')">Accept</button>
+             <button *ngIf="todayApp.student_status == 'R_SE_BS' && todayApp.prev_student_status == 'NONE' && todayApp.tutor_status ==  'R_RE_BT' && todayApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButtonAccept(todayApp.appointment_id,'accept')">Accept</button>
               <button  *ngIf=" todayApp.student_status == 'R_SE_BS' && todayApp.prev_student_status == 'NONE' && todayApp.tutor_status ==  'R_RE_BT' && todayApp.prev_tutor_status == 'NONE'" class="btn btn-text blue_btn" ion-button (click)="rejectClick(todayApp.appointment_id,'reject')">Reject</button>
 
-              <button *ngIf=" todayApp.student_status == 'R_AC_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_AC_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButton(todayApp.appointment_id,'start')">Start</button>
-              <button *ngIf=" todayApp.student_status == 'R_AC_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_AC_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(todayApp.appointment_id,'cancel')">Cancel</button>
+              <button *ngIf="todayApp.student_status == 'R_AC_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_AC_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButtonStart(todayApp.appointment_id,'start')">Start</button>
+              <button *ngIf="todayApp.student_status == 'R_AC_BT' && todayApp.prev_student_status == 'R_SE_BS' && todayApp.tutor_status ==  'R_AC_BT' && todayApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(todayApp.appointment_id,'cancel')">Cancel</button>
 
-              <button *ngIf=" todayApp.student_status == 'S_CN_BS' && todayApp.prev_student_status == 'A_ST_BT' && todayApp.tutor_status ==  'S_CN_BS' && todayApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text" ion-button (click)="endClick(todayApp.appointment_id,'end')">End Appointment</button>
-
+              <button *ngIf="todayApp.student_status == 'S_CN_BS' && todayApp.prev_student_status == 'A_ST_BT' && todayApp.tutor_status ==  'S_CN_BS' && todayApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text" ion-button (click)="endClick(todayApp.appointment_id,'end')">End Appointment</button>
 
           </ion-item>
       </ion-list>
@@ -91,21 +90,21 @@
               </ion-avatar>
              <h2 (click)="goToDetailSubmit(tommApp.appointment_id)" class="bold_font">{{tommApp.first_name}} {{tommApp.last_name}}, {{tommApp.gender}}, {{tommApp.age}}</h2>
                <p (click)="goToDetailSubmit(tommApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{tommApp.start_time}} to {{tommApp.end_time}}, {{tommApp.date | date:'dd/MM/yyyy'}}</p>
-              <p (click)="goToDetailSubmit(tommApp.appointment_id)" >{{tommApp.category_name}} - <span>{{tommApp.subcategory_name}}</span></p>
+              <p (click)="goToDetailSubmit(tommApp.appointment_id)" >{{tommApp.category_name}} - <span>{{tommApp.subcategory_name}}</span> <span *ngIf="tommApp.level_name"> - {{tommApp.level_name}}</span></p>
 
-              <p *ngIf=" tommApp.student_status == 'R_AC_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_AC_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
-              <p *ngIf=" tommApp.student_status == 'R_RJ_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_RJ_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
-              <p *ngIf=" tommApp.student_status == 'A_ST_BT' && tommApp.prev_student_status == 'R_AC_BT' && tommApp.tutor_status ==  'A_ST_BT' && tommApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
-              <p *ngIf=" tommApp.student_status == 'R_CA_BT' && tommApp.prev_student_status == 'R_AC_BT' && tommApp.tutor_status ==  'R_CA_BT' && tommApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>
-              <p *ngIf=" tommApp.student_status == 'S_CN_BS' && tommApp.prev_student_status == 'A_ST_BT' && tommApp.tutor_status ==  'S_CN_BS' && tommApp.prev_tutor_status == 'A_ST_BT'" class="green" >Appointment in progress.</p>
+              <p *ngIf="tommApp.student_status == 'R_AC_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_AC_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
+              <p *ngIf="tommApp.student_status == 'R_RJ_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_RJ_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
+              <p *ngIf="tommApp.student_status == 'A_ST_BT' && tommApp.prev_student_status == 'R_AC_BT' && tommApp.tutor_status ==  'A_ST_BT' && tommApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
+              <p *ngIf="tommApp.student_status == 'R_CA_BT' && tommApp.prev_student_status == 'R_AC_BT' && tommApp.tutor_status ==  'R_CA_BT' && tommApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>
+              <p *ngIf="tommApp.student_status == 'S_CN_BS' && tommApp.prev_student_status == 'A_ST_BT' && tommApp.tutor_status ==  'S_CN_BS' && tommApp.prev_tutor_status == 'A_ST_BT'" class="green" >Appointment in progress.</p>
 
-              <button *ngIf=" tommApp.student_status == 'R_SE_BS' && tommApp.prev_student_status == 'NONE' && tommApp.tutor_status ==  'R_RE_BT' && tommApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButton(tommApp.appointment_id,'accept')">Accept</button>
-              <button  *ngIf=" tommApp.student_status == 'R_SE_BS' && tommApp.prev_student_status == 'NONE' && tommApp.tutor_status ==  'R_RE_BT' && tommApp.prev_tutor_status == 'NONE'" class="btn btn-text blue_btn" ion-button (click)="rejectClick(tommApp.appointment_id,'reject')">Reject</button>
+              <button *ngIf="tommApp.student_status == 'R_SE_BS' && tommApp.prev_student_status == 'NONE' && tommApp.tutor_status ==  'R_RE_BT' && tommApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButtonAccept(tommApp.appointment_id,'accept')">Accept</button>
+              <button  *ngIf="tommApp.student_status == 'R_SE_BS' && tommApp.prev_student_status == 'NONE' && tommApp.tutor_status ==  'R_RE_BT' && tommApp.prev_tutor_status == 'NONE'" class="btn btn-text blue_btn" ion-button (click)="rejectClick(tommApp.appointment_id,'reject')">Reject</button>
 
-              <button *ngIf=" tommApp.student_status == 'R_AC_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_AC_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButton(tommApp.appointment_id,'start')">Start</button>
-              <button *ngIf=" tommApp.student_status == 'R_AC_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_AC_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(tommApp.appointment_id,'cancel')">Cancel</button>
+              <button *ngIf="tommApp.student_status == 'R_AC_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_AC_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButtonStart(tommApp.appointment_id,'start')">Start</button>
+              <button *ngIf="tommApp.student_status == 'R_AC_BT' && tommApp.prev_student_status == 'R_SE_BS' && tommApp.tutor_status ==  'R_AC_BT' && tommApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(tommApp.appointment_id,'cancel')">Cancel</button>
 
-              <button *ngIf=" tommApp.student_status == 'S_CN_BS' && tommApp.prev_student_status == 'A_ST_BT' && tommApp.tutor_status ==  'S_CN_BS' && tommApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text" ion-button (click)="endClick(tommApp.appointment_id,'end')">End Appointment</button>
+              <button *ngIf="tommApp.student_status == 'S_CN_BS' && tommApp.prev_student_status == 'A_ST_BT' && tommApp.tutor_status ==  'S_CN_BS' && tommApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text" ion-button (click)="endClick(tommApp.appointment_id,'end')">End Appointment</button>
 
           </ion-item>
       </ion-list>
@@ -118,21 +117,21 @@
               </ion-avatar>
              <h2 (click)="goToDetailSubmit(nextWeekApp.appointment_id)" class="bold_font">{{nextWeekApp.first_name}} {{nextWeekApp.last_name}}, {{nextWeekApp.gender}}, {{nextWeekApp.age}}</h2>
                <p (click)="goToDetailSubmit(nextWeekApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{nextWeekApp.start_time}} to {{nextWeekApp.end_time}}, {{nextWeekApp.date | date:'dd/MM/yyyy'}}</p>
-              <p (click)="goToDetailSubmit(nextWeekApp.appointment_id)" >{{nextWeekApp.category_name}} - <span>{{nextWeekApp.subcategory_name}}</span></p>
+              <p (click)="goToDetailSubmit(nextWeekApp.appointment_id)" >{{nextWeekApp.category_name}} - <span>{{nextWeekApp.subcategory_name}}</span> <span *ngIf="nextWeekApp.level_name"> - {{nextWeekApp.level_name}}</span></p>
 
-             <p *ngIf=" nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
-              <p *ngIf=" nextWeekApp.student_status == 'R_RJ_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_RJ_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
-              <p *ngIf=" nextWeekApp.student_status == 'A_ST_BT' && nextWeekApp.prev_student_status == 'R_AC_BT' && nextWeekApp.tutor_status ==  'A_ST_BT' && nextWeekApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
-              <p *ngIf=" nextWeekApp.student_status == 'R_CA_BT' && nextWeekApp.prev_student_status == 'R_AC_BT' && nextWeekApp.tutor_status ==  'R_CA_BT' && nextWeekApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>
-              <p *ngIf=" nextWeekApp.student_status == 'S_CN_BS' && nextWeekApp.prev_student_status == 'A_ST_BT' && nextWeekApp.tutor_status ==  'S_CN_BS' && nextWeekApp.prev_tutor_status == 'A_ST_BT'" class="green" >Appointment in progress.</p>
+             <p *ngIf="nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
+              <p *ngIf="nextWeekApp.student_status == 'R_RJ_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_RJ_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
+              <p *ngIf="nextWeekApp.student_status == 'A_ST_BT' && nextWeekApp.prev_student_status == 'R_AC_BT' && nextWeekApp.tutor_status ==  'A_ST_BT' && nextWeekApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
+              <p *ngIf="nextWeekApp.student_status == 'R_CA_BT' && nextWeekApp.prev_student_status == 'R_AC_BT' && nextWeekApp.tutor_status ==  'R_CA_BT' && nextWeekApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>
+              <p *ngIf="nextWeekApp.student_status == 'S_CN_BS' && nextWeekApp.prev_student_status == 'A_ST_BT' && nextWeekApp.tutor_status ==  'S_CN_BS' && nextWeekApp.prev_tutor_status == 'A_ST_BT'" class="green" >Appointment in progress.</p>
 
-              <button *ngIf=" nextWeekApp.student_status == 'R_SE_BS' && nextWeekApp.prev_student_status == 'NONE' && nextWeekApp.tutor_status ==  'R_RE_BT' && nextWeekApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButton(nextWeekApp.appointment_id,'accept')">Accept</button>
-              <button  *ngIf=" nextWeekApp.student_status == 'R_SE_BS' && nextWeekApp.prev_student_status == 'NONE' && nextWeekApp.tutor_status ==  'R_RE_BT' && nextWeekApp.prev_tutor_status == 'NONE'" class="btn btn-text blue_btn" ion-button (click)="rejectClick(nextWeekApp.appointment_id,'reject')">Reject</button>
+              <button *ngIf="nextWeekApp.student_status == 'R_SE_BS' && nextWeekApp.prev_student_status == 'NONE' && nextWeekApp.tutor_status ==  'R_RE_BT' && nextWeekApp.prev_tutor_status == 'NONE'" class="btn btn-text" ion-button (click)="actionButton(nextWeekApp.appointment_id,'accept')">Accept</button>
+              <button  *ngIf="nextWeekApp.student_status == 'R_SE_BS' && nextWeekApp.prev_student_status == 'NONE' && nextWeekApp.tutor_status ==  'R_RE_BT' && nextWeekApp.prev_tutor_status == 'NONE'" class="btn btn-text blue_btn" ion-button (click)="rejectClick(nextWeekApp.appointment_id,'reject')">Reject</button>
 
-              <button *ngIf=" nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButton(nextWeekApp.appointment_id,'start')">Start</button>
-              <button *ngIf=" nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(nextWeekApp.appointment_id,'cancel')">Cancel</button>
+              <button *ngIf="nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text" ion-button (click)="actionButton(nextWeekApp.appointment_id,'start')">Start</button>
+              <button *ngIf="nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(nextWeekApp.appointment_id,'cancel')">Cancel</button>
 
-              <button *ngIf=" nextWeekApp.student_status == 'S_CN_BS' && nextWeekApp.prev_student_status == 'A_ST_BT' && nextWeekApp.tutor_status ==  'S_CN_BS' && nextWeekApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text blue_btn" ion-button (click)="endClick(nextWeekApp.appointment_id,'end')">End Appointment</button>
+              <button *ngIf="nextWeekApp.student_status == 'S_CN_BS' && nextWeekApp.prev_student_status == 'A_ST_BT' && nextWeekApp.tutor_status ==  'S_CN_BS' && nextWeekApp.prev_tutor_status == 'A_ST_BT'" class="btn btn-text blue_btn" ion-button (click)="endClick(nextWeekApp.appointment_id,'end')">End Appointment</button>
 
           </ion-item>
       </ion-list>

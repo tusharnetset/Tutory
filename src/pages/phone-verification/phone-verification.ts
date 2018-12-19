@@ -36,7 +36,6 @@ export class PhoneVerification {
       'two'   : ["", Validators.compose([Validators.required])],
       'three' : ["", Validators.compose([Validators.required])],
       'four'  : ["", Validators.compose([Validators.required])]
-
     });
 
   }
@@ -51,21 +50,21 @@ export class PhoneVerification {
       this.token = data.login_token;
       this.signUpType = data.user_type;
       this.mobileNumber = data.mobile_number
-      let toast = this.toastCtrl.create({
-        message: "Your OTP is"+' '+data.otp,
-        position: 'top',
-        showCloseButton: true,
-        closeButtonText: 'close',
-        dismissOnPageChange: true,
-      });
-      toast.onDidDismiss((data, role) => {
-        if (role == 'close') {
-        }else{
-        }
-      });
-      toast.present();
+      // let toast = this.toastCtrl.create({
+      //   message: "Your OTP is"+' '+data.otp,
+      //   position: 'top',
+      //   showCloseButton: true,
+      //   closeButtonText: 'close',
+      //   dismissOnPageChange: true,
+      // });
+      // toast.onDidDismiss((data, role) => {
+      //   if (role == 'close') {
+      //   }else{
+      //   }
+      // });
+      // toast.present();
     })
-    this.connectSubscription = this.network.onConnect().subscribe(() => {
+      this.connectSubscription = this.network.onConnect().subscribe(() => {
     });
   }
 

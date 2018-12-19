@@ -33,6 +33,7 @@ export class AutocompletePage {
   }
 
   chooseItem(item: any) {
+    console.log(item);
     // this.viewCtrl.dismiss(this.geo);
     this.geo = item;
     this.geoCode(this.geo);
@@ -44,7 +45,13 @@ export class AutocompletePage {
       return;
     }
     let me = this;
-    this.service.getPlacePredictions({ input: this.autocomplete.query,  componentRestrictions: {country: ''} }, function (predictions, status) {
+    this.service.getPlacePredictions(
+      {
+        input: this.autocomplete.query,
+        componentRestrictions: {
+          country: ''
+        }
+      }, function (predictions, status) {
       me.autocompleteItems = [];
       me.zone.run(function () {
         predictions.forEach(function (prediction) {

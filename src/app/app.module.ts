@@ -106,6 +106,17 @@ import { TimeAgoPipe} from 'time-ago-pipe';
 import { GoogleMaps,GoogleMap,GoogleMapsEvent,GoogleMapOptions,CameraPosition,MarkerOptions,Marker,Environment } from '@ionic-native/google-maps';
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { Deeplinks } from '@ionic-native/deeplinks';
+import {Firebase} from '@ionic-native/firebase';
+import { AngularFireModule } from "angularfire2";
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyBYkGLgNb1T-gktBa6TpgpS-mGs1v8e5Tg",
+  authDomain: "tutory-1e37c.firebaseapp.com",
+  databaseURL: "https://tutory-1e37c.firebaseio.com",
+  projectId: "tutory-1e37c",
+  storageBucket: "tutory-1e37c.appspot.com",
+  messagingSenderId: "987410780081"
+};
 @NgModule({
   declarations: [
     MyApp,
@@ -184,8 +195,9 @@ import { Deeplinks } from '@ionic-native/deeplinks';
     BrowserModule,
     HttpModule,
     Ionic2RatingModule,
+    AngularFireModule.initializeApp(firebaseConfig),
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyB8R-5nAEyhXLuOySRIdBb_RXubo6C5EQ8",
+      apiKey: "AIzaSyCiXauDMJmlL0CxM_9fpe_Dmr8hE_0DcS8",
       libraries: ["places"]
     }),
     HttpClientModule,
@@ -293,7 +305,8 @@ import { Deeplinks } from '@ionic-native/deeplinks';
     LaunchNavigator,
     GoogleMaps,
     NativeGeocoder,
-    Deeplinks
+    Deeplinks,
+    Firebase
   ]
 })
 export class AppModule {}

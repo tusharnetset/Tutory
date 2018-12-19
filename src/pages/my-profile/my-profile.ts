@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,ToastController,Platform,AlertController } from 'ionic-angular';
+import { NavController,ToastController,Platform,AlertController, App } from 'ionic-angular';
 import { StudentservicesProvider } from './../../providers/studentservices/studentservices';
 import { EditProfile } from '../edit-profile/edit-profile';
 import { Notifications } from '../notifications/notifications';
@@ -9,6 +9,7 @@ import * as moment from 'moment-timezone';
 import 'moment-timezone';
 import { Network } from '@ionic-native/network';
 import { SignupType } from '../signup-type/signup-type';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
 
 @Component({
   selector: 'page-my-profile',
@@ -31,8 +32,9 @@ export class MyProfile {
   userIdSkip: any;
   loginTokenSkip: any;
   skipShow: boolean = false;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(public alertCtrl:AlertController,public platform:Platform,public studentservices:StudentservicesProvider,public toastCtrl:ToastController,public spinner:NgxSpinnerService,public nativeStorage:NativeStorage,public network:Network,public navCtrl: NavController) {
+  constructor(public app:App, public authservices:AuthservicesProvider, public alertCtrl:AlertController,public platform:Platform,public studentservices:StudentservicesProvider,public toastCtrl:ToastController,public spinner:NgxSpinnerService,public nativeStorage:NativeStorage,public network:Network,public navCtrl: NavController) {
   }
 
   ionViewDidEnter()
@@ -137,7 +139,12 @@ export class MyProfile {
           this.getProfileData = this.data1.data;
           this.userLanguages = this.getProfileData.user_languages;
         }else{
-          this.presentToast(this.data1.message);
+          if(this.data1.message == 'Wrong token entered!.Please try again.'){
+            this.presentToast("Session expired Please login again");
+            this.sessionExpired();
+          }else{
+            this.presentToast(this.data1.message);
+          }
         }
       }, (err) => {
         console.log(err);
@@ -170,6 +177,28 @@ export class MyProfile {
     })
   }
 
+
+  sessionExpired(){
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
+  }
 
   presentToast(message)
   {

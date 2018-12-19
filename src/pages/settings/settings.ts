@@ -113,7 +113,12 @@ export class Settings {
           this.isToggled = false;
         }
       }else{
-        this.presentToast(this.data1.message);
+        if(this.data1.message == 'Wrong token entered!.Please try again.'){
+          this.presentToast("Session expired Please login again");
+          this.sessionExpired();
+        }else{
+          this.presentToast(this.data1.message);
+        }
       }
     }, (err) => {
       console.log(err);
@@ -243,6 +248,28 @@ export class Settings {
   }
   goToSubscription(){
     this.navCtrl.push(Subscription);
+  }
+
+  sessionExpired(){
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
   }
 
   presentToast(message)

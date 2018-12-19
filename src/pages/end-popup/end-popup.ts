@@ -45,7 +45,7 @@ export class EndPopup {
     this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
       console.log(result);
       this.spinner.hide();
-      this.data1 = result; 
+      this.data1 = result;
       if(this.data1.status == 200){
         this.viewCtrl.dismiss(this.apId);
       }else{
@@ -57,8 +57,8 @@ export class EndPopup {
     })
   }
 
-  dismiss(data) {
-    this.viewCtrl.dismiss(data);
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 
   presentToast(message)
@@ -69,7 +69,7 @@ export class EndPopup {
       duration: 3000,
       position: 'bottom'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });

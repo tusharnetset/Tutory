@@ -112,7 +112,7 @@ export class TutorList {
           this.alert = null;
         }else{
           this.showAlert();
-          }
+        }
       }
     })
 
@@ -134,11 +134,10 @@ export class TutorList {
       this.allShow = false;
       this.favShow = true;
     }
-
   }
 
   getTutorListWithlat()
-    {
+  {
     if(this.userIdSkip){
       this.tutorData = {
         user_id : this.userIdSkip,

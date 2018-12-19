@@ -1,4 +1,6 @@
 {
+
+  "play_store_key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhY8rwXIhcii/0tfZI6TgrZasdBUGJ4d8TB2biC8Hk0PpWhAas2G5u7gruXDFvxOrrv5o6TMxIr6FuvuEx0qM62SeyGwRyAqnFKdH+Z0qXdMAvSzi3wkncxhDBkNgJDLaZ5gcwjcby1eH0fEqvsJIYsHU5R72H4Z6Z77zbxDTYDI5shdHL4FVCtHAN5BEhGbl+Dr8QmmfcyouPd/+fi7of/tXwSTTiXpxRLeIKaNIIYU5UcBtFe4Ri04YA0DeRFVg0+g61WmuQX7lO3adaBoYKZ3X1hi+DVz/tHyi8XP9FRSKuf25XyjnM7PmHODxCWO32OBof+9si/THdAVEffMTTwIDAQAB",
   "name": "Ionic",
   "short_name": "Ionic",
   "start_url": "index.html",

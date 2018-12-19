@@ -8,6 +8,7 @@ import { ScheduleAvailability } from '../schedule-availability/schedule-availabi
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AuthservicesProvider } from './../../providers/authservices/authservices';
 import { StudentservicesProvider } from './../../providers/studentservices/studentservices';
+import { TutorservicesProvider } from '../../providers/tutorservices/tutorservices';
 
 import { ConfigProvider } from './../../providers/config/config';
 import { AutocompletePage} from '../autocomplete/autocomplete';
@@ -83,7 +84,7 @@ export class TeacherCreateProfile {
   suggestedLocations: any;
   locationF: any;
 
-  constructor(public events:Events, public navParams:NavParams,public StudentServices:StudentservicesProvider, public zone:NgZone,public mapsAPILoader:MapsAPILoader,public fileTransfer:FileTransfer,public toastCtrl:ToastController,public network:Network,public nativeStorage:NativeStorage,public httpBaseUrl:ConfigProvider,public authServices: AuthservicesProvider,public spinner :NgxSpinnerService,public fb:FormBuilder, public platform: Platform, public navCtrl: NavController,public camera:Camera,public actionSheetCtrl:ActionSheetController) {
+  constructor(public Tutorservices:TutorservicesProvider, public events:Events, public navParams:NavParams,public StudentServices:StudentservicesProvider, public zone:NgZone,public mapsAPILoader:MapsAPILoader,public fileTransfer:FileTransfer,public toastCtrl:ToastController,public network:Network,public nativeStorage:NativeStorage,public httpBaseUrl:ConfigProvider,public authServices: AuthservicesProvider,public spinner :NgxSpinnerService,public fb:FormBuilder, public platform: Platform, public navCtrl: NavController,public camera:Camera,public actionSheetCtrl:ActionSheetController) {
     this.baseUrl = this.httpBaseUrl.baseUrl;
     this.appVersion = this.httpBaseUrl.appVersion;
     this.timezone = moment.tz.guess();
@@ -174,7 +175,7 @@ export class TeacherCreateProfile {
       user_id : this.userId,
       login_token:this.token
     }
-    this.StudentServices.getCategorySubCategory(this.getLevels).then((result) => {
+    this.authServices.getCategorySubCategoryDistinctLevels(this.getLevels).then((result) => {
       console.log(result);
       this.data1 = result;
       this.getD = this.data1.data;
@@ -183,14 +184,13 @@ export class TeacherCreateProfile {
         for (let i = 0; i < this.getCatLevels.length; i++) {
           this.arrPush.push(this.getCatLevels[i]);
         }
-        var obj = {};
-          for ( var i=0, len=this.getCatLevels.length; i < len; i++ )
-            obj[this.getCatLevels[i]['name']] = this.getCatLevels[i];
-            this.getCatLevels = new Array();
-            for ( var key in obj )
-              this.getCatLevels.push(obj[key]);
-            this.arrPush = this.getCatLevels;
-
+        // var obj = {};
+        //   for ( var i=0, len=this.getCatLevels.length; i < len; i++ )
+        //     obj[this.getCatLevels[i]['name']] = this.getCatLevels[i];
+        //     this.getCatLevels = new Array();
+        //     for ( var key in obj )
+        //       this.getCatLevels.push(obj[key]);
+        //     this.arrPush = this.getCatLevels;
       }else{
         this.presentToast(this.data1.message);
       }

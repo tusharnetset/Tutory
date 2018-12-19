@@ -1,6 +1,6 @@
 import { RepeatAppointmentPage } from './../repeat-appointment/repeat-appointment';
 import { Component } from '@angular/core';
-import { NavController,NavParams,ToastController,AlertController,Platform,ModalController } from 'ionic-angular';
+import { NavController,NavParams,ToastController,AlertController,Platform,ModalController, App } from 'ionic-angular';
 import { TutorProfileview } from '../tutor-profileview/tutor-profileview';
 import { StudentservicesProvider } from './../../providers/studentservices/studentservices';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,6 +9,8 @@ import { Network } from '@ionic-native/network';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { RatingPopup } from '../rating-popup/rating-popup';
 import { RejectReasonPopup } from '../reject-reason-popup/reject-reason-popup';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
+import { SignupType } from '../signup-type/signup-type';
 
 @Component({
   selector: 'page-appointment-detail-submited',
@@ -29,8 +31,9 @@ export class AppointmentDetailSubmited {
   rating : any;
   avgRating : any;
   getBookAppointCategory : any;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(public modalCtrl:ModalController,private launchNavigator: LaunchNavigator,public platform:Platform,public alertCtrl:AlertController,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public StudentServices:StudentservicesProvider,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
+  constructor(public app:App, public authservices:AuthservicesProvider, public modalCtrl:ModalController,private launchNavigator: LaunchNavigator,public platform:Platform,public alertCtrl:AlertController,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public StudentServices:StudentservicesProvider,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
   }
 
   ionViewDidEnter() {
@@ -55,13 +58,31 @@ export class AppointmentDetailSubmited {
         }
       }
     })
-    let elements = document.querySelectorAll(".tabbar");
-    if (elements != null) {
-      Object.keys(elements).map((key) => {
-        elements[key].style.display = 'none';
+    // let elements = document.querySelectorAll(".tabbar");
+    // if (elements != null) {
+    //   Object.keys(elements).map((key) => {
+    //     elements[key].style.display = 'none';
+    //   });
+    // }
+
+    let tabs = document.querySelectorAll('.show-tabbar');
+    if (tabs !== null) {
+      Object.keys(tabs).map((key) => {
+          tabs[key].style.display = 'none';
       });
     }
   }
+
+  ionViewDidLeave(){
+    this.connectSubscription.unsubscribe();
+    let tabs = document.querySelectorAll('.show-tabbar');
+      if (tabs !== null) {
+        Object.keys(tabs).map((key) => {
+          tabs[key].style.display = 'flex';
+        });
+      }
+  }
+
   showAlert() {
     this.alert = this.alertCtrl.create({
       title: 'Exit?',
@@ -85,9 +106,7 @@ export class AppointmentDetailSubmited {
     this.alert.present();
   }
 
-  ionViewDidLeave(){
-    this.connectSubscription.unsubscribe();
-  }
+
 
   getMyAppointmentDetail(){
     this.spinner.show();
@@ -107,7 +126,12 @@ export class AppointmentDetailSubmited {
         this.avgRating = this.myAppointDetail.avg_rating;
         this.getBookAppointCategory = this.myAppointDetail.book_appointment_categories;
       }else{
-        this.presentToast(this.data1.message);
+        if(this.data1.message == 'Wrong token entered!.Please try again.'){
+          this.presentToast("Session expired Please login again");
+          this.sessionExpired();
+        }else{
+          // this.presentToast(this.data1.message);
+        }
       }
     }, (err) => {
        this.spinner.hide();
@@ -158,8 +182,12 @@ export class AppointmentDetailSubmited {
   giveFeedback(id,tId){
     let modal = this.modalCtrl.create(RatingPopup,{appointment_id:id,tutorId:tId});
     modal.onDidDismiss(data => {
-      this.apId = data;
-      this.getMyAppointmentDetail();
+      if(data){
+        this.apId = data;
+        this.getMyAppointmentDetail();
+      }else{
+        console.log("cross");
+      }
     })
     modal.present();
   }
@@ -167,8 +195,12 @@ export class AppointmentDetailSubmited {
   noClick(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'end_no'});
     modal.onDidDismiss(data => {
-      this.apId = data;
-      this.getMyAppointmentDetail();
+      if(data){
+        this.apId = data;
+        this.getMyAppointmentDetail();
+      }else{
+        console.log("cross");
+      }
     })
     modal.present();
   }
@@ -176,8 +208,13 @@ export class AppointmentDetailSubmited {
   noClickAppStart(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'start_no'});
     modal.onDidDismiss(data => {
-      this.apId = data;
-      this.getMyAppointmentDetail();
+      if(data){
+        this.apId = data;
+        this.getMyAppointmentDetail();
+      }else{
+        console.log("cross");
+      }
+
     })
     modal.present();
   }
@@ -185,8 +222,12 @@ export class AppointmentDetailSubmited {
   cancelClick(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'student_cancel'});
     modal.onDidDismiss(data => {
-      this.apId = data;
-      this.getMyAppointmentDetail();
+      if(data){
+        this.apId = data;
+        this.getMyAppointmentDetail();
+      }else{
+        console.log("cross");
+      }
     })
     modal.present();
   }
@@ -199,6 +240,29 @@ export class AppointmentDetailSubmited {
   // {
   //   this.navCtrl.push(RepeatAppointmentPage,{tutorId:tId,tutorRate:tRate,tutorGroupRate:tGroupRate,catId:this.catId,subCatId:this.subId,bookCategory:this.getBookAppointCategory});
   // }
+
+
+  sessionExpired(){
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
+  }
 
   presentToast(message)
   {

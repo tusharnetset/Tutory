@@ -254,8 +254,8 @@ export class EditProfile {
         this.authForm.get('bio').setValue(this.getProfileData.bio);
         for (let i = 0; i < this.languagescheck.length; i++) {
           this.langPush.push(this.languagescheck[i].language_id)
-          this.authForm.get('languages').setValue(this.langPush);
         }
+        this.authForm.get('languages').setValue(this.langPush);
 
         if(this.getProfileData.student_type == 'US'){
           this.US = true;

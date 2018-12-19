@@ -24,7 +24,7 @@
 
 			<ion-item>
           <ion-label color="primary" style="margin-top:12px;">+974</ion-label>
-		    	<ion-input (keyup)="moveInput($event)" type="tel" limit-to="5" placeholder="Enter Phone Number" [formControl]="authForm.controls['mobile_number']"></ion-input>
+		    	<ion-input (keyup)="moveInput($event)" type="tel" limit-to="10" placeholder="Enter Phone Number" [formControl]="authForm.controls['mobile_number']"></ion-input>
         </ion-item>
 		     <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['mobile_number'].hasError('required') && authForm.controls['mobile_number'].touched">* Mobile number is required!</div>
          <div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['mobile_number'].hasError('pattern')">

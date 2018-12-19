@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,ToastController ,Platform,AlertController,ModalController} from 'ionic-angular';
+import { NavController, NavParams, ToastController, Platform, AlertController, ModalController, App} from 'ionic-angular';
 import { TeacherAppointmentDetailSubmited } from '../teacher-appointment-detail-submited/teacher-appointment-detail-submited';
 import { TeacherAppointmentDetailProgress } from '../teacher-appointment-detail-progress/teacher-appointment-detail-progress';
 import { TeacherAppointmentDetailAccepted } from '../teacher-appointment-detail-accepted/teacher-appointment-detail-accepted';
@@ -15,6 +15,7 @@ import { Network } from '@ionic-native/network';
 import { SignupType } from '../signup-type/signup-type';
 import { EndPopup } from '../end-popup/end-popup';
 import { RejectReasonPopup } from '../reject-reason-popup/reject-reason-popup';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
 
 @Component({
   selector: 'page-teacher-my-appointments',
@@ -53,8 +54,9 @@ export class TeacherMyAppointments {
   public appointments: string = 'scheduled';
   public categories: Array<string> = ['scheduled', 'completed']
   getBadgeCount:any;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(public modalCtrl:ModalController,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public tutorservices:TutorservicesProvider,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
+  constructor(public app:App, public authservices:AuthservicesProvider, public modalCtrl:ModalController,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public tutorservices:TutorservicesProvider,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
   }
 
   onTabChanged(tabName) {
@@ -171,27 +173,46 @@ export class TeacherMyAppointments {
 
 
   actionClick(appointmentId,action){
-    this.spinner.show();
-    this.actionData = {
-      tutor_id : this.userId,
-      login_token:this.token,
-      appointment_id:appointmentId,
-      action:action
-    }
-    this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
-      console.log(result);
-      this.spinner.hide();
-      this.data1 = result;
-      this.myAppoint = this.data1.data;
-      if(this.data1.status == 200){
-        this.myAppointMents();
-      }else{
-        this.presentToast(this.data1.message);
-      }
-    }, (err) => {
-       this.spinner.hide();
-      console.log(err);
-    })
+    this.alert = this.alertCtrl.create({
+      title: 'Start appointment',
+      message: 'Are you sure you want to start this appointment?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log("cancel");
+          }
+        },
+        {
+          text: 'Start',
+          handler: () => {
+            this.spinner.show();
+            this.actionData = {
+              tutor_id : this.userId,
+              login_token:this.token,
+              appointment_id:appointmentId,
+              action:action
+            }
+            this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
+              console.log(result);
+              this.spinner.hide();
+              this.data1 = result;
+              this.myAppoint = this.data1.data;
+              if(this.data1.status == 200){
+                this.myAppointMents();
+              }else{
+                this.presentToast(this.data1.message);
+              }
+            }, (err) => {
+              this.spinner.hide();
+              console.log(err);
+            })
+          }
+        }
+      ]
+    });
+    this.alert.present();
   }
 
   goToEnd(id,action){
@@ -210,20 +231,36 @@ export class TeacherMyAppointments {
   cancelClick(id,action){
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'teacher_cancel'});
     modal.onDidDismiss(data => {
-     this.nativeStorage.getItem('userData').then((data) => {
-        this.userType = data.user_type;
-        this.userId = data.id;
-        this.token = data.login_token;
+      if(data){
         this.myAppointMents();
-      })
+      }else{
+        console.log("cancel");
+      }
+
     })
     modal.present();
   }
 
   sessionExpired(){
-    this.nativeStorage.remove('userType');
-    this.nativeStorage.remove('userData');
-    this.navCtrl.push(SignupType);
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
   }
 
   goToDetail(appointmentId){

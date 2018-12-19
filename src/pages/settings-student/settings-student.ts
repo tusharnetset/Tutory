@@ -30,7 +30,7 @@ export class SettingsStudentPage {
     login_token:any;
   }
   data1:any;
-  sendProfileData:{user_id:any;login_token:any;user_type:any;};
+  sendProfileData : {user_id:any;login_token:any;user_type:any;};
   notiOnOffData : {user_id : any;login_token:any;user_type :any; status:any;}
   getProfileData:any;
   isToggled:boolean = false;
@@ -97,7 +97,6 @@ export class SettingsStudentPage {
     profileModal.present();
   }
   termCondition(){
-    alert(this.conditions);
     let profileModal = this.modalCtrl.create(TermConditonPage,{term:this.conditions});
     profileModal.present();
   }
@@ -140,7 +139,12 @@ export class SettingsStudentPage {
           this.isToggled = false;
         }
       }else{
+        if(this.data1.message == 'Wrong token entered!.Please try again.'){
+          this.presentToast("Session expired Please login again");
+          this.sessionExpired();
+        }else{
           this.presentToast(this.data1.message);
+        }
       }
     }, (err) => {
       console.log(err);
@@ -238,6 +242,29 @@ export class SettingsStudentPage {
       ]
     });
     this.alert.present();
+  }
+
+
+  sessionExpired(){
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
   }
 
   goToContactUs(){

@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ConfigProvider {
-  readonly baseUrl: string = 'http://142.4.10.93/~vooap/tutorry/api/v1/';
+  readonly baseUrl: string = 'http://207.154.223.142/tutory/api/v1/';
   readonly appVersion:string = '1.0';
   constructor() {}
 }

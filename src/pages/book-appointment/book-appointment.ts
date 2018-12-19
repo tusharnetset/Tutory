@@ -237,6 +237,7 @@ export class BookAppointment {
       this.showiNPUT  = true;
     }else{
       this.show = false;
+      this.showiNPUT  = false;
     }
   }
   suggestClick(){
@@ -405,14 +406,12 @@ export class BookAppointment {
           return;
         }
       }
-
       if(this.levePresent == 1){
         if(this.levelSelectId == "" || this.levelSelectId == undefined || this.levelSelectId == null){
           this.presentToast("Please select level");
           return;
         }
       }
-
       if(this.authForm.value.no_of_students > 10){
         this.presentToast("Only 10 users allowed");
         return;
@@ -421,13 +420,11 @@ export class BookAppointment {
         this.presentToast("Please add atleast one student");
         return;
       }
-
       if(this.authForm.value.no_of_students > 1){
         this.rateCheck = this.tGrRate
       }else{
         this.rateCheck = this.trate
       }
-
       let alert = this.alertCtrl.create({
         title: 'Are you sure?',
         message: 'You want to book appointment',
@@ -469,7 +466,6 @@ export class BookAppointment {
                   let modal = this.modalCtrl.create(SuccessPopup);
                   modal.present();
                   this.navCtrl.setRoot(TabsStudentPage, {opentab: 2});
-
                 }else{
                   this.presentToast(this.data1.message);
                 }

@@ -62,6 +62,9 @@ export class TutorProfileview {
   userIdSkip:any;
   getBookAppointCategory: any;
   teachingLevel: any;
+  screenShotSave: any;
+  recomendation: any;
+  profileStatus: any;
 
 	constructor(public screenshot:Screenshot,private socialSharing: SocialSharing, public zone: NgZone,public toastCtrl: ToastController,public spinner:NgxSpinnerService,public geolocation:Geolocation,public studentservices:StudentservicesProvider,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public navCtrl: NavController,public modalCtrl:ModalController) {
 	}
@@ -74,6 +77,7 @@ export class TutorProfileview {
     this.subId = this.navParams.get('subCatId');
     this.nativeStorage.getItem('userData').then((data) => {
       this.userId = data.id;
+      this.profileStatus = data.profile_status
       this.token = data.login_token;
       this.lat = data.latitude;
       this.long = data.longitude;
@@ -154,7 +158,8 @@ export class TutorProfileview {
     	this.data1 = result;
     	if(this.data1.status == 200){
         this.zone.run(() => {
-        	this.getTutordata = this.data1.data;
+          this.getTutordata = this.data1.data;
+          this.recomendation = this.getTutordata.getTutordata;
           this.ratingData = this.getTutordata.avg_rating;
           // this.teachingLevel = this.getTutordata.teaching_levels;
           this.getBookAppointCategory = this.getTutordata.book_appointment_categories;
@@ -221,52 +226,20 @@ export class TutorProfileview {
     	}, (err) => {
         console.log(err);
     	})
-  	}
+    }
 
   	goToShareProfile()
   	{
-
-      this.socialSharing.share("Check this item:  tutoryapp://items/" + this.tId, this.getTutordata.first_name)
-      .then(() => {
-      })
-      .catch(() => {
-      });
-      // if(this.userIdSkip){
-      //   this.presentToast("Please login your account first for share tutor profile");
-      //   return;
-      // }
-      // this.shareProImage = Math.floor((Math.random() * 10000) + 1);
-      // //  this.socialSharing.share("hi", this.getTutordata.profile_pic +'Name '+this.getTutordata.first_name+this.getTutordata.last_name, 'https://tutorry.com').then((success)=>{
-      //   this.socialSharing.shareViaWhatsApp("hiiiiiiiii", 'http://18.188.55.192:8080/Located1/resources/images/group1.png', "https://tutory.com").then((success)=>{
-      //   console.log(success);
-      //     this.recommenddata = {
-      //       user_id : this.userId,
-      //       login_token:this.token,
-      //       tutor_id:this.tId
-      //     }
-      //     this.spinner.show();
-      //     this.studentservices.recommendApi(this.recommenddata).then((result) => {
-      //       console.log(result);
-      //       this.spinner.hide();
-      //       this.data1 = result;
-      //       if(this.data1.status == 200){
-      //         this.presentToast("Successfully shared");
-      //       }else{
-      //         this.presentToast(this.data1.message);
-      //       }
-      //     }, (err) => {
-      //       this.spinner.hide();
-      //       console.log(err);
-      //     })
-
-      //   }).catch((err) => {
-      //     console.log(err);
-      //   });
-    }
-
-    goToShareProfileShare(){
-      this.socialSharing.share("hiiiiiiiii", null, null).then((success)=>{
-        console.log(success);
+      this.screenshot.URI(80).then((res) => {
+        console.log("url",res.URI);
+        this.screenShotSave = res.URI;
+        // this.socialSharing.share("Check this item:  tutoryapp://items/" + this.tId, this.getTutordata.first_name,scrn)
+        this.socialSharing.share("Check this item:  tutoryapp://items/" + this.tId, this.getTutordata.first_name,this.screenShotSave)
+        .then(() => {
+          if(this.userIdSkip){
+            this.presentToast("Please login your account first for share tutor profile");
+            return;
+          }
           this.recommenddata = {
             user_id : this.userId,
             login_token:this.token,
@@ -280,22 +253,63 @@ export class TutorProfileview {
             if(this.data1.status == 200){
               // this.presentToast("Successfully shared");
             }else{
-              // this.presentToast(this.data1.message);
+              this.presentToast(this.data1.message);
             }
           }, (err) => {
             this.spinner.hide();
             console.log(err);
           })
-
         }).catch((err) => {
           console.log(err);
         });
+      }, (err) => {
+        console.log("errrrrrr",err);
+      });
+    }
+
+    goToShareProfileShare(){
+      this.screenshot.URI(80).then((res) => {
+        this.screenShotSave = res.URI;
+        this.socialSharing.share("Check this item:  tutoryapp://items/" + this.tId, this.getTutordata.first_name,this.screenShotSave)
+        .then(() => {
+          if(this.userIdSkip){
+            this.presentToast("Please login your account first for share tutor profile");
+            return;
+          }
+          this.recommenddata = {
+            user_id : this.userId,
+            login_token:this.token,
+            tutor_id:this.tId
+          }
+          this.spinner.show();
+          this.studentservices.recommendApi(this.recommenddata).then((result) => {
+            console.log(result);
+            this.spinner.hide();
+            this.data1 = result;
+            if(this.data1.status == 200){
+              // this.presentToast("Successfully shared");
+            }else{
+              this.presentToast(this.data1.message);
+            }
+          }, (err) => {
+            this.spinner.hide();
+            console.log(err);
+          })
+        }).catch((err) => {
+          console.log(err);
+        });
+      }, (err) => {
+        console.log("errrrrrr",err);
+      });
     }
 
   	goToBookAppointment(tId,tRate,tGroupRate)
   	{
       if(this.userIdSkip){
         this.presentToast("Please login your account first for Book Appointment");
+        return;
+      }else if(this.profileStatus == 0){
+        this.presentToast("Please complete your profile");
         return;
       }else{
         this.navCtrl.push(BookAppointment,{tutorId:tId,tutorRate:tRate,tutorGroupRate:tGroupRate,catId:this.catId,subCatId:this.subId,bookCategory:this.getBookAppointCategory});
@@ -316,7 +330,7 @@ export class TutorProfileview {
 	    console.log(message);
 	    let toast = this.toastCtrl.create({
 	      message: message,
-	      duration: 3000,
+	      duration: 5000,
 	      position: 'bottom'
 	    });
 

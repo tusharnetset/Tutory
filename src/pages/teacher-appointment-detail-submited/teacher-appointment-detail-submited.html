@@ -33,7 +33,7 @@
 			<p>{{detailData?.start_time}} to {{detailData?.end_time}}, {{detailData?.date | date:'dd/MM/yyyy'}} </p>
 			<hr/>
 			<h3 class="bold_font">Subject</h3>
-			<p>{{detailData?.category_name}} - <span>{{detailData?.subcategory_name}}</span> - <span>{{detailData?.level_name}}</span></p>
+			<p>{{detailData?.category_name}} - <span>{{detailData?.subcategory_name}}</span> <span *ngIf="detailData?.level_name"> - {{detailData?.level_name}}</span></p>
 			<hr/>
 			<ion-row>
 				<ion-col col-5>
@@ -72,9 +72,9 @@
     <p *ngIf=" detailData?.student_status == 'S_CN_BS'" class="green">Appointment in process.</p>
     <p *ngIf=" detailData?.student_status == 'R_CA_BS'" class="blue">Appointment cancelled by Student.</p>
     <p *ngIf=" detailData?.student_status == 'S_NCN_BS'"  class="green">Student is not ready for this appointment</p>
-    <p *ngIf=" detailData?.student_status == 'A_EN_BT'"  class="green">Waiting student's response for appointment complete or not.</p>
+    <p *ngIf=" detailData?.student_status == 'A_EN_BT'"  class="green">Waiting for your student to respond.</p>
 
-    <p *ngIf=" detailData?.student_status == 'E_NCN_BS'"  class="green">Student is not ready to and this appointment .</p>
+    <p *ngIf=" detailData?.student_status == 'E_NCN_BS'"  class="green">Student is not ready to end this appointment .</p>
 
     <p *ngIf=" detailData?.student_status == 'END'" class="green">Your appointment has been completed.</p>
 
@@ -96,10 +96,10 @@
 
 
 
-		<button *ngIf=" detailData?.student_status == 'R_SE_BS'" class="btn btn-text" ion-button full (click)="actionClick(detailData?.appointment_id,'accept')">Accept</button>
+		<button *ngIf=" detailData?.student_status == 'R_SE_BS'" class="btn btn-text" ion-button full (click)="actionClickAccept(detailData?.appointment_id,'accept')">Accept</button>
         <button  *ngIf=" detailData?.student_status == 'R_SE_BS'" class="btn btn-text blue_btn" ion-button full (click)="goToReject(detailData?.appointment_id,'reject');">Reject</button>
 
-        <button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text" ion-button full (click)="actionClick(detailData?.appointment_id,'start')" >Start</button>
+        <button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text" ion-button full (click)="actionClickSTart(detailData?.appointment_id,'start')" >Start</button>
 		<button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text blue_btn" ion-button full (click)="cancelClick(detailData?.appointment_id,'cancel')">Cancel</button>
 
 

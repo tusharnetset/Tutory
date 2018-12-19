@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,ToastController,Platform ,NavParams ,AlertController,ModalController} from 'ionic-angular';
+import { NavController,ToastController,Platform ,NavParams ,AlertController,ModalController, App} from 'ionic-angular';
 import { TeacherAppointmentDetailSubmited } from '../teacher-appointment-detail-submited/teacher-appointment-detail-submited';
 import { NotificationsTeacherPage } from '../notifications-teacher/notifications-teacher';
 import { TutorservicesProvider } from './../../providers/tutorservices/tutorservices';
@@ -12,6 +12,7 @@ import { SignupType } from '../signup-type/signup-type';
 import { RejectReasonPopup } from '../reject-reason-popup/reject-reason-popup';
 import { EndPopup } from '../end-popup/end-popup';
 import Swal from 'sweetalert2';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
 
 @Component({
   selector: 'page-teacher-dashboard',
@@ -41,36 +42,37 @@ export class TeacherDashboard {
   successMessage: string;
   title: string;
   content: string;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(public modalCtrl: ModalController,public alertCtrl:AlertController,public navParams:NavParams,public toastCtrl:ToastController, public tutorservices:TutorservicesProvider, public platform:Platform, public spinner:NgxSpinnerService,public nativeStorage:NativeStorage,public network:Network, public navCtrl: NavController) {
+  constructor(public app:App, public authservices:AuthservicesProvider, public modalCtrl: ModalController,public alertCtrl:AlertController,public navParams:NavParams,public toastCtrl:ToastController, public tutorservices:TutorservicesProvider, public platform:Platform, public spinner:NgxSpinnerService,public nativeStorage:NativeStorage,public network:Network, public navCtrl: NavController) {
     this.timezone = moment.tz.guess();
   }
 
   ionViewDidEnter() {
-      this.nativeStorage.getItem('userData').then((data) => {
-        this.userType = data.user_type;
-        this.userId = data.id;
-        this.token = data.login_token;
-        this.getNotificationCounts();
-        this.getDashBoardData();
-      })
-      this.connectSubscription = this.network.onConnect().subscribe(() => {
-        this.getNotificationCounts();
-        this.getDashBoardData();
-      });
-      this.platform.registerBackButtonAction(() => {
-        if(this.navCtrl.canGoBack()){
-          this.navCtrl.pop();
+    this.nativeStorage.getItem('userData').then((data) => {
+      this.userType = data.user_type;
+      this.userId = data.id;
+      this.token = data.login_token;
+      this.getNotificationCounts();
+      this.getDashBoardData();
+    })
+    this.connectSubscription = this.network.onConnect().subscribe(() => {
+      this.getNotificationCounts();
+      this.getDashBoardData();
+    });
+    this.platform.registerBackButtonAction(() => {
+      if(this.navCtrl.canGoBack()){
+        this.navCtrl.pop();
+      }else{
+        if(this.alert){
+          this.alert.dismiss();
+          this.alert = null;
         }else{
-          if(this.alert){
-            this.alert.dismiss();
-            this.alert = null;
-          }else{
-            this.showAlert();
-          }
+          this.showAlert();
         }
-      })
-    }
+      }
+    })
+  }
 
 
   ionViewDidLeave(){
@@ -171,88 +173,120 @@ export class TeacherDashboard {
         }
       }
     }, (err) => {
-       this.spinner.hide();
+      this.spinner.hide();
       console.log(err);
     })
   }
 
-  actionButton(appointmentId,action){
-
-    if(action == 'accept'){
-      this.title = "accept";
-      this.successMessage = 'Successfully Accepted'
-      this.content = "You want to accept the appointment !"
-    }else if(action == 'start'){
-      this.title = "start";
-      this.successMessage = 'Successfully Started'
-      this.content = "You want to start the appointment !"
-    }
-    Swal({
-      title: 'Are you sure?',
-      text: this.content,
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, '+this.title+' it!',
-      cancelButtonText: 'No, keep it'
-    }).then((result) => {
-      if (result.value) {
-        this.spinner.show();
-        this.actionData = {
-          tutor_id : this.userId,
-          login_token:this.token,
-          appointment_id:appointmentId,
-          action:action
-        }
-        this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
-          console.log(result);
-          this.spinner.hide();
-          this.data1 = result;
-          this.myAppoint = this.data1.data;
-          if(this.data1.status == 200){
-            Swal(
-              this.title,
-              this.successMessage,
-              'success'
-            )
-            this.getDashBoardData();
-          }else{
-            this.presentToast(this.data1.message);
+  actionButtonStart(appointmentId,action){
+    this.alert = this.alertCtrl.create({
+      title: 'Start appointment',
+      message: 'Are you sure you want to start this appointment?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log();
           }
-        }, (err) => {
-          this.spinner.hide();
-          console.log(err);
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          'Cancelled',
-          'Your dont '+this.title+' the appointment :)',
-          'error'
-        )
+        },
+        {
+          text: 'Accept',
+          handler: () => {
+            this.spinner.show();
+            this.actionData = {
+              tutor_id : this.userId,
+              login_token:this.token,
+              appointment_id:appointmentId,
+              action:action
+            }
+            this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
+              console.log(result);
+              this.spinner.hide();
+              this.data1 = result;
+              this.myAppoint = this.data1.data;
+              if(this.data1.status == 200){
+                this.getDashBoardData();
+              }else{
+                this.presentToast(this.data1.message);
+              }
+            }, (err) => {
+              this.spinner.hide();
+              console.log(err);
+            })
+          }
+        }
+      ]
+    });
+    this.alert.present();
+  }
+
+  actionButtonAccept(appointmentId,action, date, time){
+    this.alert = this.alertCtrl.create({
+      title: 'Accept appointment',
+      message: 'Are you sure you want to accept this appointment?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log();
+          }
+        },
+        {
+          text: 'Accept',
+          handler: () => {
+            this.spinner.show();
+            this.actionData = {
+              tutor_id : this.userId,
+              login_token:this.token,
+              appointment_id:appointmentId,
+              action:action
+            }
+            this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
+              console.log(result);
+              this.spinner.hide();
+              this.data1 = result;
+              this.myAppoint = this.data1.data;
+              if(this.data1.status == 200){
+                this.getDashBoardData();
+              }else{
+                this.presentToast(this.data1.message);
+              }
+            }, (err) => {
+              this.spinner.hide();
+              console.log(err);
+            })
+          }
+        }
+      ]
+    });
+    this.alert.present();
+  }
+
+  actionButton(appointmentId,action){
+    this.spinner.show();
+    this.actionData = {
+      tutor_id : this.userId,
+      login_token:this.token,
+      appointment_id:appointmentId,
+      action:action
+    }
+    this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
+      console.log(result);
+      this.spinner.hide();
+      this.data1 = result;
+      this.myAppoint = this.data1.data;
+      if(this.data1.status == 200){
+
+        this.getDashBoardData();
+      }else{
+        this.presentToast(this.data1.message);
       }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
     })
-
-
-    // this.spinner.show();
-    // this.actionData = {
-    //   tutor_id : this.userId,
-    //   login_token:this.token,
-    //   appointment_id:appointmentId,
-    //   action:action
-    // }
-    // this.tutorservices.myAppointmentActionsApi(this.actionData).then((result) => {
-    //   console.log(result);
-    //   this.spinner.hide();
-    //   this.data1 = result;
-    //   this.myAppoint = this.data1.data;
-    //   if(this.data1.status == 200){
-    //     this.getDashBoardData();
-    //   }else{
-    //     this.presentToast(this.data1.message);
-    //   }
-    // }, (err) => {
-    //    this.spinner.hide();
-    //   console.log(err);
-    // })
   }
 
   rejectClick(id,action){
@@ -331,9 +365,25 @@ export class TeacherDashboard {
   }
 
   sessionExpired(){
-    this.nativeStorage.remove('userType');
-    this.nativeStorage.remove('userData');
-    this.navCtrl.push(SignupType);
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
   }
 
   presentToast(message)

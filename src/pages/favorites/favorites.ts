@@ -1,5 +1,5 @@
 import { Component ,NgZone} from '@angular/core';
-import { NavController, ModalController ,ToastController,AlertController,Platform} from 'ionic-angular';
+import { NavController, ModalController ,ToastController,AlertController,Platform, App} from 'ionic-angular';
 import { ServicesPopup } from '../services-popup/services-popup';
 import { TutorProfileview } from '../tutor-profileview/tutor-profileview';
 import { Notifications } from '../notifications/notifications';
@@ -10,6 +10,7 @@ import { StudentservicesProvider } from './../../providers/studentservices/stude
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment-timezone';
 import 'moment-timezone';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
 
 @Component({
   selector: 'page-favorites',
@@ -32,8 +33,9 @@ export class Favorites {
   connectSubscription:any;
   favArr :any[];
   getBadgeCount:any;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(public zone:NgZone,public platform:Platform,public alertCtrl:AlertController,public toastCtrl:ToastController,public spinner:NgxSpinnerService,public studentservices:StudentservicesProvider,public network:Network,public nativeStorage:NativeStorage,public navCtrl: NavController, public modalCtrl: ModalController) {
+  constructor(public app:App, public authservices:AuthservicesProvider, public zone:NgZone,public platform:Platform,public alertCtrl:AlertController,public toastCtrl:ToastController,public spinner:NgxSpinnerService,public studentservices:StudentservicesProvider,public network:Network,public nativeStorage:NativeStorage,public navCtrl: NavController, public modalCtrl: ModalController) {
 
   }
 
@@ -193,9 +195,25 @@ export class Favorites {
   }
 
   sessionExpired(){
-    this.nativeStorage.remove('userType');
-    this.nativeStorage.remove('userData');
-    this.navCtrl.push(SignupType);
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
   }
 
   presentToast(message)

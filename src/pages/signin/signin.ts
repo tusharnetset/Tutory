@@ -168,7 +168,7 @@ export class Signin {
         console.log(err);
       })
     }else{
-     this.validateAllFormFields(this.authForm)
+      this.validateAllFormFields(this.authForm)
     }
   }
 
@@ -199,8 +199,10 @@ export class Signin {
   {
     if(this.uType == 'T'){
       this.navCtrl.push(TeacherTutorialPage);
+    }else{
+      this.navCtrl.push(TutorialPage);
     }
-    this.navCtrl.push(TutorialPage);
+
   }
 
   skip()

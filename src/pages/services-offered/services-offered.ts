@@ -84,7 +84,6 @@ export class ServicesOffered {
     })
   }
 
-
   ionViewDidLeave(){
     this.connectSubscription.unsubscribe();
   }
@@ -258,7 +257,7 @@ export class ServicesOffered {
         this.presentToast("Please select sub category");
         return;
       }
-       if(this.levelSel == 0){
+      if(this.levelSel == 0){
         this._levelId = 0;
       }else{
         if(this._levelId == "" || this._levelId == undefined || this._levelId == null){
@@ -269,10 +268,10 @@ export class ServicesOffered {
 
       this.addServiceData = {
         user_id : this.userId,
-        login_token:this.token,
-        category_id:this._catId,
-        subcategory_id:this._subCatId,
-        level_id:this._levelId
+        login_token : this.token,
+        category_id : this._catId,
+        subcategory_id : this._subCatId,
+        level_id : this._levelId
       }
       this.spinner.show();
       this.tutorservices.addServices(this.addServiceData).then((result) => {
@@ -281,12 +280,14 @@ export class ServicesOffered {
         this.data1 = result;
         this.getServiceData = this.data1.data;
         if(this.data1.status == 200){
-          this.subCateArr = [];
-          this.levelsArr = [];
           this._subCatId = "";
           this._levelId = "";
+          this.subCateArr = [];
+          this.levelsArr = [];
+          this.subCateSelect(this._catId);
+          this.getLevels(this._catId);
           this.getCategories();
-          // this.getServicesFun();
+          //this.getServicesFun();
         }else{
           this.presentToast(this.data1.message);
         }
@@ -294,11 +295,11 @@ export class ServicesOffered {
         console.log(err);
       })
     }else{
-     this.validateAllFormFields(this.authForm)
+      this.validateAllFormFields(this.authForm)
     }
   }
 
-   validateAllFormFields(formGroup: FormGroup)
+  validateAllFormFields(formGroup: FormGroup)
   {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);

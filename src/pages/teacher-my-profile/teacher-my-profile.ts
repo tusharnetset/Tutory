@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,ToastController } from 'ionic-angular';
+import { NavController,ToastController, App } from 'ionic-angular';
 import { EditProfile } from '../edit-profile/edit-profile';
 import { ServicesOffered } from '../services-offered/services-offered';
 import { Notifications } from '../notifications/notifications';
@@ -14,6 +14,7 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import * as moment from 'moment-timezone';
 import 'moment-timezone';
 import { Network } from '@ionic-native/network';
+import { AuthservicesProvider } from './../../providers/authservices/authservices';
 
 @Component({
   selector: 'page-teacher-my-profile',
@@ -33,8 +34,9 @@ export class TeacherMyProfile {
   ratingData:any;
   getBadgeCount:any;
   userLevels: any;
+  logoutDataSend: { user_id: any; login_token: any; };
 
-  constructor(public toastCtrl:ToastController,public spinner:NgxSpinnerService,public nativeStorage:NativeStorage,public tutorservices:TutorservicesProvider,public network:Network,public navCtrl: NavController) {
+  constructor(public app:App, public authservices:AuthservicesProvider,public toastCtrl:ToastController,public spinner:NgxSpinnerService,public nativeStorage:NativeStorage,public tutorservices:TutorservicesProvider,public network:Network,public navCtrl: NavController) {
   }
 
   ionViewDidEnter() {
@@ -90,7 +92,12 @@ export class TeacherMyProfile {
         this.userLanguages = this.getProfileData.user_languages;
         this.userLevels = this.getProfileData.teaching_levels;
       }else{
+        if(this.data1.message == 'Wrong token entered!.Please try again.'){
+          this.presentToast("Session expired Please login again");
+          this.sessionExpired();
+        }else{
           this.presentToast(this.data1.message);
+        }
       }
     }, (err) => {
       console.log(err);
@@ -131,6 +138,29 @@ export class TeacherMyProfile {
   }
   goToViewAvailability(){
     this.navCtrl.push(ViewAvailability,{tutorId:this.userId});
+  }
+
+  sessionExpired(){
+    this.logoutDataSend = {
+      user_id : this.userId,
+      login_token:this.token,
+    }
+    this.authservices.logoutApi(this.logoutDataSend).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      if(this.data1.status == 200){
+        console.log("status 200", this.data1.status);
+        this.nativeStorage.remove('userData');
+        this.nativeStorage.remove('userType');
+        this.app.getRootNav().setRoot(SignupType);
+        // this.navCtrl.push(SignupType);
+      }else{
+        this.presentToast(this.data1.message);
+      }
+    }, (err) => {
+      this.spinner.hide();
+      console.log(err);
+    })
   }
 
   presentToast(message)

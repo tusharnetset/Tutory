@@ -67,6 +67,7 @@ export class ViewAvailability {
     pickMode: 'multi'
   };
   dateArr: any[];
+  fromTimeSend: any;
   constructor(public zone:NgZone,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public tutorservices:TutorservicesProvider,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
   }
 
@@ -146,35 +147,29 @@ export class ViewAvailability {
         login_token:this.token,
         tutor_id:this.tutorId
       }
-		}
+    };
     this.spinner.show();
     this.tutorservices.checkViewAvailability(this.getSlotsdata).then((result) => {
       console.log(result);
       this.dataCom = true;
       this.spinner.hide();
       this.data1 = result;
-      console.log("this.currentEvents ",this.currentEvents)
       if(this.data1.status == 200){
         this.getdates = this.data1.dates;
+        let firstItem = this.getdates[0];
+        let lastItem = this.getdates[this.getdates.length-1];
+        let first = moment(firstItem).format('YYYY-MM-DD').toString();
+        var last = moment(lastItem).format('YYYY-MM-DD').toString();
+
+        this.dateRange = {
+          'from' : first,
+          'to' : last
+        };
+        console.log(this.dateRange);
         this.zone.run(() => {
-          for (let i = 0; i < this.getdates.length; i++) {
-            let check = moment(this.getdates[i], 'YYYY/MM/DD');
-            console.log(check);
-            this.events = {
-            year: check.format('YYYY'),
-              month: check.format('M'),
-              date: check.format('D')
-            }
-            this.eventsDouble = {
-              year:this.events.year,
-              month:this.events.month-1,
-              date:this.events.date
-            }
-            this.currentEvents.push(this.eventsDouble);
-          }
-          console.log('this.currentEvents',this.currentEvents);
           this.calShow = true;
           this.getViewAvailbilityData = this.data1.data;
+          console.log('this.getViewAvailbilityData', this.getViewAvailbilityData);
           for (let i = 0; i < this.getViewAvailbilityData.length; i++) {
             this.slotData.push({
               from_time:this.getViewAvailbilityData[i].from_time,
@@ -183,6 +178,7 @@ export class ViewAvailability {
               date:this.getViewAvailbilityData[i].date
             })
           }
+
           if(this.getViewAvailbilityData.length == 0){
             this.check = true;
           }else{
@@ -197,7 +193,6 @@ export class ViewAvailability {
       console.log(err);
     })
   }
-
 
   deleteSlot(_id,date){
     this.slotData = [];
@@ -228,7 +223,7 @@ export class ViewAvailability {
             this.check = true;
           }else{
             this.check = false;
-        }
+          }
         })
       }else{
         this.presentToast(this.data1.message);
@@ -349,21 +344,22 @@ export class ViewAvailability {
 
 
 	fromTime(event,i){
-     	console.log("eventevent",event,i);
-		if(i != 0) {
-			console.log("this.slotArr.length", this.slotArr.length);
-		   	var lastTotime = this.slotArr[i-1].to_time;
-		   	console.log("hii lastTotime ",lastTotime, this.slotArr[i-1].to_time)
-		   	if(lastTotime <= event.hour) {
-		   		console.log("if lastTotime <= event.hour");
-		   		this.frTime = event.hour;
-		    }else {
-		   		this.presentToast('From time must be greater than previous to time.');
-		   	}
-       	}else {
-       		console.log("array empty");
-       	  	this.frTime = event.hour;
-       	}
+    console.log("eventevent",event,i);
+    this.fromTimeSend = event.hour;
+    if(i != 0) {
+    console.log("this.slotArr.length", this.slotArr.length);
+      var lastTotime = this.slotArr[i-1].to_time;
+      console.log("hii lastTotime ",lastTotime, this.slotArr[i-1].to_time)
+      if(lastTotime <= event.hour) {
+        console.log("if lastTotime <= event.hour");
+        this.frTime = event.hour;
+      }else {
+        this.presentToast('From time must be greater than previous to time.');
+      }
+      }else {
+        console.log("array empty");
+        this.frTime = event.hour;
+      }
   	}
 
   	toTime(event,idi){
@@ -374,23 +370,7 @@ export class ViewAvailability {
 	  			to_time:this.toTimeVal
 	  		};
 	  		console.log('this.newAttri',this.newAttri)
-  		   	this.slotArr[idi]=this.newAttri;
-  			// var from = parseInt(this.frTime);
-  			// var to = parseInt(this.toTimeVal);
-  		 	//    var to_time = from;
-  		 	//    var inc = 0;
-  		 	//    for(var i=from; i < to; i++) {
-  		 	//    	from = to_time;
-  		 	//    	to_time = from + 1;
-  		 	//    	this.newAttri = {
-			  	// 		from_time: from,
-			  	// 		to_time:to_time
-			  	// 	};
-			  	// 	console.log('this.newAttri',this.newAttri)
-		  		//    	this.slotArr[idi + inc]=this.newAttri;
-		  		//    	inc = inc + 1;
-  		 	//    }
-
+        this.slotArr[idi]=this.newAttri;
 	  		console.log("this.slotArr",this.slotArr)
 	  	}else{
 	  		this.presentToast('Please select time greater than from time');
@@ -410,13 +390,13 @@ export class ViewAvailability {
       var endDate = new Date(checkTo); //YYYY-MM-DD
 
       var getDateArray = function(start, end) {
-          var arr = new Array();
-          var dt = new Date(start);
-          while (dt <= end) {
-              arr.push(new Date(dt));
-              dt.setDate(dt.getDate() + 1);
-          }
-          return arr;
+        var arr = new Array();
+        var dt = new Date(start);
+        while (dt <= end) {
+          arr.push(new Date(dt));
+          dt.setDate(dt.getDate() + 1);
+        }
+        return arr;
       }
 
       var dateArr = getDateArray(startDate, endDate);
@@ -427,26 +407,19 @@ export class ViewAvailability {
 
   	submitSlot()
   	{
+
+      if(this.dateArr.length == 0){
+        this.presentToast('Please select start and end date in range');
+        return;
+      }
+
+      if(this.fromTimeSend == "" || this.fromTimeSend == undefined || this.fromTimeSend == null && this.toTimeVal == "" || this.toTimeVal == undefined || this.toTimeVal == null){
+        this.presentToast('Please add from time and to time');
+        return;
+      }
+
   		this.dataCom = false;
 		  this.slotData = [];
-      	// for(let j in this.slotArr) {
-      	// 	let from = parseInt(this.slotArr[j].from_time);
-  			// let to = parseInt(this.slotArr[j].to_time);
-  		  //   let to_time = from;
-
-  		  //   for(let i=from; i < to; i++) {
-  		  //   	from = to_time;
-  		  //   	to_time = from + 1;
-  		  //   	this.newAttri2 = {
-		  	// 		from_time: from,
-		  	// 		to_time:to_time
-		  	// 	};
-		  	// 	console.log('this.newAttri2',this.newAttri2)
-	  		//    	this.slotArr2.push(this.newAttri2);
-  		  //   }
-        // }
-
-
         for (let k = 0; k < this.dateArr.length; k++) {
           for(var j in this.slotArr) {
             var from = parseInt(this.slotArr[j].from_time);
@@ -460,10 +433,27 @@ export class ViewAvailability {
                 to_time:to_time,
                 date:moment(this.dateArr[k]).format('YYYY-MM-DD')
               };
+              if(this.slotArr[j].from_time == "" || this.slotArr[j].from_time == undefined || this.slotArr[j].from_time == null){
+                this.presentToast('Please select from time');
+                return;
+              }
+              if(this.slotArr[j].to_time == undefined || this.slotArr[j].to_time == "" || this.slotArr[j].to_time == null){
+                this.presentToast('Please select to time');
+                return;
+              }
+              if(this.newAttri2.from_time > this.newAttri2.to_time){
+                this.presentToast('Please select time greater than from time');
+                return;
+              }
               console.log('this.newAttri2',this.newAttri2)
               this.slotArr2.push(this.newAttri2);
             }
           }
+      }
+
+      if(this.slotArr2.length == 0){
+        this.presentToast('Please add time slot');
+        return;
       }
 
   		if(!this.dateSend){
@@ -476,26 +466,28 @@ export class ViewAvailability {
         this.dateSend = year+'-'+month+'-'+day;
   		}else{
   			this.dateSend = this.dateSend;
-  		}
+      }
+
 
 		this.submitSlotData = {
 	      user_id : this.userId,
 	      login_token:this.token,
 	      // date:this.dateSend,
 	      slots:JSON.stringify(this.slotArr2)
-	    }
+      }
+
 	    this.spinner.show();
 	    this.tutorservices.addSlotsApi(this.submitSlotData).then((result) => {
-	      	console.log(result);
-	      	this.dataCom = true;
-	      	this.spinner.hide();
+        console.log(result);
+        this.dataCom = true;
+        this.spinner.hide();
     		this.show = true;
   			this.hide = false;
 	      	this.data1 = result;
 	      	if(this.data1.status == 200){
 	      		this.slotArr2 = [];
 		      	this.anArray = [];
-	    		this.slotArr = [];
+	    		  this.slotArr = [];
 	        	this.zone.run(() => {
       				this.getViewAvailbilityData = this.data1.data;
       				for (let i = 0; i < this.getViewAvailbilityData.length; i++) {
@@ -510,13 +502,13 @@ export class ViewAvailability {
 	        			this.check = true;
 		        	}else{
 		        		this.check = false;
-		   		 	}
+		   		 	  }
       			})
 	      	}else if(this.data1.status == 204){
 	        	this.presentToast(this.data1.message);
 	        	this.slotArr2 = [];
 		      	this.anArray = [];
-	    		this.slotArr = [];
+	    		  this.slotArr = [];
 	        	this.zone.run(() => {
       				this.getViewAvailbilityData = this.data1.data;
       				for (let i = 0; i < this.getViewAvailbilityData.length; i++) {
