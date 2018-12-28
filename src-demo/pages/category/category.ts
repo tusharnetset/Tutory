@@ -3,6 +3,8 @@ import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { SingleItem } from '../../pages/single-item/single-item';
 import { ItemApi } from '../../services/service';
+import { AuthServiceProvider } from '../../providers/apiservices/apiservices';
+
 @Component({
   selector: 'page-category',
   templateUrl: 'category.html',
@@ -12,7 +14,11 @@ import { ItemApi } from '../../services/service';
 export class CategoryPage {
   items: any;
   passedCategory: any;
+  getId: any;
+  data1:any;
+  cateData: any;
   constructor(
+    public authService:AuthServiceProvider,
     public navCtrl: NavController,
     private navParams:NavParams,
     private itemApi: ItemApi,
@@ -22,19 +28,22 @@ export class CategoryPage {
     this.passedCategory = this.navParams.get('category');
   }
   ionViewDidLoad() {
-    let loader = this.loadingController.create({
-      content: "Getting items.."
-    });
-    loader.present();
-    this.itemApi.getItems().then(data => {
-      loader.dismiss();
-      this.items = data;
-      this.items = this.items.filter(item => item.category == this.passedCategory);
-    });
-
+    this.getId = this.navParams.get('id');
+    this.getCategory();
   }
-  itemTapped($event, item) {
-    this.navCtrl.push(SingleItem, item);
+
+  getCategory(){
+    this.authService.getCategoryApi(this.getId).then((data) => {
+      console.log('responseeeeee', data);
+      this.data1 = data;
+      this.cateData = this.data1.result;
+    }, err => {
+      console.log('Error', err);
+    })
+}
+
+  itemTapped(id,mainId) {
+    this.navCtrl.push(SingleItem,{'id':id,'mainId':mainId});
   }
 
 

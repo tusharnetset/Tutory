@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <img class="title-image" alt="logo" height="40"   src="assets/img/logo.png" >
+    </ion-title>
+    <ion-buttons right (click)="presentPopover($event)">
+        <button ion-button>
+            <ion-icon name="more"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="padding_helper" color="white" *ngFor="let data of fistData" (click)="CategoryTapped(data.id)">
+    <div class="category__image">
+        <div class="text-center image__padding">
+          <p class="nomargin category__headline">
+            {{data.title}}
+          </p>
+        </div>
+    </div>
+  </div>
+
+</ion-content>

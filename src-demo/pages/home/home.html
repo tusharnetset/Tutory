@@ -12,34 +12,14 @@
 </ion-header>
 
 <ion-content>
-  <div class="padding_helper" color="white" (click)="CategoryTapped()">
+  <div class="padding_helper" color="white" *ngFor="let data of fistData" (click)="CategoryTapped(data.id)">
     <div class="category__image">
         <div class="text-center image__padding">
           <p class="nomargin category__headline">
-            इतिहास
+            {{data.title}}
           </p>
         </div>
     </div>
   </div>
-  <div class="padding_helper" color="white" (click)="CategoryTapped_2()">
-    <div class="category__image2">
-        <div class="text-center image__padding">
-          <!-- <p class="section__headline">
-              The breakfast
-          </p> -->
-          <p class="nomargin category__headline">
-            भूगोल
-          </p>
-        </div>
-    </div>
-  </div>
-  <div class="padding_helper" color="white" (click)="CategoryTapped_3()">
-    <div class="category__image3">
-        <div class="text-center image__padding">
-          <p class="nomargin category__headline">
-              Burger
-          </p>
-        </div>
-    </div>
-  </div>
+
 </ion-content>

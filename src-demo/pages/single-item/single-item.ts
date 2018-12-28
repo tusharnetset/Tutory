@@ -1,32 +1,41 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Http } from '@angular/http';
+import { AuthServiceProvider } from '../../providers/apiservices/apiservices';
 
 // Service import for items
 import { ItemApi } from '../../services/service';
 
 @Component({
   selector: 'page-single-item',
-  templateUrl: 'single-item.html',
-  providers: [Http]
+  templateUrl: 'single-item.html'
 })
 export class SingleItem {
-
-  item: any;
+  getCateId: any;
+  data1:any;
+  cateDetailData: any;
 
   constructor(
-              public navCtrl: NavController,
-              private navParams:NavParams,
-              private itemApi: ItemApi
-            )
-            {
-              this.item = this.navParams.data;
-              console.log(this.item);
-            }
+    public authService:AuthServiceProvider,
+    public navCtrl: NavController,
+    private navParams:NavParams,
+    private itemApi: ItemApi
+  )
+  {
+  }
 
-  // ------------------------------------------------------------------------------------------
-  // FUNCTIONS
-  // ------------------------------------------------------------------------------------------
+  ionViewDidEnter(){
+    this.getCateId = this.navParams.get('id');
+    this.getCategoryDetail();
+  }
 
+  getCategoryDetail(){
+    this.authService.getCategoryDatailApi(this.getCateId).then((data) => {
+      console.log('responseeeeee', data);
+      this.data1 = data;
+      this.cateDetailData = this.data1.result;
+    }, err => {
+      console.log('Error', err);
+    })
+  }
 
 }

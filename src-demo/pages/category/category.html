@@ -5,21 +5,12 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
-
-  <!-- List Code -->
   <ion-list>
-
-    <ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+    <ion-item *ngFor="let item of cateData" (click)="itemTapped(item.id,item.main_heading_id)">
         <ion-avatar item-left>
-          <img src="{{ item.imgpath }}">
         </ion-avatar>
         <h2>{{ item.title }}</h2>
-        <p>{{ item.category }}</p>
     </ion-item>
-
   </ion-list>
-  <!-- End of List Code -->
-
 </ion-content>
