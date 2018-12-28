@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BoundCallbackObservable } from 'rxjs/observable/BoundCallbackObservable';
 // import { Base64 } from '@ionic-native/base64';
 
-let apiUrl = 'http://www.haryanagyan.com/api/v1/'
+let apiUrl = 'http://www.dsfsdsad.com/api/v1/'
 
 @Injectable()
 export class AuthServiceProvider {
