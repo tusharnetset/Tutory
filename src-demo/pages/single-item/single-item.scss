@@ -1,24 +1,43 @@
 page-single-item {
-  .scroll-content {
+  .image__padding {
+    padding: 15px;
+  }
+  .padding_helper {
+    margin: 10px;
+    padding: 8px;;
+    border-radius: 5px;
     background-color: $white;
   }
-  .background_image_header {
+  .category__image {
     background-image: url('../assets/img/backgrounds/background.png');
     background-repeat: no-repeat;
     background-size: cover;
+    border-radius: 5px;
   }
-  .headline {
-    color: $white;
-    float: left;
-  }
-  .item__content {
+  .section__headline {
+    font-size: 1.5rem;
+    font-weight: $bold;
+    letter-spacing: .8px;
     margin: 0;
-    color: $white;
-    float: left;
+    text-transform: uppercase;
+    color: $grey;
   }
-  p {
-    margin: 0;
+  .category__headline {
+    font-size: 2.3rem;
+    font-weight: bold;
+    text-transform: uppercase;
     color: $white;
-    float: left;
+    line-height: 1.1;
+    margin: 5px;
   }
+
+  .ion-md-rewind:before {
+    content: "\f370";
+    margin-left: 65px;
+  }
+  .ion-md-fastforward:before {
+    content: "\f2ea";
+    margin-right: 65px;
+  }
+
 }

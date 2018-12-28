@@ -7,7 +7,7 @@ import { AdMobFree, AdMobFreeBannerConfig, AdMobFreeInterstitialConfig } from '@
 // Http import
 import { HttpModule } from '@angular/http';
 
-// Page imports
+// Page imports http://www.harayanagyan.com/api/v1/services/getMainHeading
 import { CategoryPage } from '../pages/category/category';
 import { ListPage } from '../pages/list/list';
 import { HomePage } from '../pages/home/home';
@@ -20,6 +20,7 @@ import { ItemApi } from '../services/item-api.service';
 // Native imports
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { AuthServiceProvider } from '../providers/apiservices/apiservices';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ItemApi,
     HttpModule,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AdMobFree
+    AdMobFree,
+    AuthServiceProvider
   ]
 })
 export class AppModule {}

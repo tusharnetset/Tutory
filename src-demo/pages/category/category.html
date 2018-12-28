@@ -6,11 +6,13 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of cateData" (click)="itemTapped(item.id,item.main_heading_id)">
-        <ion-avatar item-left>
-        </ion-avatar>
-        <h2>{{ item.title }}</h2>
-    </ion-item>
-  </ion-list>
+  <div class="padding_helper" color="white" *ngFor="let item of cateData,let i = index;" (click)="itemTapped(item.id,item.main_heading_id,i)">
+    <div class="category__image">
+        <div class="text-center image__padding">
+          <p class="nomargin category__headline">
+            {{item.title}}
+          </p>
+        </div>
+    </div>
+  </div>
 </ion-content>

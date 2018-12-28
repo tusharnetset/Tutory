@@ -4,41 +4,24 @@
       <img class="title-image" alt="logo" height="40" src="assets/img/logo.png" >
     </ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-icon name="rewind" *ngIf="prevShow" style="float:left;margin-right: 75px;font-size: xx-large;" (click)="previousAction()"></ion-icon>
+    <ion-icon name="fastforward" *ngIf="nextShow" style="float:right;margin-left: 75px;font-size: xx-large;" (click)="nextAction()"></ion-icon>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <div class="background_image_header text-center" *ngFor="let data of cateDetailData">
-      <br>
-      <div>
-      <h6 class="headline">
-        Question:{{data.id}} :- {{ data.question }}
-      </h6>
-      <br>
-      <p>
-        Answer:- {{ data.answer }}
-      </p>
-      <br>
-      <p padding>
-        {{ data.comments }}
-      </p>
-    </div>
-  </div>
-</ion-content>
-<!-- <div class="background_image_header text-center" *ngFor="let data of cateDetailData">
-      <br>
-      <div>
-      <h6 class="headline">
-        Question:{{data.id}} :- {{ data.question }}
-      </h6>
-      <br>
-      <a class="btn__line__square__white">
-        Answer:- {{ data.answer }}
-      </a>
-      <br>
-      <div class="item__content">
-          <p padding>
-            {{ data.comments }}
+  <div class="padding_helper" color="white" *ngFor="let data of arrPush">
+    <div class="category__image">
+        <div class="image__padding">
+          <p class="nomargin category__headline">
+              प्रश्न :{{data.num}} :- {{ data.question }}
+          </p>
+          <p style="color: #fff">उत्तर :- {{ data.answer }}</p>
+          <p *ngIf="data.comments" style="color: #fff">
+              सामान्य ज्ञान:- {{ data.comments }}
           </p>
         </div>
     </div>
-  </div> -->
+  </div>
+</ion-content>
