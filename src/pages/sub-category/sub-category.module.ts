@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { SubCategory } from './sub-category';
 
 @NgModule({
-  declarations: [
-    SubCategory,
-  ],
+  // declarations: [
+  //   SubCategory,
+  // ],
   imports: [
     IonicPageModule.forChild(SubCategory),
   ],

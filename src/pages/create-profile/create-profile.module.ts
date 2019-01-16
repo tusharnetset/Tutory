@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { CreateProfile } from './create-profile';
 
 @NgModule({
-  declarations: [
-    CreateProfile,
-  ],
+  // declarations: [
+  //   CreateProfile,
+  // ],
   imports: [
     IonicPageModule.forChild(CreateProfile),
   ],

@@ -9,5 +9,13 @@
        </ion-item>
      </ion-list></ion-header>
 <ion-content>
-	<div id="map1" style="height: 100%;width: 100%;"></div>
+  <div id="map1" style="height: 100%;width: 100%;">
+      <ion-select [(ngModel)]="mapTypeId" (ngModelChange)="onChangeObj($event)" style="background: #fff; max-width: 120px; margin: 10px;" >
+          <ion-option value="ROADMAP">ROADMAP</ion-option>
+          <ion-option value="SATELLITE">SATELLITE</ion-option>
+          <ion-option value="HYBRID">HYBRID</ion-option>
+          <ion-option value="TERRAIN">TERRAIN</ion-option>
+          <ion-option value="NONE">NONE</ion-option>
+      </ion-select>
+  </div>
 </ion-content>

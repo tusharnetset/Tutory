@@ -5,6 +5,7 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import * as moment from 'moment-timezone';
 import 'moment-timezone';
 import { Network } from '@ionic-native/network';
+import { TutorservicesProvider } from './../../providers/tutorservices/tutorservices';
 
 @Component({
   selector: 'page-contact-us',
@@ -15,8 +16,12 @@ export class ContactUs {
 	alert:any;
 	userType:any;
 	userId:any;
-	token:any;
-  constructor(public zone:NgZone,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
+  token:any;
+  data1:any;
+  sendCategorydata: { user_id: string; login_token: string; };
+  content: any;
+  contactNumber: any;
+  constructor(public tutorservices:TutorservicesProvider, public zone:NgZone,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
   }
 
   ionViewDidLoad() {
@@ -25,6 +30,7 @@ export class ContactUs {
       this.userId = data.id;
       this.token = data.login_token;
     })
+    this.contactInfo();
     this.connectSubscription = this.network.onConnect().subscribe(() => {
     });
     this.platform.registerBackButtonAction(() => {
@@ -36,13 +42,28 @@ export class ContactUs {
           this.alert = null;
         }else{
           this.showAlert();
-         }
+        }
       }
     })
   }
 
   ionViewDidLeave(){
     this.connectSubscription.unsubscribe();
+  }
+
+  contactInfo(){
+    this.sendCategorydata = {
+      user_id : '0',
+      login_token:'0'
+    }
+    this.tutorservices.getCategorySubCategory(this.sendCategorydata).then((result) => {
+      console.log(result);
+      this.data1 = result;
+      this.content = this.data1.data;
+      console.log('this.contentthis.contentthis.content',this.content);
+    }, (err) => {
+      console.log(err);
+    })
   }
 
   	showAlert() {

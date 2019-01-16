@@ -1,11 +1,11 @@
 <ion-header class="with_back">
   <ion-navbar>
     <ion-title>Address</ion-title>
-    <!--<ion-buttons right>
-	    <button ion-button (click)="dismissCan()">
-	         <ion-icon><img src="img/close_icon.png" alt="" /></ion-icon>
+    <ion-buttons right>
+	    <button ion-button (click)="doneClick()">
+	        <ion-icon><img src="img/check_icon.png" alt="" /></ion-icon>
 	    </button>
-	  </ion-buttons> -->
+	  </ion-buttons>
   </ion-navbar>
   <ion-searchbar id="txtHome1" [(ngModel)]="autocomplete.query" (keyup)="updateSearch()" placeholder="Search here" ></ion-searchbar>
   <ion-list>
@@ -15,5 +15,15 @@
   </ion-list>
 </ion-header>
 <ion-content>
-	<div id="map" style="height: 100%;width: 100%;"></div>
+  <div id="map" style="height: 100%;width: 100%;">
+
+    <ion-select [(ngModel)]="mapTypeId" (ngModelChange)="onChangeObj($event)" style="background: #fff; max-width: 120px; margin: 10px;" >
+        <ion-option value="ROADMAP">ROADMAP</ion-option>
+        <ion-option value="SATELLITE">SATELLITE</ion-option>
+        <ion-option value="HYBRID">HYBRID</ion-option>
+        <ion-option value="TERRAIN">TERRAIN</ion-option>
+        <ion-option value="NONE">NONE</ion-option>
+    </ion-select>
+
+  </div>
 </ion-content>

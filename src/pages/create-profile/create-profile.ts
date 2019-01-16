@@ -390,7 +390,6 @@ export class CreateProfile {
           console.log(targetPath, url, options);
           console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa gyaaa",data);
           this.data1 = JSON.parse(data.response);
-          console.log("yhi hai wo randua jo ",this.data1.data);
           if(this.data1.status == 200){
             this.events.unsubscribe('user:created');
             this.presentToast(this.data1.message);
@@ -460,7 +459,7 @@ export class CreateProfile {
         })
       }
     }else{
-     this.validateAllFormFields(this.authForm)
+      this.validateAllFormFields(this.authForm)
     }
   }
 
@@ -474,8 +473,6 @@ export class CreateProfile {
       }
     });
   }
-
-
 
   presentToast(message)
   {

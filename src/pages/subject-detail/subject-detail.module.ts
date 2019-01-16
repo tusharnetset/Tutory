@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { SubjectDetail } from './subject-detail';
 
 @NgModule({
-  declarations: [
-    SubjectDetail,
-  ],
+  // declarations: [
+  //   SubjectDetail,
+  // ],
   imports: [
     IonicPageModule.forChild(SubjectDetail),
   ],

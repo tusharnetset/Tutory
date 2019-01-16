@@ -43,6 +43,7 @@ export class SettingsStudentPage {
   conditions: any;
   privacy_policy: any;
   aboutU: any;
+  faqStudent: any;
 
   constructor(public app: App, public viewCtrl:ViewController, public modalCtrl:ModalController, public studentservices:StudentservicesProvider,public toastCtrl:ToastController,public spinner:NgxSpinnerService,public authservices:AuthservicesProvider,public network:Network,public alertCtrl:AlertController,public nativeStorage:NativeStorage,public navCtrl: NavController) {
 
@@ -84,21 +85,37 @@ export class SettingsStudentPage {
       this.aboutU = this.data1.data.about_us;
       this.conditions = this.data1.data.conditions;
       this.privacy_policy = this.data1.data.privacy_policy;
+      this.faqStudent = this.data1.data.faq_students
     }, (err) => {
       console.log(err);
     })
   }
   aboutUs(){
-    let profileModal = this.modalCtrl.create(AboutUsPage,{about:this.aboutU});
-    profileModal.present();
+    // let profileModal = this.modalCtrl.create(AboutUsPage,{about:this.aboutU});
+    // profileModal.present();
+     let alert = this.alertCtrl.create({
+      title: 'About Us',
+      cssClass: 'my-class',
+      subTitle: this.aboutU,
+      buttons: ['Ok']
+    });
+    alert.present();
   }
   faq(){
-    let profileModal = this.modalCtrl.create(FaqPage);
-    profileModal.present();
+    // let profileModal = this.modalCtrl.create(FaqPage);
+    // profileModal.present();
+    this.navCtrl.push(FaqPage,{data:this.faqStudent,type:'student'});
   }
   termCondition(){
-    let profileModal = this.modalCtrl.create(TermConditonPage,{term:this.conditions});
-    profileModal.present();
+    // let profileModal = this.modalCtrl.create(TermConditonPage,{term:this.conditions});
+    // profileModal.present();
+    let alert = this.alertCtrl.create({
+      title: 'Terms and Conditions',
+      cssClass: 'my-class',
+      subTitle: this.conditions,
+      buttons: ['Ok']
+    });
+    alert.present();
   }
 
   getNotificationCounts(){
@@ -234,7 +251,7 @@ export class SettingsStudentPage {
                 this.presentToast(this.data1.message);
               }
             }, (err) => {
-               this.spinner.hide();
+              this.spinner.hide();
               console.log(err);
             })
           }

@@ -1,6 +1,7 @@
 <ion-header class="with_back">
     <ion-navbar>
-   		<ion-title>Subscription</ion-title>
+       <ion-title>Subscription</ion-title>
+
     </ion-navbar>
     <div class="blue_bg">
   		<ion-row>
@@ -21,11 +22,12 @@
 		<ion-list radio-group no-lines [(ngModel)]="currentPlanId" *ngFor="let subscriptionList of getplanList;let i = index" >
 		  	<ion-item *ngIf="subscriptionList.monthly_rate != '0'">
 					<ion-label>{{subscriptionList.title}} <span class="price bold_font">{{subscriptionList.total}} Riyals</span><span class="per_month">({{subscriptionList.monthly_rate}} Riyals/month)</span></ion-label>
-					<ion-radio [value]="subscriptionList.id"  (ionSelect)="purchaseSubScription(subscriptionList.id,subscriptionList.expire_after,getCurrentPlan?.id)"></ion-radio>
+					<ion-radio [value]="subscriptionList.id"  (ionSelect)="purchaseSubScription(subscriptionList.id,subscriptionList.expire_after,getCurrentPlan?.id, getCurrentPlan?.product_id)"></ion-radio>
 					<!-- <p *ngIf="subscriptionList.id == bestOffer" class="best_offer"><span item-end class="gradient_bg">BEST OFFER</span></p> -->
 				</ion-item>
         <p *ngIf="subscriptionList.id == bestOffer" class="best_offer"><span item-end class="gradient_bg">BEST OFFER</span></p>
 		</ion-list>
-		<button class="btn btn-text" ion-button full (click)="subscribeNow()">Subscribe Now</button>
+    <button class="btn btn-text" ion-button full (click)="subscribeNow()">Subscribe Now</button>
+    <!-- <button class="btn btn-text" ion-button full (click)="subscriptionDetail()">Subscription Detail</button> -->
 	</div>
 </ion-content>

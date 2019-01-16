@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { TutorProfileview } from './tutor-profileview';
 
 @NgModule({
-  declarations: [
-    TutorProfileview,
-  ],
+  // declarations: [
+  //   TutorProfileview,
+  // ],
   imports: [
     IonicPageModule.forChild(TutorProfileview),
   ],

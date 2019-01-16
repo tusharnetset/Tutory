@@ -273,7 +273,7 @@ export class TutorProfileview {
         this.socialSharing.share("Check this item:  tutoryapp://items/" + this.tId, this.getTutordata.first_name,this.screenShotSave)
         .then(() => {
           if(this.userIdSkip){
-            this.presentToast("Please login your account first for share tutor profile");
+            this.presentToast("Please create an account to access and update this section of your profile.");
             return;
           }
           this.recommenddata = {

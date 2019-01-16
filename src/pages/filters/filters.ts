@@ -1,5 +1,5 @@
 import { Component ,NgZone} from '@angular/core';
-import { NavController,NavParams,ToastController,AlertController ,Platform, ViewController } from 'ionic-angular';
+import { NavController,NavParams,ToastController,AlertController ,Platform, ViewController, Toast } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators,FormControl } from "@angular/forms";
 import { TutorList } from '../tutor-list/tutor-list';
 import { NativeStorage } from '@ionic-native/native-storage';
@@ -19,6 +19,7 @@ import { MapsAPILoader } from '@agm/core';
   templateUrl: 'filters.html',
 })
 export class Filters {
+  toast: Toast;
   userId:any;
   token:any;
   alert:any;
@@ -54,6 +55,8 @@ export class Filters {
   addFilterdata: { user_id: any; login_token: any; latitude: any; longitude: any; city: any; category_id: any; subcategory_id: any; level_id: any; price: any; rating: any; };
   levelSel: any;
   showLevel:boolean = true;
+  latStorage: any;
+  longStorage: any;
 
   constructor(public authServices:AuthservicesProvider,public viewCtrl:ViewController,public mapsAPILoader:MapsAPILoader,public zone:NgZone,public studentservices:StudentservicesProvider,public fb:FormBuilder,public tutorservices:TutorservicesProvider, public toastCtrl:ToastController, public spinner:NgxSpinnerService,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public navCtrl: NavController) {
     this.authForm = fb.group({
@@ -78,6 +81,12 @@ export class Filters {
       this.lng = data.longitude;
       this.getCity();
       this.categories();
+    })
+    this.nativeStorage.getItem('locationLat').then((data) => {
+      this.latStorage = data;
+    })
+    this.nativeStorage.getItem('locationLng').then((data) => {
+      this.longStorage = data;
     })
     this.nativeStorage.getItem('skipData').then((data) => {
       this.userIdSkip = data.user_id;
@@ -206,7 +215,7 @@ export class Filters {
         user_id : this.userIdSkip,
         login_token:this.loginTokenSkip
       }
-    }else{
+    } else{
       this.sendCategorydata = {
         user_id : this.userId,
         login_token:this.token
@@ -278,15 +287,21 @@ export class Filters {
 
   submitForm(valid){
 
-    if(this.latitude == "" || this.latitude == undefined || this.latitude == null || this.longitude == "" || this.longitude == undefined || this.longitude == null){
+    if(this.lat == "" || this.lat == undefined || this.lat == null){
+      this.lati = this.latStorage;
+      this.lngi = this.longStorage;
+    }else{
       this.lati = this.lat;
       this.lngi = this.lng;
-    }else{
-      this.lati = this.latitude;
-      this.lngi = this.longitude;
     }
     if(valid){
-
+      if(this.lati){
+        this.lati = this.lat;
+        this.lngi = this.lng;
+      }else{
+        this.lati = 0;
+        this.lngi = 0;
+      }
       if(this.levelSel == 0){
         this.levelid = 0;
         this.catI = this.catSelect;
@@ -329,7 +344,9 @@ export class Filters {
           rating:this.authForm.value.rating
         }
       }
+      this.spinner.show();
       this.studentservices.filterSaveApi(this.addFilterdata).then((result) => {
+        this.spinner.hide();
         console.log(result);
         this.data1 = result;
         if(this.data1.status == 200){
@@ -337,8 +354,6 @@ export class Filters {
             const index = this.viewCtrl.index;
             this.navCtrl.remove(index);
           });
-
-          // this.navCtrl.push(TutorList,{categoryId:this.catI,subCateId:this.subCatI,levelId:this.levelid});
         }else{
           this.presentToast(this.data1.message);
         }
@@ -371,6 +386,7 @@ export class Filters {
 
   presentToast(message)
   {
+
     console.log(message);
     let toast = this.toastCtrl.create({
       message: message,

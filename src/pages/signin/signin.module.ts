@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { Signin } from './signin';
 
 @NgModule({
-  declarations: [
-    Signin,
-  ],
+  // declarations: [
+  //   Signin,
+  // ],
   imports: [
     IonicPageModule.forChild(Signin),
   ],

@@ -5,7 +5,8 @@ page-subscription {
 		{
 			background:#275f87;
 			padding: 10px 5px;
-			color:#fff;
+      color:#fff;
+      min-height: 68px;
 			p
 			{
 				margin: 0;
@@ -15,7 +16,7 @@ page-subscription {
 			{
 				margin: 0;
 				text-transform: uppercase;
-				font-size: 2rem;
+        font-size: 1.6rem;
 			}
 			.text-right
 			{

@@ -17,7 +17,6 @@ import { TeacherCreateProfile } from '../teacher-create-profile/teacher-create-p
 import { TutorialPage } from '../tutorial/tutorial';
 import { TeacherTutorialPage } from '../teacher-tutorial/teacher-tutorial';
 import { ConditionalExpr } from '@angular/compiler';
-import Swal from 'sweetalert2'
 
 @Component({
   selector: 'page-signin',

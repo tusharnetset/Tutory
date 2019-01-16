@@ -15,7 +15,6 @@ import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-na
 import Swal from 'sweetalert2';
 import { AuthservicesProvider } from './../../providers/authservices/authservices';
 import { SignupType } from '../signup-type/signup-type';
-
 @Component({
   selector: 'page-teacher-appointment-detail-submited',
   templateUrl: 'teacher-appointment-detail-submited.html',
@@ -43,6 +42,8 @@ export class TeacherAppointmentDetailSubmited {
   dateF: string;
   localISOTime: string;
   logoutDataSend: { user_id: any; login_token: any; };
+  currentDate:any;
+  TimeF: string;
 
   constructor(public app:App, public authservices:AuthservicesProvider, private launchNavigator: LaunchNavigator,public sms:SMS, public call:CallNumber, public alertCtrl:AlertController, public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public platform:Platform, public toastCtrl:ToastController, public spinner: NgxSpinnerService,public tutorservices:TutorservicesProvider, public navCtrl: NavController, public modalCtrl: ModalController) {
 
@@ -71,7 +72,7 @@ export class TeacherAppointmentDetailSubmited {
           this.alert = null;
         }else{
           this.showAlert();
-         }
+        }
       }
     })
   }
@@ -101,6 +102,9 @@ export class TeacherAppointmentDetailSubmited {
       ]
     });
     this.alert.present();
+  }
+  greatRaper(){
+
   }
 
   getAppointmentDetail(){
@@ -181,7 +185,18 @@ export class TeacherAppointmentDetailSubmited {
     this.alert.present();
   }
 
-  actionClickSTart(appointmentId,action){
+  actionClickSTart(appointmentId, action, startTime, date){
+    console.log('startTime', startTime);
+    console.log("date", date);
+
+    this.currentDate  = moment(this.localISOTime).format("YYYY-MM-DD");
+    console.log('this.currentDate', this.currentDate);
+    this.appDate = moment(date).format("YYYY-MM-DD");
+    console.log(' this.appDate', this.appDate);
+    this.TimeF  = moment(this.localISOTime).format("HH:mm");
+    var hoStartTime = moment(startTime, ["h:mm A"])
+    var innerTextFrTime1 = hoStartTime.format("HH:mm");
+
     this.alert = this.alertCtrl.create({
       title: 'Start appointment',
       message: 'Are you sure you want to start this appointment?',
@@ -194,7 +209,7 @@ export class TeacherAppointmentDetailSubmited {
           }
         },
         {
-          text: 'Accept',
+          text: 'Yes',
           handler: () => {
             this.spinner.show();
             this.actionData = {
@@ -295,12 +310,12 @@ export class TeacherAppointmentDetailSubmited {
     let modal = this.modalCtrl.create(RejectReasonPopup,{appointment_id:id,action:action,popup:'teacher_cancel'});
     modal.onDidDismiss(data => {
       if(data){
+        console.log(data);
         this.apId = data;
         this.getAppointmentDetail();
       }else{
         console.log("cross");
       }
-
     })
     modal.present();
   }
@@ -308,7 +323,6 @@ export class TeacherAppointmentDetailSubmited {
   viewMap(lat,lng){
     this.latLng  = lat.concat(','+lng);
     let options: LaunchNavigatorOptions = {
-
     }
     this.launchNavigator.navigate(this.latLng,options).then(()=>{
       console.log("launched successfully");

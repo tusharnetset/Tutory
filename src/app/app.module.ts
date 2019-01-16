@@ -31,11 +31,6 @@ import { MyProfile } from '../pages/my-profile/my-profile';
 import { EditProfile } from '../pages/edit-profile/edit-profile';
 import { MyAppointments } from '../pages/my-appointments/my-appointments';
 import { AppointmentDetailSubmited } from '../pages/appointment-detail-submited/appointment-detail-submited';
-import { AppointmentDetailRejected } from '../pages/appointment-detail-rejected/appointment-detail-rejected';
-import { AppointmentDetailProgress } from '../pages/appointment-detail-progress/appointment-detail-progress';
-import { AppointmentDetailAccepted } from '../pages/appointment-detail-accepted/appointment-detail-accepted';
-import { AppointmentDetailCompleted } from '../pages/appointment-detail-completed/appointment-detail-completed';
-import { AppointmentDetailCompletedFeedback } from '../pages/appointment-detail-completed-feedback/appointment-detail-completed-feedback';
 import { RatingPopup } from '../pages/rating-popup/rating-popup';
 import { Favorites } from '../pages/favorites/favorites';
 import { Notifications } from '../pages/notifications/notifications';
@@ -55,9 +50,6 @@ import { TeacherMyProfile } from '../pages/teacher-my-profile/teacher-my-profile
 import { TeacherEditProfile } from '../pages/teacher-edit-profile/teacher-edit-profile';
 import { Reviews } from '../pages/reviews/reviews';
 import { TeacherMyAppointments } from '../pages/teacher-my-appointments/teacher-my-appointments';
-import { TeacherAppointmentDetailProgress } from '../pages/teacher-appointment-detail-progress/teacher-appointment-detail-progress';
-import { TeacherAppointmentDetailAccepted } from '../pages/teacher-appointment-detail-accepted/teacher-appointment-detail-accepted';
-import { TeacherAppointmentDetailCompleted } from '../pages/teacher-appointment-detail-completed/teacher-appointment-detail-completed';
 import { EndPopup } from '../pages/end-popup/end-popup';
 import { Subscription } from '../pages/subscription/subscription';
 import { ScheduleAvailability } from '../pages/schedule-availability/schedule-availability';
@@ -73,7 +65,10 @@ import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { AboutUsPage } from '../pages/about-us/about-us';
 import { TermConditonPage } from '../pages/term-conditon/term-conditon';
 import { KeepHtmlPipe } from '../pipes/keep-html/keep-html';
+import { TruncatePipe } from '../pipes/truncate/truncate';
+
 import { FaqPage } from '../pages/faq/faq';
+import { SubscriptionDetailPage } from '../pages/subscription-detail/subscription-detail';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -106,8 +101,6 @@ import { TimeAgoPipe} from 'time-ago-pipe';
 import { GoogleMaps,GoogleMap,GoogleMapsEvent,GoogleMapOptions,CameraPosition,MarkerOptions,Marker,Environment } from '@ionic-native/google-maps';
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { Deeplinks } from '@ionic-native/deeplinks';
-import {Firebase} from '@ionic-native/firebase';
-import { AngularFireModule } from "angularfire2";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBYkGLgNb1T-gktBa6TpgpS-mGs1v8e5Tg",
@@ -145,11 +138,6 @@ export const firebaseConfig = {
     EditProfile,
     MyAppointments,
     AppointmentDetailSubmited,
-    AppointmentDetailRejected,
-    AppointmentDetailProgress,
-    AppointmentDetailAccepted,
-    AppointmentDetailCompleted,
-    AppointmentDetailCompletedFeedback,
     RatingPopup,
     Favorites,
     Notifications,
@@ -169,10 +157,7 @@ export const firebaseConfig = {
     TeacherEditProfile,
     Reviews,
     TeacherMyAppointments,
-    TeacherAppointmentDetailProgress,
     EndPopup,
-    TeacherAppointmentDetailAccepted,
-    TeacherAppointmentDetailCompleted,
     Subscription,
     ScheduleAvailability,
     ViewAvailability,
@@ -189,15 +174,16 @@ export const firebaseConfig = {
     AboutUsPage,
     TermConditonPage,
     KeepHtmlPipe,
-    FaqPage
+    TruncatePipe,
+    FaqPage,
+    SubscriptionDetailPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     Ionic2RatingModule,
-    AngularFireModule.initializeApp(firebaseConfig),
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCiXauDMJmlL0CxM_9fpe_Dmr8hE_0DcS8",
+      apiKey: "AIzaSyB5K8WJMTe5z7DTSQ4pcIDjsSOLDuxORIM",
       libraries: ["places"]
     }),
     HttpClientModule,
@@ -236,11 +222,6 @@ export const firebaseConfig = {
     EditProfile,
     MyAppointments,
     AppointmentDetailSubmited,
-    AppointmentDetailRejected,
-    AppointmentDetailProgress,
-    AppointmentDetailAccepted,
-    AppointmentDetailCompleted,
-    AppointmentDetailCompletedFeedback,
     RatingPopup,
     Favorites,
     Notifications,
@@ -260,10 +241,7 @@ export const firebaseConfig = {
     TeacherEditProfile,
     Reviews,
     TeacherMyAppointments,
-    TeacherAppointmentDetailProgress,
     EndPopup,
-    TeacherAppointmentDetailAccepted,
-    TeacherAppointmentDetailCompleted,
     Subscription,
     ScheduleAvailability,
     ViewAvailability,
@@ -276,7 +254,8 @@ export const firebaseConfig = {
     PrivacyPolicyPage,
     AboutUsPage,
     TermConditonPage,
-    FaqPage
+    FaqPage,
+    SubscriptionDetailPage
   ],
   providers: [
     StatusBar,
@@ -305,8 +284,7 @@ export const firebaseConfig = {
     LaunchNavigator,
     GoogleMaps,
     NativeGeocoder,
-    Deeplinks,
-    Firebase
+    Deeplinks
   ]
 })
 export class AppModule {}

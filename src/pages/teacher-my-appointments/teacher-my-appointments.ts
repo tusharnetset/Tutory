@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, Platform, AlertController, ModalController, App} from 'ionic-angular';
 import { TeacherAppointmentDetailSubmited } from '../teacher-appointment-detail-submited/teacher-appointment-detail-submited';
-import { TeacherAppointmentDetailProgress } from '../teacher-appointment-detail-progress/teacher-appointment-detail-progress';
-import { TeacherAppointmentDetailAccepted } from '../teacher-appointment-detail-accepted/teacher-appointment-detail-accepted';
-import { TeacherAppointmentDetailCompleted } from '../teacher-appointment-detail-completed/teacher-appointment-detail-completed';
 import { Notifications } from '../notifications/notifications';
 import { NotificationsTeacherPage } from '../notifications-teacher/notifications-teacher';
 import { TutorservicesProvider } from './../../providers/tutorservices/tutorservices';
@@ -44,6 +41,7 @@ export class TeacherMyAppointments {
   myAppoint:any;
   sheduleSh:boolean = false;
   comSh:boolean = false;
+  cancelD: boolean = false;
   actionData : {
     tutor_id : any;
     login_token:any;
@@ -52,9 +50,10 @@ export class TeacherMyAppointments {
   }
 
   public appointments: string = 'scheduled';
-  public categories: Array<string> = ['scheduled', 'completed']
+  public categories: Array<string> = ['scheduled', 'completed', 'cancelled']
   getBadgeCount:any;
   logoutDataSend: { user_id: any; login_token: any; };
+  cancelledData: any;
 
   constructor(public app:App, public authservices:AuthservicesProvider, public modalCtrl:ModalController,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public tutorservices:TutorservicesProvider,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
   }
@@ -90,6 +89,18 @@ export class TeacherMyAppointments {
       }
     })
   }
+
+
+  ionViewDidLeave(){
+    this.connectSubscription.unsubscribe();
+    let tabs = document.querySelectorAll('.show-tabbar');
+      if (tabs !== null) {
+        Object.keys(tabs).map((key) => {
+          tabs[key].style.display = 'flex';
+        });
+      }
+  }
+
 
   showAlert() {
     this.alert = this.alertCtrl.create({
@@ -148,6 +159,7 @@ export class TeacherMyAppointments {
         this.myAppoint = this.data1.data;
         this.sheduledData = this.myAppoint.scheduled;
         this.completeAppoint =  this.myAppoint.completed;
+        this.cancelledData = this.myAppoint.cancelled;
         if(this.sheduledData.length == 0){
           this.sheduleSh = true;
         }else{
@@ -157,6 +169,11 @@ export class TeacherMyAppointments {
           this.comSh = true;
         }else{
           this.comSh = false;
+        }
+        if(this.cancelledData.length == 0){
+          this.cancelD = true;
+        }else{
+          this.cancelD = false;
         }
       }else{
         if(this.data1.message == 'Wrong token entered!.Please try again.'){
@@ -265,15 +282,6 @@ export class TeacherMyAppointments {
 
   goToDetail(appointmentId){
     this.navCtrl.push(TeacherAppointmentDetailSubmited,{appointment_id:appointmentId});
-  }
-  goToDetailprogress(){
-    this.navCtrl.push(TeacherAppointmentDetailProgress);
-  }
-  goToDetailAccepted(){
-    this.navCtrl.push(TeacherAppointmentDetailAccepted);
-  }
-  goToDetailCompleted(){
-  	this.navCtrl.push(TeacherAppointmentDetailCompleted);
   }
 
   goToNotifications(){

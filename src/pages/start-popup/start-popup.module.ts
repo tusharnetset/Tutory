@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { StartPopup } from './start-popup';
 
 @NgModule({
-  declarations: [
-    StartPopup,
-  ],
+  // declarations: [
+  //   StartPopup,
+  // ],
   imports: [
     IonicPageModule.forChild(StartPopup),
   ],

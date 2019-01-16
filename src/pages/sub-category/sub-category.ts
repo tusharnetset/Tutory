@@ -9,6 +9,8 @@ import 'moment-timezone';
 import { Network } from '@ionic-native/network';
 import { SignupType } from '../signup-type/signup-type';
 import { SubjectDetail } from '../subject-detail/subject-detail';
+import { AnimationFrameScheduler } from 'rxjs/scheduler/AnimationFrameScheduler';
+import { TutorList } from '../tutor-list/tutor-list';
 
 @Component({
   selector: 'page-sub-category',
@@ -35,6 +37,8 @@ export class SubCategory {
   userIdSkip:any;
   loginTokenSkip:any;
   levelPresent:any;
+  getDetaildata: { user_id: any; login_token: any; category_id: any; subcategory_id: any; };
+  getDetailData: any;
 
   constructor(public alertCtrl:AlertController,public platform:Platform,public StudentServices:StudentservicesProvider,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
   }
@@ -100,6 +104,7 @@ export class SubCategory {
   }
 
   getSubCategories(){
+    this.spinner.show();
     if(this.userIdSkip){
       this.sendCategorydata = {
         user_id : this.userIdSkip,
@@ -112,6 +117,7 @@ export class SubCategory {
       }
     }
     this.StudentServices.getCategorySubCategory(this.sendCategorydata).then((result) => {
+      this.spinner.hide();
       console.log(result);
       this.data1 = result;
       this.cateD = this.data1.data;
@@ -129,6 +135,7 @@ export class SubCategory {
         this.presentToast(this.data1.message);
       }
     }, (err) => {
+      this.spinner.hide();
       console.log(err);
     })
   }
@@ -136,11 +143,47 @@ export class SubCategory {
   subCateSelect(id,name){
     this.sendSubId = id;
     this.subName = name;
-    console.log('this.catId',this.catId,'subCateId',this.sendSubId)
     if(this.sendSubId){
       if(this.levelPresent == 0){
         this.levelId = 0;
-        this.navCtrl.push(SubjectDetail,{categoryId: this.catId,subCateId:this.sendSubId,subCateName:this.subName,catName:this.catName,levelId:this.levelId});
+          if(this.userIdSkip){
+            this.getDetaildata = {
+              user_id : this.userIdSkip,
+              login_token:this.loginTokenSkip,
+              category_id:this.catId,
+              subcategory_id:this.sendSubId
+            }
+          }else{
+            this.getDetaildata = {
+              user_id : this.userId,
+              login_token:this.token,
+              category_id:this.catId,
+              subcategory_id:this.sendSubId
+            }
+          }
+          this.spinner.show();
+          this.StudentServices.getSubDetailApi(this.getDetaildata).then((result) => {
+            console.log(result);
+            this.spinner.hide();
+            this.data1 = result;
+            this.getDetailData = this.data1.data;
+            if(this.data1.status == 200){
+              if(this.getDetailData.image != 'NA'){
+                this.navCtrl.push(SubjectDetail,{categoryId: this.catId,subCateId:this.sendSubId,subCateName:this.subName,catName:this.catName,levelId:this.levelId});
+              }else{
+                this.navCtrl.push(TutorList,{
+                  categoryId :this.catId,
+                  subCateId : this.sendSubId,
+                  levelId:this.levelId
+                });
+              }
+            }else{
+              this.presentToast(this.data1.message);
+            }
+          }, (err) => {
+            this.spinner.hide();
+            console.log(err);
+          })
       }else{
         this.navCtrl.push(SubCategoryLevel,{categoryId: this.catId,subCateId:this.sendSubId,subCateName:this.subName,cateName:this.catName});
       }
@@ -148,20 +191,6 @@ export class SubCategory {
       this.presentToast("Please select subcategory");
     }
   }
-
-  // goToLevel(){
-  //   console.log('this.catId',this.catId,'subCateId',this.sendSubId)
-  //   if(this.sendSubId){
-  //     if(this.levelPresent == 0){
-  //       this.levelId = 0;
-  //       this.navCtrl.push(SubjectDetail,{categoryId: this.catId,subCateId:this.sendSubId,subCateName:this.subName,catName:this.catName,levelId:this.levelId});
-  //     }else{
-  //       this.navCtrl.push(SubCategoryLevel,{categoryId: this.catId,subCateId:this.sendSubId,subCateName:this.subName,cateName:this.catName});
-  //     }
-  //   }else{
-  //     this.presentToast("Please select subcategory");
-  //   }
-  // }
 
   presentToast(message)
   {

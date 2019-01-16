@@ -113,6 +113,13 @@ export class RepeatAppointmentPage {
   toTime1: any;
   sTime: any;
   endT: any;
+  toTimeSendMinutes: any;
+  fromTimeSendMinutes: any;
+  currentDate: string;
+  localISOTime: string;
+  getFrmTimeObj: { hour: any; minute: any; };
+  newAttri2: { from_time: string; to_time: string; };
+  slotArr2 = [];
 
   constructor(public events:Events, public app:App,public tutorservices:TutorservicesProvider,public httpBaseUrl:ConfigProvider,public fb:FormBuilder,public studentServices:StudentservicesProvider,public modalCtrl: ModalController,public zone:NgZone,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
     this.baseUrl = this.httpBaseUrl.baseUrl;
@@ -136,6 +143,9 @@ export class RepeatAppointmentPage {
       this.suggestId = user.id;
       this.authForm.get('other_location').setValue(user.address);
     });
+
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    this.localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
 
   }
 
@@ -300,17 +310,40 @@ export class RepeatAppointmentPage {
 
 
   fromTime(event){
-    console.log("eventevent",event);
+    this.currentDate = moment(this.localISOTime).format("YYYY-MM-DD");
+    console.log('this.currentDate',this.currentDate);
     this.frTime = event.hour;
+    this.fromTimeSendMinutes = event.minute;
+    this.getFrmTimeObj = {
+      hour:event.hour+1,
+      minute:event.minute
+    }
+    var str = new String(this.getFrmTimeObj.hour);
+    var str2 = new String(this.getFrmTimeObj.minute);
+
+    if(str.length == 1){
+      this.getFrmTimeObj = {
+        hour:'0'+this.getFrmTimeObj.hour,
+        minute:this.getFrmTimeObj.minute
+      }
+    }
+    if(str2.length == 1){
+      this.getFrmTimeObj = {
+        hour:this.getFrmTimeObj.hour,
+        minute:'0'+this.getFrmTimeObj.minute
+      }
+    }
+    let getDate = this.currentDate+'T'+this.getFrmTimeObj.hour+':'+this.getFrmTimeObj.minute+':00'+'.000Z'
+    // this.authForm.get('end_time').setValue(getDate);
     if(this.toTimeVal) {
       console.log("this.toTimeVal", this.toTimeVal);
       if(this.toTimeVal < this.frTime) {
-        this.presentToast('From time must be less than to time.')
+        this.presentToast('From time must be less than to time.');
         this.authForm.value.start_time = "";
       } else {
         this.frTime = this.frTime;
       }
-    } else {
+    }else {
       this.frTime = this.frTime;
     }
   }
@@ -318,33 +351,31 @@ export class RepeatAppointmentPage {
   toTime(event){
     this.slotArr = [];
     this.toTimeVal = event.hour;
+    this.toTimeSendMinutes = event.minute;
     if(this.frTime){
       if(this.toTimeVal > this.frTime) {
-        var from = parseInt(this.frTime);
-        var to = parseInt(this.toTimeVal);
-        var to_time = from;
+        // var from = parseInt(this.frTime);
+        // var to = parseInt(this.toTimeVal);
+        // var to_time = from;
 
-        for(var i = from; i < to; i++) {
-          from = to_time;
-          to_time = from + 1;
+        // for(var i=from; i < to; i++) {
+          // from = to_time;
+          // to_time = from + 1;
           this.newAttri = {
-            from_time: from,
-            to_time:to_time
+            from_time: this.frTime+':'+this.fromTimeSendMinutes,
+            to_time:this.toTimeVal+':'+this.toTimeSendMinutes
           };
           console.log('this.newAttri',this.newAttri)
           this.slotArr.push(this.newAttri);
-
-        }
+        // }
         console.log("this.slotArr",this.slotArr)
       }else{
         this.presentToast('Please select time greater than from time');
         this.authForm.value.end_time = "";
-        return;
       }
     }else {
       this.presentToast('Please select from time first');
       this.authForm.value.end_time = "";
-      return;
     }
   }
 
@@ -384,7 +415,7 @@ export class RepeatAppointmentPage {
   }
 
   submitForm(val,valid){
-    this.slotArr = [];
+    this.slotArr2 = [];
     this.serviceArrPush = [];
     if(this.levePresent == 0){
       this.levelSelectId = 0;
@@ -401,12 +432,39 @@ export class RepeatAppointmentPage {
     var t = this.authForm.value.end_time;
     this.endT = t.substring(0, t.indexOf(':'));
 
-    this.newAttri = {
-      from_time: this.sTime,
-      to_time:this.endT
-    };
-    console.log('this.newAttri',this.newAttri);
-    this.slotArr.push(this.newAttri);
+    for(var j in this.slotArr) {
+      var from = parseInt(this.slotArr[j].from_time.split(':')[0]);
+      var to = parseInt(this.slotArr[j].to_time.split(':')[0]);
+      var to_time = from;
+      var endMins = '';
+      if(this.slotArr[j].from_time.split(':')[1] == '0'){
+        endMins = ':00';
+      }
+      else{
+        endMins = ':30';
+      }
+
+      for (var i = from; i < to; i++) {
+        from = to_time;
+        to_time = from + 1;
+        this.newAttri2 = {
+          from_time: from+endMins,
+          to_time: to_time+endMins
+        };
+        this.slotArr2.push(this.newAttri2);
+      }
+      if(this.newAttri.from_time.split(':')[1] != this.newAttri.to_time.split(':')[1]){
+        if(this.newAttri.from_time.split(':')[1] == '0' && this.newAttri.to_time.split(':')[1] == '30') {
+          var lastHour = this.slotArr2[this.slotArr2.length-1].to_time.split(':')[0];
+          let lastFrom = this.slotArr2[this.slotArr2.length-1].to_time;
+            this.slotArr2.push({from_time: lastFrom, to_time: lastHour+':30'});
+        }
+        else{
+          var lastHour2 = this.slotArr2[this.slotArr2.length-1].to_time.split(':')[0];
+          this.slotArr2[this.slotArr2.length-1].to_time = lastHour2 + ':00';
+        }
+      }
+    }
 
     if(valid){
       console.log(this.toTimeVal,this.frTime);

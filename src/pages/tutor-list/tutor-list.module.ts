@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { TutorList } from './tutor-list';
 
 @NgModule({
-  declarations: [
-    TutorList,
-  ],
+  // declarations: [
+  //   TutorList,
+  // ],
   imports: [
     IonicPageModule.forChild(TutorList),
   ],

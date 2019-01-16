@@ -52,7 +52,7 @@ export class ForgotPassword {
          }else{
             this.presentToast(this.data1.message);
          }
-         
+
       }, (err) => {
         this.spinner.hide();
         console.log(err);
@@ -64,12 +64,12 @@ export class ForgotPassword {
 
    validateAllFormFields(formGroup: FormGroup)
   {
-    Object.keys(formGroup.controls).forEach(field => {  
-      const control = formGroup.get(field);             
-      if (control instanceof FormControl) {             
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
         control.markAsTouched({ onlySelf: true });
-      } else if (control instanceof FormGroup) {        
-        this.validateAllFormFields(control);            
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
       }
     });
   }
@@ -82,7 +82,7 @@ export class ForgotPassword {
       duration: 3000,
       position: 'bottom'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });

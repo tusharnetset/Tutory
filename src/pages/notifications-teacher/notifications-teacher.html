@@ -8,18 +8,25 @@
 		<ul>
 			<li *ngFor="let notifications of notificationD" (click)="goAppoitmentDetails(notifications.appointment_id)">
 				<h3 *ngIf="notifications.label == 'new request'">You have received a new appointment request from <span class="bold_font">"{{notifications.student_name}}" </span> for <span class="bold_font">“{{notifications.service_name}}“. </span></h3>
-        <h3 *ngIf="notifications.label == 'feedback'"><span class="bold_font">{{notifications.student_name}}</span>Gives you a feedback on appointment of <span class="bold_font">“{{notifications.service_name}}“</span></h3>
+        <h3 *ngIf="notifications.label == 'feedback'"><span class="bold_font">{{notifications.student_name}} </span>Gives you a feedback on appointment of <span class="bold_font">“{{notifications.service_name}}“</span></h3>
 
-
-        <h3 *ngIf="notifications.label == 'yes'"><span class="bold_font">{{notifications.student_name}}</span>has confirmed yes for the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
-        <h3 *ngIf="notifications.label == 'no'"><span class="bold_font">{{notifications.student_name}}</span>has confirmed no for the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
-        <h3 *ngIf="notifications.label == 'end no'"><span class="bold_font">{{notifications.student_name}}</span>has not ended the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
-        <h3 *ngIf="notifications.label == 'end yes'"><span class="bold_font">{{notifications.student_name}}</span>has ended the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
+        <h3 *ngIf="notifications.label == 'yes'"><span class="bold_font">{{notifications.student_name}} </span>has confirmed yes for the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
+        <h3 *ngIf="notifications.label == 'no'"><span class="bold_font">{{notifications.student_name}} </span>has confirmed no for the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
+        <h3 *ngIf="notifications.label == 'end no'"><span class="bold_font">{{notifications.student_name}} </span>has not ended the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
+        <h3 *ngIf="notifications.label == 'end yes'"><span class="bold_font">{{notifications.student_name}} </span>has ended the appointment of <span class="bold_font">“{{notifications.service_name}}”.</span></h3>
 
         <h3 *ngIf="notifications.label == 'student cancelled'"><span class="bold_font">{{notifications.student_name}}</span>is not ready for the appointment of <span class="bold_font">“{{notifications.service_name}}“</span></h3>
 
+        <h3 *ngIf="notifications.label == 'Appointment expired'">Your appointment has expired<span class="bold_font">“{{notifications.service_name}}“</span></h3>
+
+        <h3 *ngIf="notifications.label == 'Appointment alert'">Your appointment is begin to start<span class="bold_font">“{{notifications.service_name}}“</span></h3>
+
+        <h3 *ngIf="notifications.label == 'Slot expired'">{{notifications.text}}</h3>
+
         <p>{{notifications.created_at | timeAgo}}</p>
-			</li>
+      </li>
+      <p style="text-align: center;margin-top: 50%;" *ngIf="show">You have no notification yet. Once you have any they will appear here </p>
+
 		</ul>
 	</div>
 </ion-content>

@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { EditProfile } from './edit-profile';
 
 @NgModule({
-  declarations: [
-    EditProfile,
-  ],
+  // declarations: [
+  //   EditProfile,
+  // ],
   imports: [
     IonicPageModule.forChild(EditProfile),
   ],

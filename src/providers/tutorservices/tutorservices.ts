@@ -213,7 +213,7 @@ export class TutorservicesProvider {
     let body = this.StringQuery({
       user_id : data.user_id,
       login_token:data.login_token,
-      date:data.date,
+      // date:data.date,
       app_version:this.appVersion,
       slots:data.slots
     });

@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { Subscription } from './subscription';
 
 @NgModule({
-  declarations: [
-    Subscription,
-  ],
+  // declarations: [
+  //   Subscription,
+  // ],
   imports: [
     IonicPageModule.forChild(Subscription),
   ],

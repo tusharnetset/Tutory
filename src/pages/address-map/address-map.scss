@@ -14,4 +14,29 @@ page-address-map {
 			}
 		}
   }
+  .pgm-html-info-frame
+  {
+    div
+    {
+      height: auto !important;
+        width: auto !important;
+        h3
+        {
+          margin-top: 4px;
+          font-size: 2rem;
+          margin-bottom: 0;
+        }
+        p
+        {
+          margin: 5px 0;
+        }
+
+    }
+    .pgm-html-info-content-box
+    {
+        padding: 10px !important;
+        min-width: 150px;
+        text-align: center;
+    }
+  }
 }

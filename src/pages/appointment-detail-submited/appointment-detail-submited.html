@@ -6,7 +6,8 @@
 <ion-content padding class="appointment_details">
 	<div class="white_box">
 		<div class="user_detail">
-			<img src="{{myAppointDetail?.profile_pic}}" class="user_img" (click)="goToProfile(myAppointDetail?.tutor_id)">
+      <img *ngIf="myAppointDetail?.profile_pic" src="{{myAppointDetail?.profile_pic}}" class="user_img" (click)="goToProfile(myAppointDetail?.tutor_id)">
+      <img *ngIf="!myAppointDetail?.profile_pic" src="img/gender_icon1.png" class="user_img" (click)="goToProfile(myAppointDetail?.tutor_id)">
 			<h2>{{myAppointDetail?.first_name}} {{myAppointDetail?.last_name}}, {{myAppointDetail?.gender}} {{myAppointDetail?.age}}
 				<span class="rating">
           <rating [(ngModel)]="avgRating"

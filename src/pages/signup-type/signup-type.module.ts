@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { SignupType } from './signup-type';
 
 @NgModule({
-  declarations: [
-    SignupType,
-  ],
+  // declarations: [
+  //   SignupType,
+  // ],
   imports: [
     IonicPageModule.forChild(SignupType),
   ],

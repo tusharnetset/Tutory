@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { Filters } from './filters';
 
 @NgModule({
-  declarations: [
-    Filters,
-  ],
+  // declarations: [
+  //   Filters,
+  // ],
   imports: [
     IonicPageModule.forChild(Filters),
   ],

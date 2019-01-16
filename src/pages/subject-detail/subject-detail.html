@@ -1,31 +1,17 @@
-<!--
-  Generated template for the SubjectDetail page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header class="with_back">
-
   <ion-navbar>
     <ion-title>Subject Detail</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content>
-	<ngx-spinner
-		bdColor = "rgba(51, 51, 51, 0.8)"
-		size = "medium"
-		color = "#fff"
-		type = "line-scale-pulse-out-rapid">
-	</ngx-spinner>
 	<div class="subject_image">
-		<img src="img/subject_image.jpg" alt="" />
+    <img *ngIf="getDetailData?.image" src="{{getDetailData?.image}}" alt="" />
+    <img *ngIf="!getDetailData?.image" src="img/subject_image.jpg" alt="" />
 	</div>
 	<div padding>
 		<div class="white_box">
-			<h2 class="bold_font">{{getDetailData?.title}}</h2>
+			<!-- <h2 class="bold_font">{{getDetailData?.title}}</h2> -->
 			<h4>{{catName}} > {{subCatName}}</h4>
 			<p>{{getDetailData?.detail}}</p>
 		</div>

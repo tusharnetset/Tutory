@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { ContactUs } from './contact-us';
 
 @NgModule({
-  declarations: [
-    ContactUs,
-  ],
+  // declarations: [
+  //   ContactUs,
+  // ],
   imports: [
     IonicPageModule.forChild(ContactUs),
   ],

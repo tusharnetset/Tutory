@@ -48,9 +48,11 @@ export class Reviews {
       this.userType = data.user_type;
       this.userId = data.id;
       this.token = data.login_token;
+
       if(this.checkData == 'my_profile'){
       this.getReviews();
       }else{
+        console.log("check reviews function...");
         this.checkReview();
       }
     })
@@ -74,7 +76,7 @@ export class Reviews {
           this.alert = null;
         }else{
           this.showAlert();
-          }
+        }
       }
     })
   }

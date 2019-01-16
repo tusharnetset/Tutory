@@ -15,7 +15,9 @@
         <h3 *ngIf="notification.label == 'tutor cancelled'"><span class="bold_font">{{notification.tutor_name}}</span> has cancelled your appointment for <span class="bold_font">“{{notification.service_name}}”.</span></h3>
 
         <p>{{notification.created_at | timeAgo}}</p>
-			</li>
+      </li>
+      <p style="text-align: center;margin-top: 50%;" *ngIf="show">You have no notification yet. Once you have any they will appear here </p>
 		</ul>
 	</div>
 </ion-content>
+

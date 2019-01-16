@@ -14,13 +14,11 @@
 			<li class="active" (click)="allShow()">All</li>
 			<li (click)="favorite()">Favorites</li>
     </ul> -->
-
     <ul id="grouplist" class="list-group">
-        <li class="list-group-item" [ngClass]="{'active': selectedItem == item}" (click)="listClick($event, item)" *ngFor="let item of groups">
-           {{ item.name }}
-        </li>
-   </ul>
-
+      <li class="list-group-item" [ngClass]="{'active': selectedItem == item}" (click)="listClick($event, item)" *ngFor="let item of groups">
+          {{ item.name }}
+      </li>
+    </ul>
 	</div>
 </ion-header>
 <ion-content padding>
@@ -28,9 +26,10 @@
 			<ion-list no-lines *ngIf="allShow" >
 				<ion-item *ngFor="let tutor of tutorArr">
 			        <ion-avatar item-start (click)="goTutorProfile(tutor.tutor_id)">
-			        	<img src="{{tutor.profile_pic}}">
+                <img *ngIf="tutor.profile_pic" src="{{tutor.profile_pic}}">
+                <img *ngIf="!tutor.profile_pic" src="img/gender_icon1.png">
 			        </ion-avatar>
-			        <h2 (click)="goTutorProfile(tutor.tutor_id)">{{tutor.first_name}} {{tutor.last_name}}, {{tutor.gender}}, {{tutor.age}}
+			        <h2 (click)="goTutorProfile(tutor.tutor_id)"><span>{{tutor.first_name}}</span> <span [innerHTML]="tutor.last_name | truncate : 3"></span>, {{tutor.gender}}, {{tutor.age}}
               <span (click)="goTutorProfile(tutor.tutor_id)" class="rating">
               <rating  *ngIf="tutor.rating != null"
 					        readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
@@ -54,9 +53,10 @@
         <ion-list no-lines *ngIf="favShow">
             <ion-item *ngFor="let review of favArr">
 			        <ion-avatar item-start (click)="goTutorProfile(tutor.tutor_id)">
-			        	<img src="{{review.profile_pic}}">
+                <img *ngIf="review.profile_pic" src="{{review.profile_pic}}">
+                <img *ngIf="!review.profile_pic" src="img/gender_icon1.png">
 			        </ion-avatar>
-			        <h2 (click)="goTutorProfile(review.tutor_id)">{{review.first_name}} {{review.last_name}}, {{review.gender}}, {{review.age}}
+			        <h2 (click)="goTutorProfile(review.tutor_id)"><span>{{review.first_name}}</span> <span [innerHTML]="review.last_name | truncate : 3"></span>, {{review.gender}}, {{review.age}}
               <span (click)="goTutorProfile(review.tutor_id)" class="rating">
               <rating  *ngIf="review.rating != null"
 					        readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">

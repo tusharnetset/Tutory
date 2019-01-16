@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { RejectReasonPopup } from './reject-reason-popup';
 
 @NgModule({
-  declarations: [
-    RejectReasonPopup,
-  ],
+  // declarations: [
+  //   RejectReasonPopup,
+  // ],
   imports: [
     IonicPageModule.forChild(RejectReasonPopup),
   ],

@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { AddressMapPage } from './address-map';
 
 @NgModule({
-  declarations: [
-    AddressMapPage,
-  ],
+  // declarations: [
+  //   AddressMapPage,
+  // ],
   imports: [
     IonicPageModule.forChild(AddressMapPage),
   ],

@@ -23,7 +23,7 @@
 
 			<ion-list class="input_forms" no-lines>
 			<ion-item *ngFor="let slots of getViewAvailbilityData">
-				    	<ion-label>{{slots.from_time}}:00 to {{slots.to_time}}:00</ion-label>
+				    	<ion-label>{{slots.from_time}} to {{slots.to_time}}</ion-label>
 					 	<ion-icon *ngIf="userType == 'T'" (click)="deleteSlot(slots.slot_id,slots.date)" item-end><img src="img/cross_icon.png" alt=""/></ion-icon>
 					</ion-item>
 
@@ -31,13 +31,13 @@
 					<ion-col col-50>
 						<ion-item class="drops">
 						  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
-						  	<ion-datetime displayFormat="HH:mm" minuteValues="0" placeholder="From" (ionChange)="fromTime($event,i)"></ion-datetime>
+						  	<ion-datetime displayFormat="HH:mm" minuteValues="0,30" placeholder="From" (ionChange)="fromTime($event,i)"></ion-datetime>
 						</ion-item>
 					</ion-col>
 					<ion-col col-50>
 					    <ion-item class="drops">
 						  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
-						  	<ion-datetime displayFormat="HH:mm" minuteValues="0" placeholder="To" minuteValues="0" (ionChange)="toTime($event,i)"></ion-datetime>
+						  	<ion-datetime displayFormat="HH:mm" minuteValues="0,30" placeholder="To" (ionChange)="toTime($event,i)"></ion-datetime>
 						</ion-item>
 					</ion-col>
 					<ion-icon style="height: 20px;width: 20px;margin-top: 26px;" item-end (click)="remove(i)"><img src="img/cross_icon.png" alt=""/></ion-icon>

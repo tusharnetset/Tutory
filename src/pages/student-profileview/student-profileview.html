@@ -5,11 +5,11 @@
 </ion-header>
 <ion-content class="profile_view">
   	<div class="big_profile_image">
-		<img *ngIf="!getProfileData?.profile_pic" class="profile_pic_big" src="img/user.jpg">
-		<img *ngIf="getProfileData?.profile_pic" class="profile_pic_big" src="{{getProfileData?.profile_pic}}">
+		<!-- <img *ngIf="!getProfileData?.profile_pic" class="profile_pic_big" src="img/gender_icon1.png"> -->
+		<img class="profile_pic_big" src="{{getProfileData?.profile_pic}}">
 	</div>
 	<div class="name_image_area center">
-		<img  *ngIf="!getProfileData?.profile_pic" src="img/ash.jpg" alt="" class="user_image" />
+		<img  *ngIf="!getProfileData?.profile_pic" src="img/gender_icon1.png" alt="" class="user_image" />
 		<img  *ngIf="getProfileData?.profile_pic" src="{{getProfileData?.profile_pic}}" alt="" class="user_image" />
 		<h1>{{getProfileData?.first_name}} {{getProfileData?.last_name}}, {{getProfileData?.age}}</h1>
 
@@ -38,7 +38,7 @@
 					<h3>Grade</h3>
 					<p>{{getProfileData?.grade}}</p>
 				</li>
-				
+
 
 				<li *ngIf="getProfileData?.stydent_type == 'US'">
 					<img src="img/university_icon.png" alt="" />
@@ -50,7 +50,7 @@
 					<h3>Course Title</h3>
 					<p>{{getProfileData?.course_title}}</p>
 				</li>
-				
+
 
 				<li *ngIf="getProfileData?.stydent_type == 'GR'">
 					<img src="img/university_icon.png" alt="" />
@@ -84,7 +84,7 @@
 					<h3>Qualification</h3>
 					<p>{{getProfileData?.qualification}}</p>
 				</li>
-				
+
 
 				<li>
 					<img src="img/appointments_icon_active.png" alt="" />

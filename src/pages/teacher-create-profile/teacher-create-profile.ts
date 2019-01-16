@@ -21,6 +21,7 @@ import { SignupType } from '../signup-type/signup-type';
 import { MapsAPILoader } from '@agm/core';
 import { google } from "google-maps";
 import { AddressMapPage } from '../address-map/address-map';
+import { Http ,HttpModule, Headers,RequestOptions } from '@angular/http';
 
 @Component({
   selector: 'page-teacher-create-profile',
@@ -84,7 +85,7 @@ export class TeacherCreateProfile {
   suggestedLocations: any;
   locationF: any;
 
-  constructor(public Tutorservices:TutorservicesProvider, public events:Events, public navParams:NavParams,public StudentServices:StudentservicesProvider, public zone:NgZone,public mapsAPILoader:MapsAPILoader,public fileTransfer:FileTransfer,public toastCtrl:ToastController,public network:Network,public nativeStorage:NativeStorage,public httpBaseUrl:ConfigProvider,public authServices: AuthservicesProvider,public spinner :NgxSpinnerService,public fb:FormBuilder, public platform: Platform, public navCtrl: NavController,public camera:Camera,public actionSheetCtrl:ActionSheetController) {
+  constructor(public http:Http, public Tutorservices:TutorservicesProvider, public events:Events, public navParams:NavParams,public StudentServices:StudentservicesProvider, public zone:NgZone,public mapsAPILoader:MapsAPILoader,public fileTransfer:FileTransfer,public toastCtrl:ToastController,public network:Network,public nativeStorage:NativeStorage,public httpBaseUrl:ConfigProvider,public authServices: AuthservicesProvider,public spinner :NgxSpinnerService,public fb:FormBuilder, public platform: Platform, public navCtrl: NavController,public camera:Camera,public actionSheetCtrl:ActionSheetController) {
     this.baseUrl = this.httpBaseUrl.baseUrl;
     this.appVersion = this.httpBaseUrl.appVersion;
     this.timezone = moment.tz.guess();
@@ -105,7 +106,7 @@ export class TeacherCreateProfile {
       'bio': ["", Validators.compose([Validators.required])],
       'location_preference':["",Validators.compose([Validators.required])],
       'other_location': [""],
-      'other_info':["",Validators.compose([Validators.required])]
+      'other_info':[""]
     });
 
 
@@ -384,9 +385,24 @@ export class TeacherCreateProfile {
         this.presentToast("Your age must be atleast 18 to register as a tutor");
         return;
       }
+      if(this.authForm.value.rate < 100){
+        this.presentToast("Individual student rate minimum 100 (Q.R)");
+        return;
+      }else if(this.authForm.value.rate > 500){
+        this.presentToast("Individual student rate maximum 500 (Q.R)");
+        return;
+      }
+
+      if(this.authForm.value.group_rate < 100){
+        this.presentToast("Group of student rate minimum 100 (Q.R)");
+        return;
+      }else if(this.authForm.value.group_rate > 500){
+        this.presentToast("Group of student rate maximum 500 (Q.R)");
+        return;
+      }
+      let url = this.baseUrl+'create_profile';
       if(this.imgData){
         this.spinner.show();
-        let url = this.baseUrl+'create_profile';
         const fileTransfer: FileTransferObject = this.fileTransfer.create();
         let targetPath =  this.imgData;
         let filename = targetPath.split("/").pop();
@@ -488,9 +504,43 @@ export class TeacherCreateProfile {
           age                   : this.a,
           currency_id           : '85'
         }
-        this.authServices.createProfileTutor(this.sendCreateProfileData).then((result) => {
-          this.spinner.hide();
+
+        let body = new FormData();
+          body.append('device_id', this.deviceId);
+          body.append('device_type', 'A');
+          body.append('user_type', this.userType);
+          body.append('timezone', this.timezone);
+          body.append('latitude', this.latS);
+          body.append('longitude', this.lngS);
+          body.append('user_id', this.userId);
+          body.append('login_token', this.token);
+          body.append('app_version', this.appVersion);
+          body.append('first_name', this.authForm.value.first_name);
+          body.append('last_name', this.authForm.value.last_name);
+          body.append('dob', this.authForm.value.dob);
+          body.append('address', this.authForm.value.address);
+          body.append('university_name', this.authForm.value.university_name);
+          body.append('city_id', this.authForm.value.city_id);
+          body.append('gender', this.authForm.value.gender);
+          body.append('teaching_levels', this.authForm.value.teaching_levels.toString());
+
+          body.append('languages', this.authForm.value.languages.toString());
+          body.append('bio', this.authForm.value.bio);
+          body.append('rate', this.authForm.value.rate);
+          body.append('group_rate', this.authForm.value.group_rate);
+          body.append('qualification', this.authForm.value.qualification);
+          body.append('location_preference', this.authForm.value.location_preference);
+          body.append('other_location', this.authForm.value.other_location);
+          body.append('other_location_id', this.suggestId);
+          body.append('other_info', this.authForm.value.other_info);
+          body.append('age', this.a);
+          body.append('currency_id', '85');
+         console.log('bodybodybody', body);
+        // this.authServices.createProfileTutor(this.sendCreateProfileData).then((result) => {
+          this.http.post(url, body).map(res => res.json()).subscribe(result => {
+            this.spinner.hide();
           this.data1  = result;
+          console.log(' this.data1 this.data1',  this.data1);
           if(this.data1.status == 200){
             this.events.unsubscribe('user:created');
             this.presentToast(this.data1.message);

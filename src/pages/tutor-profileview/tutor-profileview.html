@@ -20,7 +20,8 @@
 	</div>
 
 	<div class="name_image_area center">
-		<img src="{{getTutordata?.profile_pic}}" alt="" class="user_image" />
+    <img *ngIf="getTutordata?.profile_pic" src="{{getTutordata?.profile_pic}}" alt="" class="user_image" />
+    <img *ngIf="!getTutordata?.profile_pic" src="img/gender_icon1.png" alt="" class="user_image" />
 		<h1>{{getTutordata?.first_name}} {{getTutordata?.last_name}}, {{getTutordata?.gender}}, {{getTutordata?.age}}</h1>
 		<!-- <span class="ratings"> -->
         <span class="rating">
@@ -36,7 +37,7 @@
 		<div class="white_box">
 			<p class="bio">{{getTutordata?.bio}}</p>
 			<ul>
-				<li>
+				<li *ngIf="favDataS">
 					<img src="img/address_icon.png" alt="" />
 					<h3>Address</h3>
 					<p>{{getTutordata?.address}}</p>

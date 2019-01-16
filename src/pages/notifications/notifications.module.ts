@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { Notifications } from './notifications';
 
 @NgModule({
-  declarations: [
-    Notifications,
-  ],
+  // declarations: [
+  //   Notifications,
+  // ],
   imports: [
     IonicPageModule.forChild(Notifications),
   ],

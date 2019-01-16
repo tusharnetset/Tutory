@@ -114,7 +114,7 @@ export class TeacherEditProfile {
       'bio': ["", Validators.compose([Validators.required])],
       'location_preference':["",Validators.compose([Validators.required])],
       'other_location': [""],
-      'other_info':["",Validators.compose([Validators.required])]
+      'other_info':[""]
     });
     this.langPush = [];
     this.levelPush = [];
@@ -164,7 +164,7 @@ export class TeacherEditProfile {
           this.alert = null;
         }else{
           this.showAlert();
-         }
+        }
       }
     })
 
@@ -285,7 +285,7 @@ export class TeacherEditProfile {
     }
     console.log("this.getLevelssssssssss",this.getLevels);
     this.authServices.getCategorySubCategoryDistinctLevels(this.getLevels).then((result) => {
-      console.log("levels dataaaaa",result);
+      console.log("levels data present",result);
       this.data1 = result;
       this.getD = this.data1.data;
       if(this.data1.status == 200){
@@ -492,6 +492,22 @@ export class TeacherEditProfile {
         return;
       }
 
+      if(this.authForm.value.rate < 100){
+        this.presentToast("Individual student rate minimum 100 (Q.R)");
+        return;
+      }else if(this.authForm.value.rate > 500){
+        this.presentToast("Individual student rate maximum 500 (Q.R)");
+        return;
+      }
+
+      if(this.authForm.value.group_rate < 100){
+        this.presentToast("Group of student rate minimum 100 (Q.R)");
+        return;
+      }else if(this.authForm.value.group_rate > 500){
+        this.presentToast("Group of student rate maximum 500 (Q.R)");
+        return;
+      }
+
       if(this.imgData){
         this.spinner.show();
         let url = this.baseUrl+'edit_profile';
@@ -622,7 +638,7 @@ export class TeacherEditProfile {
     console.log(message);
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3000,
+      duration: 4000,
       position: 'bottom'
     });
 

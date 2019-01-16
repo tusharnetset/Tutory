@@ -72,18 +72,11 @@ export class PhoneVerification {
     this.connectSubscription.unsubscribe();
   }
 
-  // moveFocus(nextElement) {
-  //   nextElement.setFocus();
-  // }
-
   moveInput(event,nextElement,prevElement) {
     let bcSpc = event.key;
-    console.log('backdata ',bcSpc,prevElement,nextElement);
     if(bcSpc == 'Backspace'){
-      console.log('previousss',bcSpc,prevElement);
       prevElement.setFocus();
     }else if(bcSpc ==  'Unidentified' || bcSpc ==  'Enter'){
-     console.log("chl rha hai na tu ")
       return;
     } else{
       console.log('else',nextElement);
@@ -116,7 +109,7 @@ export class PhoneVerification {
           this.getOtpData = this.data1.data;
           this.nativeStorage.setItem('userData', this.getOtpData).then(
             (result) => {
-              console.log("succesfully set ",result);
+              console.log("succesfully set",result);
             }
           );
           if(this.getOtpData.user_type == 'S'){
@@ -163,21 +156,8 @@ export class PhoneVerification {
             }
             this.authService.resendotpApi(this.resendOtpData).then((result) => {
               this.spinner.hide();
-              this.data1  = result;
+              this.data1 = result;
               if(this.data1.status == 200){
-                let toast = this.toastCtrl.create({
-                  message: "Your OTP is"+' '+this.data1.data.otp,
-                  position: 'top',
-                  showCloseButton: true,
-                  closeButtonText: 'close',
-                  dismissOnPageChange: true,
-                });
-                toast.onDidDismiss((data, role) => {
-                  if (role == 'close') {
-                  }else{
-                  }
-                });
-                toast.present();
                 this.presentToast(this.data1.message);
               }else{
                 this.presentToast(this.data1.message);

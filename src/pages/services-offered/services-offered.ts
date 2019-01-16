@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,ToastController ,Platform, AlertController} from 'ionic-angular';
+import { NavController, NavParams, ToastController ,Platform, AlertController} from 'ionic-angular';
 import { SubCategory } from '../sub-category/sub-category';
 import { FormGroup, FormBuilder, Validators,FormControl } from "@angular/forms";
 import { StudentservicesProvider } from './../../providers/studentservices/studentservices';
@@ -161,11 +161,13 @@ export class ServicesOffered {
   }
 
   subCateSelect(_cateId){
+    this.spinner.show();
     this.sendCategorydata = {
       user_id : this.userId,
       login_token:this.token
     }
     this.tutorservices.getCategorySubCategory(this.sendCategorydata).then((result) => {
+      this.spinner.hide();
       console.log(result);
       this.data1 = result;
       this.cateD = this.data1.data;
@@ -265,7 +267,6 @@ export class ServicesOffered {
           return;
         }
       }
-
       this.addServiceData = {
         user_id : this.userId,
         login_token : this.token,
@@ -280,8 +281,6 @@ export class ServicesOffered {
         this.data1 = result;
         this.getServiceData = this.data1.data;
         if(this.data1.status == 200){
-          this._subCatId = "";
-          this._levelId = "";
           this.subCateArr = [];
           this.levelsArr = [];
           this.subCateSelect(this._catId);
@@ -312,7 +311,7 @@ export class ServicesOffered {
   }
 
   deleteServ(_id){
-   this.deleteData = {
+    this.deleteData = {
       user_id : this.userId,
       login_token:this.token,
       type:'SO',//service offered

@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { PhoneVerification } from './phone-verification';
 
 @NgModule({
-  declarations: [
-    PhoneVerification,
-  ],
+  // declarations: [
+  //   PhoneVerification,
+  // ],
   imports: [
     IonicPageModule.forChild(PhoneVerification),
   ],

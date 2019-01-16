@@ -23,6 +23,7 @@ export class NotificationsTeacherPage {
   data1:any;
   notificationD:any;
   alert: any;
+  show: boolean = false;
 
 	constructor(public alertCtrl:AlertController, public platform:Platform, public toastCtrl:ToastController,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public network:Network,public tutorservices:TutorservicesProvider,public modalCtrl:ModalController,public navCtrl: NavController, public navParams: NavParams) {
 	}
@@ -47,7 +48,7 @@ export class NotificationsTeacherPage {
           this.alert = null;
         }else{
           this.showAlert();
-         }
+        }
       }
     })
   }
@@ -93,6 +94,11 @@ export class NotificationsTeacherPage {
       this.data1 = result;
       if(this.data1.status == 200){
         this.notificationD = this.data1.data;
+        if(this.notificationD.length == 0){
+          this.show = true;
+        }else{
+          this.show = false;
+        }
       }else{
           this.presentToast(this.data1.message);
       }
@@ -102,7 +108,10 @@ export class NotificationsTeacherPage {
   }
 
   goAppoitmentDetails(id){
-    this.navCtrl.push(TeacherAppointmentDetailSubmited,{appointment_id:id});
+    if(id == 0){
+    }else{
+      this.navCtrl.push(TeacherAppointmentDetailSubmited,{appointment_id:id});
+    }
   }
 
 	goToRejectPopup(){

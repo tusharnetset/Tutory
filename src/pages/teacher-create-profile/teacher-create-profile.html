@@ -161,7 +161,6 @@
 			<ion-item>
 		    	<ion-textarea placeholder="Other Information" formControlName="other_info"></ion-textarea>
 			</ion-item>
-			<div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['other_info'].hasError('required') && authForm.controls['other_info'].touched">* Other Information is required!</div>
 
 		</ion-list>
 		<button class="btn btn-text" ion-button full type="submit" >Submit</button>

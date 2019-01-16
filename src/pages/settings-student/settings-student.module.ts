@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { SettingsStudentPage } from './settings-student';
 
 @NgModule({
-  declarations: [
-    SettingsStudentPage,
-  ],
+  // declarations: [
+  //   SettingsStudentPage,
+  // ],
   imports: [
     IonicPageModule.forChild(SettingsStudentPage),
   ],

@@ -59,7 +59,7 @@ page-favorites {
                     ul {
                         padding: 0px;
                         &.rating{
-                          margin-left: 10px;
+                          margin-left: 5px;
                           margin-bottom: 2px;
                         }
                         &.rating li {
@@ -67,7 +67,7 @@ page-favorites {
                           background: none;
                           color: #ffb400;
                           ion-icon {
-                              font-size: 20px;
+                            font-size: 20px;
                           }
                         }
                     }

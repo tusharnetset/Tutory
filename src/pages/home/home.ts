@@ -175,7 +175,7 @@ export class HomePage {
     })
   }
   skipTutorProfile(){
-    this.navCtrl.push(TutorList);
+    this.navCtrl.push(TutorList, {userSkip:"skipToHome"});
   }
 
   presentToast(message)

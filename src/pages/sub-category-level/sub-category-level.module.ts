@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { SubCategoryLevel } from './sub-category-level';
 
 @NgModule({
-  declarations: [
-    SubCategoryLevel,
-  ],
+  // declarations: [
+  //   SubCategoryLevel,
+  // ],
   imports: [
     IonicPageModule.forChild(SubCategoryLevel),
   ],

@@ -40,7 +40,7 @@ export class TutorList {
   latitude:number;
   longitude:number;
   getTutordata:any;
-  tutorArr=[];
+  tutorArr:any[];
   levelid:any;
   userIdSkip:any;
   loginTokenSkip:any;
@@ -54,15 +54,17 @@ export class TutorList {
   favArr: any[];
   allShow:boolean = true;
   favShow:boolean = false;
+  userSkipData: any;
+  sortBy: string;
   constructor(public viewCtrl:ViewController, public zone: NgZone,public toastCtrl: ToastController,public spinner:NgxSpinnerService,public geolocation:Geolocation,public studentservices:StudentservicesProvider,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public navCtrl: NavController,public modalCtrl:ModalController) {
   }
 
   ionViewDidEnter() {
-    this.tutorArr = [];
     this.favArr = [];
     this.catId = this.navParams.get('categoryId');
     this.subId = this.navParams.get('subCateId');
     this.levelid = this.navParams.get('levelId');
+    this.userSkipData = this.navParams.get('userSkip');
     this.nativeStorage.getItem('userData').then((data) => {
       this.userId = data.id;
       this.token = data.login_token;
@@ -97,12 +99,10 @@ export class TutorList {
         this.getTutorListWithlat();
       })
     })
-
     this.connectSubscription = this.network.onConnect().subscribe(() => {
       this.getTutorListWithlat();
       this.getFavorites();
     });
-
     this.platform.registerBackButtonAction(() => {
       if(this.navCtrl.canGoBack()){
         this.navCtrl.pop();
@@ -126,7 +126,7 @@ export class TutorList {
 
   listClick(event, newValue) {
     console.log(newValue);
-    this.selectedItem = newValue;  // don't forget to update the model here
+    this.selectedItem = newValue;
     if(this.selectedItem.name == 'All'){
       this.allShow = true;
       this.favShow = false;
@@ -138,6 +138,12 @@ export class TutorList {
 
   getTutorListWithlat()
   {
+    this.tutorArr = [];
+    if(this.userSkipData){
+      this.sortBy = 'S'
+    }else{
+      this.sortBy = 'A'
+    }
     if(this.userIdSkip){
       this.tutorData = {
         user_id : this.userIdSkip,
@@ -145,7 +151,7 @@ export class TutorList {
         category_id:this.catId,
         subcategory_id:this.subId,
         level_id:this.levelid,
-        sort_by:"A",
+        sort_by:this.sortBy,
         latitude:this.lat,
         longitude: this.long
       }
@@ -157,14 +163,12 @@ export class TutorList {
         category_id:this.catId,
         subcategory_id:this.subId,
         level_id:this.levelid,
-        sort_by:"A",
+        sort_by:this.sortBy,
         latitude:this.lat,
         longitude: this.long
       }
     }
-
     this.studentservices.getTutorListApi(this.tutorData).then((result) => {
-      console.log(result);
       this.data1 = result;
       if(this.data1.status == 200){
         this.zone.run(() => {
@@ -174,7 +178,6 @@ export class TutorList {
           }else{
             this.check = false;
           }
-          console.log(this.getTutordata);
           for (var i = 0; i < this.getTutordata.length; i++) {
             this.tutorArr.push({
               tutor_id:this.getTutordata[i].tutor_id,
@@ -209,36 +212,33 @@ export class TutorList {
     }
     this.spinner.show();
     this.studentservices.getfavTutorApi(this.favData).then((result) => {
-        console.log(result);
         this.spinner.hide();
         this.data1 = result;
         if(this.data1.status == 200){
           this.zone.run(() => {
-              this.getFavData = this.data1.data;
-              for (let i = 0; i < this.getFavData.length; i++) {
-                this.favArr.push({
-                  first_name:this.getFavData[i].first_name,
-                  last_name:this.getFavData[i].last_name,
-                  age:this.getFavData[i].age,
-                  address:this.getFavData[i].address,
-                  tutor_id:this.getFavData[i].tutor_id,
-                  fav_status:this.getFavData[i].fav_status,
-                  profile_pic:this.getFavData[i].profile_pic,
-                  distance:this.getFavData[i].distance.toFixed(0),
-                  avg_rating:this.getFavData[i].avg_rating,
-                  categories:this.getFavData[i].categories,
-                  rate:this.getFavData[i].rate,
-                  gender:this.getFavData[i].gender,
-                  catLength:this.getFavData[i].categories.length-1
-                })
-              }
-
-              if(this.getFavData.fav_status == 0){
-                this.show = true;
-              }else{
-                this.show = false;
-              }
-              console.log(this.getFavData);
+            this.getFavData = this.data1.data;
+            for (let i = 0; i < this.getFavData.length; i++) {
+              this.favArr.push({
+                first_name:this.getFavData[i].first_name,
+                last_name:this.getFavData[i].last_name,
+                age:this.getFavData[i].age,
+                address:this.getFavData[i].address,
+                tutor_id:this.getFavData[i].tutor_id,
+                fav_status:this.getFavData[i].fav_status,
+                profile_pic:this.getFavData[i].profile_pic,
+                distance:this.getFavData[i].distance.toFixed(0),
+                avg_rating:this.getFavData[i].avg_rating,
+                categories:this.getFavData[i].categories,
+                rate:this.getFavData[i].rate,
+                gender:this.getFavData[i].gender,
+                catLength:this.getFavData[i].categories.length-1
+              })
+            }
+            if(this.getFavData.fav_status == 0){
+              this.show = true;
+            }else{
+              this.show = false;
+            }
           })
         }else{
           if(this.data1.message == 'Wrong token entered!.Please try again.'){
@@ -297,12 +297,9 @@ export class TutorList {
     modal.present();
   }
   goToFilters(){
-    // this.navCtrl.push(Filters,{categoryId:this.catId,subCateId:this.subId,levelId:this.levelid});
     this.navCtrl.push(Filters,{categoryId:this.catId,subCateId:this.subId,levelId:this.levelid}).then(() => {
-
     });
   }
-
   goTutorProfile(id){
     this.navCtrl.push(TutorProfileview,{tutorId:id,catId:this.catId,subCatId:this.subId});
   }
@@ -315,7 +312,6 @@ export class TutorList {
       duration: 3000,
       position: 'bottom'
     });
-
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });

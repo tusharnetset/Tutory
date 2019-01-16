@@ -614,53 +614,67 @@ ion-picker-cmp
 				{
 					display:none;
 				}
-			}
-			.tab-button-icon[ng-reflect-name="home"]
+      }
+
+
+      .tab-button-icon[ng-reflect-name="home"]
+      , .tab-button-icon[aria-label="home"]
 			{
 				background-image: url('../img/home_icon.png');
 			}
-			.tab-button-icon[ng-reflect-name="profile"], .tab-button-icon[ng-reflect-name="teacherprofile"]
+      .tab-button-icon[ng-reflect-name="profile"], .tab-button-icon[ng-reflect-name="teacherprofile"]
+      , .tab-button-icon[aria-label="profile"], .tab-button-icon[aria-label="teacherprofile"]
 			{
 				background-image: url('../img/profile_icon.png');
 			}
-			.tab-button-icon[ng-reflect-name="appointments"], .tab-button-icon[ng-reflect-name="teacherappointment"]
+      .tab-button-icon[ng-reflect-name="appointments"], .tab-button-icon[ng-reflect-name="teacherappointment"]
+      , .tab-button-icon[aria-label="appointments"], .tab-button-icon[aria-label="teacherappointment"]
 			{
 				background-image: url('../img/appointments_icon.png');
 			}
-			.tab-button-icon[ng-reflect-name="favorites"]
+      .tab-button-icon[ng-reflect-name="favorites"]
+      , .tab-button-icon[aria-label="favorites"]
 			{
 				background-image: url('../img/favorites_icon.png');
 			}
-			.tab-button-icon[ng-reflect-name="settings"]
+      .tab-button-icon[ng-reflect-name="settings"]
+      , .tab-button-icon[aria-label="settings"]
 			{
 				background-image: url('../img/settings_icon.png');
 			}
-			.tab-button-icon[ng-reflect-name="dashboard"]
+      .tab-button-icon[ng-reflect-name="dashboard"], .tab-button-icon[aria-label="dashboard"]
+      , .tab-button-icon[aria-label="dashboard"], .tab-button-icon[aria-label="dashboard"]
 			{
 				background-image: url('../img/dashboard_icon.png');
 			}
 
-			.tab-button-icon[ng-reflect-name="home"][ng-reflect-is-active="true"]
+      .tab-button-icon[ng-reflect-name="home"][ng-reflect-is-active="true"]
+      , .tab-button-icon[aria-label="home"][ng-reflect-is-active="true"]
 			{
 				background-image: url('../img/home_icon_active.png');
 			}
 			.tab-button-icon[ng-reflect-name="profile"][ng-reflect-is-active="true"], .tab-button-icon[ng-reflect-name="teacherprofile"][ng-reflect-is-active="true"]
-			{
+      ,.tab-button-icon[aria-label="profile"][ng-reflect-is-active="true"], .tab-button-icon[aria-label="teacherprofile"][ng-reflect-is-active="true"]
+      {
 				background-image: url('../img/profile_icon_active.png');
 			}
 			.tab-button-icon[ng-reflect-name="appointments"][ng-reflect-is-active="true"], .tab-button-icon[ng-reflect-name="teacherappointment"][ng-reflect-is-active="true"]
-			{
+      , .tab-button-icon[aria-label="appointments"][ng-reflect-is-active="true"], .tab-button-icon[aria-label="teacherappointment"][ng-reflect-is-active="true"]
+      {
 				background-image: url('../img/appointments_icon_active.png');
 			}
-			.tab-button-icon[ng-reflect-name="favorites"][ng-reflect-is-active="true"]
+      .tab-button-icon[ng-reflect-name="favorites"][ng-reflect-is-active="true"]
+      , .tab-button-icon[aria-label="favorites"][ng-reflect-is-active="true"]
 			{
 				background-image: url('../img/favorites_icon_active.png');
 			}
-			.tab-button-icon[ng-reflect-name="settings"][ng-reflect-is-active="true"]
+      .tab-button-icon[ng-reflect-name="settings"][ng-reflect-is-active="true"]
+      , .tab-button-icon[aria-label="settings"][ng-reflect-is-active="true"]
 			{
 				background-image: url('../img/settings_icon_active.png');
 			}
-			.tab-button-icon[ng-reflect-name="dashboard"][ng-reflect-is-active="true"]
+      .tab-button-icon[ng-reflect-name="dashboard"][ng-reflect-is-active="true"]
+      , .tab-button-icon[aria-label="dashboard"][ng-reflect-is-active="true"]
 			{
 				background-image: url('../img/dashboard_icon_active.png');
 			}

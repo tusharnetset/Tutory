@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { Favorites } from './favorites';
 
 @NgModule({
-  declarations: [
-    Favorites,
-  ],
+  // declarations: [
+  //   Favorites,
+  // ],
   imports: [
     IonicPageModule.forChild(Favorites),
   ],

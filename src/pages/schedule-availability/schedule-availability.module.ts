@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { ScheduleAvailability } from './schedule-availability';
 
 @NgModule({
-  declarations: [
-    ScheduleAvailability,
-  ],
+  // declarations: [
+  //   ScheduleAvailability,
+  // ],
   imports: [
     IonicPageModule.forChild(ScheduleAvailability),
   ],

@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { RatingPopup } from './rating-popup';
 
 @NgModule({
-  declarations: [
-    RatingPopup,
-  ],
+  // declarations: [
+  //   RatingPopup,
+  // ],
   imports: [
     IonicPageModule.forChild(RatingPopup),
   ],

@@ -15,6 +15,9 @@
     	</ion-segment-button>
     	<ion-segment-button value="completed">
     		Completed
+      </ion-segment-button>
+      <ion-segment-button value="cancelled">
+    		cancelled
 	    </ion-segment-button>
 	</ion-segment>
 </ion-header>
@@ -24,7 +27,8 @@
 			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let sheduled of sheduledData">
 			        <ion-avatar (click)="goToDetail(sheduled.appointment_id)" item-start>
-			        	<img src="{{sheduled.profile_pic}}">
+                <img *ngIf="sheduled.profile_pic" src="{{sheduled.profile_pic}}">
+                <img *ngIf="!sheduled.profile_pic" src="img/gender_icon1.png">
 			        </ion-avatar>
 			        <h2 (click)="goToDetail(sheduled.appointment_id)" class="bold_font">{{sheduled.first_name}} {{sheduled.last_name}}, {{sheduled.gender}}, {{sheduled.age}}</h2>
 			        <p (click)="goToDetail(sheduled.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{sheduled.start_time}} to {{sheduled.end_time}}, {{sheduled.date | date:'dd/MM/yyyy'}} </p>
@@ -45,15 +49,16 @@
             		<button *ngIf="sheduled.student_status == 'R_AC_BT'" class="btn btn-text blue_btn" ion-button (click)="cancelClick(sheduled.appointment_id,'cancel')">Cancel</button>
 			        <button *ngIf="sheduled.student_status == 'S_CN_BS'" class="btn btn-text" ion-button (click)="goToEnd(sheduled.appointment_id,'end')">End Appointment</button>
 			    </ion-item>
-			    <p style="text-align: center;" *ngIf="sheduleSh">There is no data found.</p>
-			</ion-list>
+      </ion-list>
+      <p style="text-align: center;" *ngIf="sheduleSh">No appointments found.</p>
 		</div>
 
 		<div *ngSwitchCase="'completed'">
 			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let compApp of completeAppoint">
 			        <ion-avatar (click)="goToDetail(compApp.appointment_id)" item-start>
-			        	<img src="{{compApp.profile_pic}}">
+                <img *ngIf="compApp.profile_pic" src="{{compApp.profile_pic}}">
+                <img *ngIf="!compApp.profile_pic" src="img/gender_icon1.png">
 			        </ion-avatar>
 			        <h2 (click)="goToDetail(compApp.appointment_id)" class="bold_font">{{compApp.first_name}} {{compApp.last_name}}, {{compApp.gender}}, {{compApp.age}}</h2>
 			        <p (click)="goToDetail(compApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{compApp.start_time}} to {{compApp.end_time}}, {{compApp.date | date:'dd/MM/yyyy'}} </p>
@@ -74,8 +79,30 @@
 			        	<p>{{compApp.feedback}}</p>
 			        </div>
 			    </ion-item>
-			    <p style="text-align: center;" *ngIf="comSh">There is no data found.</p>
-			</ion-list>
+      </ion-list>
+      <p style="text-align: center;" *ngIf="comSh">No appointments found.</p>
+    </div>
+
+    <div *ngSwitchCase="'cancelled'">
+			<ion-list no-lines style="margin-bottom:60px;">
+				<ion-item *ngFor="let cancelData of cancelledData">
+			        <ion-avatar (click)="goToDetail(cancelData.appointment_id)" item-start>
+                <img *ngIf="cancelData.profile_pic" src="{{cancelData.profile_pic}}">
+                <img *ngIf="!cancelData.profile_pic" src="img/gender_icon1.png">
+			        </ion-avatar>
+			        <h2 (click)="goToDetail(cancelData.appointment_id)" class="bold_font">{{cancelData.first_name}} {{cancelData.last_name}}, {{cancelData.gender}}, {{cancelData.age}}</h2>
+			        <p (click)="goToDetail(cancelData.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{cancelData.start_time}} to {{cancelData.end_time}}, {{cancelData.date | date:'dd/MM/yyyy'}} </p>
+			        <p (click)="goToDetail(cancelData.appointment_id)">{{cancelData.category_name}} - <span>{{cancelData.subcategory_name}}</span> <span *ngIf="cancelData.level_name"> - {{cancelData.level_name}}</span></p>
+
+              <p *ngIf=" cancelData.student_status == 'EXP' && cancelData.tutor_status ==  'EXP'" class="pink_color">Your appointment has expired</p>
+			        <p *ngIf=" cancelData.student_status == 'R_RJ_BT'" class="pink_color">Appointment Rejected by you.</p>
+			        <p *ngIf=" cancelData.student_status == 'R_CA_BT'" class="blue">Appointment cancelled by you.</p>
+			        <p *ngIf=" cancelData.student_status == 'S_CN_BS'" class="green">Appointment in process.</p>
+			        <p *ngIf=" cancelData.student_status == 'R_CA_BS'" class="blue">Appointment cancelled by Student.</p>
+              <p *ngIf=" cancelData.student_status == 'S_NCN_BS'"  class="green">Student is not ready for this appointment</p>
+			    </ion-item>
+      </ion-list>
+      <p style="text-align: center;" *ngIf="cancelD">No appointments found.</p>
 		</div>
 
 	</div>

@@ -10,14 +10,14 @@
 			<ion-col col-50>
 				<ion-item class="drops">
 				  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
-				  	<ion-datetime displayFormat="HH:mm" minuteValues="0" placeholder="From Time" formControlName="start_time" (ionChange)="fromTime($event)"></ion-datetime>
+				  	<ion-datetime displayFormat="HH:mm" minuteValues="0,30" placeholder="From Time" formControlName="start_time" (ionChange)="fromTime($event)"></ion-datetime>
 				</ion-item>
 				 <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['start_time'].hasError('required') && authForm.controls['start_time'].touched">* From time is required!</div>
 			</ion-col>
 			<ion-col col-50>
 			    <ion-item class="drops">
 				  	<ion-icon item-end><img src="img/clock_icon.png" alt=""/></ion-icon>
-				  	<ion-datetime displayFormat="HH:mm" minuteValues="0" placeholder="To Time" formControlName="end_time" (ionChange)="toTime($event)"></ion-datetime>
+				  	<ion-datetime displayFormat="HH:mm" minuteValues="0,30" placeholder="To Time" formControlName="end_time"  (ionChange)="toTime($event)"></ion-datetime>
 				</ion-item>
 				<div style="margin-top: 6px;color: red;" *ngIf="authForm.controls['end_time'].hasError('required') && authForm.controls['end_time'].touched">* To time is required!</div>
 			</ion-col>
@@ -47,21 +47,19 @@
   <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['category'].hasError('required') && authForm.controls['category'].touched">* Category is required!</div>
     <ion-item class="drops">
       <ion-label>Select sub category</ion-label>
-     <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
+      <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
       <ion-select formControlName="subcategory" placeholder="Sub category">
         <ion-option *ngFor="let subCat of subCat" [value]="subCat.subcategory_id" (ionSelect)="categorySelectSub(subCat.subcategory_id,subCat.subcategory_name)">{{subCat.subcategory_name}}</ion-option>
       </ion-select>
   </ion-item>
   <div style="margin-top: 6px;color: red;"  *ngIf="authForm.controls['subcategory'].hasError('required') && authForm.controls['subcategory'].touched">* Sub category is required!</div>
   <ion-item *ngIf="showLevel" class="drops">
-      <ion-label>Level</ion-label>
+      <ion-label>Select Level</ion-label>
      <ion-icon item-end><img src="img/drop_arrow.png" alt=""/></ion-icon>
       <ion-select formControlName="levels" placeholder="Level">
         <ion-option *ngFor="let level of levelData" [value]="level.level_id" (ionSelect)="levelsSelect(level.level_id,level.level_name)">{{level.level_name}}</ion-option>
       </ion-select>
   </ion-item>
-
-
 
     <ion-item class="drops">
 	    	<ion-label>Location Preferences</ion-label>

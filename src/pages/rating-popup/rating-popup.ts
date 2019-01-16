@@ -26,8 +26,8 @@ export class RatingPopup {
   data1:any;
   tutorId:any;
   ratingVal:any;
-
   constructor(public viewCtrl:ViewController,public platform:Platform,public alertCtrl:AlertController,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public studentServices:StudentservicesProvider,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
+    this.ratingVal = '5';
   }
 
   ionViewDidEnter() {
@@ -96,7 +96,7 @@ export class RatingPopup {
       duration: 3000,
       position: 'bottom'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });

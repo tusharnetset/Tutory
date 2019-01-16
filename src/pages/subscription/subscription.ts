@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,ToastController,NavParams, AlertController, Platform} from 'ionic-angular';
+import { NavController,ToastController,NavParams, AlertController, Platform, ModalController} from 'ionic-angular';
 import { SignupType } from '../signup-type/signup-type';
 import { TutorservicesProvider } from './../../providers/tutorservices/tutorservices';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,8 +7,12 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import 'moment-timezone';
 import { Network } from '@ionic-native/network';
 import { InAppPurchase } from '@ionic-native/in-app-purchase';
+import { SubscriptionDetailPage } from '../subscription-detail/subscription-detail';
 
-const MONTHLYLVL_TEST = 'com.located.app.subscriptiontest.account1';
+const MONTHLYLVL_TEST = 'com.monthlytutorysubscription.subscription';
+const THREEMONTH_TEST = 'com.threemonthstutorysubscription.subscription';
+const SIXMONTH_TEST = 'com.sixmonthstutorysubscription.subscription';
+const TESTING_SUBSCRIPTION = 'com.tutorydemosunscription.subscription';
 @Component({
   selector: 'page-subscription',
   templateUrl: 'subscription.html',
@@ -31,8 +35,18 @@ export class Subscription {
 	currentPlanId: any;
 	currentId:any;
 	bestOffer:any;
-	constructor(public iap:InAppPurchase,public platform:Platform,public alertCtrl:AlertController,public toastCtrl:ToastController,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public network:Network,public tutorservices:TutorservicesProvider,public navCtrl: NavController, public navParams: NavParams) {
-	}
+  productId: any;
+	constructor(public modalCtrl:ModalController, public iap:InAppPurchase,public platform:Platform,public alertCtrl:AlertController,public toastCtrl:ToastController,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public network:Network,public tutorservices:TutorservicesProvider,public navCtrl: NavController, public navParams: NavParams) {
+
+    this.iap.getProducts([MONTHLYLVL_TEST,THREEMONTH_TEST,SIXMONTH_TEST]).then((products) => {
+      console.log(products);
+      console.log(products);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  }
 
 	ionViewDidEnter()
 	{
@@ -56,7 +70,6 @@ export class Subscription {
 			}
 		})
 	}
-
 
 	ionViewDidLeave()
 	{
@@ -112,18 +125,18 @@ export class Subscription {
 		})
 	}
 
-	purchaseSubScription(id,expPlan,cId)
+	purchaseSubScription(id,expPlan,cId, productId)
 	{
 		this.purchaseId = id;
 		console.log(this.purchaseId);
 		this.expPlan = expPlan;
 		console.log(this.expPlan);
 		this.currentId = cId;
-	}
+    this.productId = productId;
+  }
 
 	subscribeNow()
 	{
-		console.log("this.purchaseId",this.purchaseId,"this.currentPlanId",this.currentId)
 		if(this.purchaseId == this.currentId){
 			this.presentToast("You have already subscribed this plan. Please choose another plan");
 			return;
@@ -131,38 +144,45 @@ export class Subscription {
 		if(!this.purchaseId){
 			this.presentToast("Please choose a plan");
 			return;
-		}
-		let purchaseData = {
-			user_id : this.userId,
-			login_token:this.token,
-			subscription_id:this.purchaseId,
-			expire_after:this.expPlan
-		}
-		this.spinner.show();
-		this.tutorservices.subscriptionsApi(purchaseData).then((result) => {
-			console.log(result);
-			this.spinner.hide();
-			this.data1 = result;
-			if(this.data1.status == 200){
-				this.presentToast(this.data1.message);
-				this.getCurrentSubscrptions();
-			}else{
-				this.presentToast(this.data1.message);
-			}
-		}, (err) => {
-			console.log(err);
-		})
-	}
+    }
+    if(!this.productId){
+      this.presentToast("Please choose a plan");
+      return;
+    }
+    this.iap.subscribe(TESTING_SUBSCRIPTION).then((data) => {
+      console.log(data);
+      this.trnsactionId = data.transactionId;
+      let purchaseData = {
+        user_id : this.userId,
+        login_token:this.token,
+        subscription_id:this.purchaseId,
+        expire_after:this.expPlan
+      }
+      this.spinner.show();
+      this.tutorservices.subscriptionsApi(purchaseData).then((result) => {
+        console.log(result);
+        this.spinner.hide();
+        this.data1 = result;
+        if(this.data1.status == 200){
+          this.presentToast(this.data1.message);
+          this.getCurrentSubscrptions();
+        }else{
+          this.presentToast(this.data1.message);
+        }
+      }, (err) => {
+        console.log(err);
+      })
+    })
+    .catch((err)=> {
+      console.log(err);
+    });
+  }
 
-
-	// purchaseSubScription(id,exAf)
-	// {
-	 	// this.iap.subscribe(data).then((data)=> {
-	 	// 	console.log(data);
-	 	// 	this.trnsactionId = data.transactionId;
-	 	// })
-	// }
-
+  subscriptionDetail(){
+    let contactModal = this.modalCtrl.create(SubscriptionDetailPage);
+    contactModal.present();
+    // this.navCtrl.push(SubscriptionDetailPage);
+  }
 
 	presentToast(message)
 	{

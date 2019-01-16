@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { Settings } from './settings';
 
 @NgModule({
-  declarations: [
-    Settings,
-  ],
+  // declarations: [
+  //   Settings,
+  // ],
   imports: [
     IonicPageModule.forChild(Settings),
   ],

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { SwipeSegmentDirective } from './swipe-segment/swipe-segment';
 @NgModule({
-	declarations: [SwipeSegmentDirective],
+	declarations: [],
 	imports: [],
-	exports: [SwipeSegmentDirective]
+	exports: []
 })
 export class DirectivesModule {}

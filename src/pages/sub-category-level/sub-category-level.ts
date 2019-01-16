@@ -6,6 +6,7 @@ import { Network } from '@ionic-native/network';
 import { StudentservicesProvider } from './../../providers/studentservices/studentservices';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SignupType } from '../signup-type/signup-type';
+import { TutorList } from '../tutor-list/tutor-list';
 
 @Component({
   selector: 'page-sub-category-level',
@@ -34,6 +35,8 @@ export class SubCategoryLevel {
   cateLevel: any;
   getD:any;
   levelsArr:any[];
+  getDetailData: any;
+  getDetaildata: { user_id: any; login_token: any; category_id: any; subcategory_id: any; };
   constructor(public toastCtrl:ToastController,public spinner:NgxSpinnerService,public StudentServices:StudentservicesProvider,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public navCtrl: NavController) {
   }
 
@@ -96,6 +99,7 @@ export class SubCategoryLevel {
   }
 
   getLevels(){
+    this.spinner.show();
     if(this.userIdSkip){
       this.sendCategorydata = {
         user_id : this.userIdSkip,
@@ -108,7 +112,7 @@ export class SubCategoryLevel {
       }
     }
     this.StudentServices.getCategorySubCategory(this.sendCategorydata).then((result) => {
-      console.log(result);
+      this.spinner.hide();
       this.data1 = result;
       this.getD = this.data1.data;
       if(this.data1.status == 200){
@@ -125,6 +129,7 @@ export class SubCategoryLevel {
         this.presentToast(this.data1.message);
       }
     }, (err) => {
+      this.spinner.hide();
       console.log(err);
     })
   }
@@ -134,18 +139,56 @@ export class SubCategoryLevel {
   }
 
 
+  // subCateSelect(id,name){
+  //   this.levelsId = id;
+  //   if(this.levelsId){
+  //     this.navCtrl.push(SubjectDetail,{categoryId:this.catId,subCateId:this.subCatId,catName:this.catName,subCateName:this.subCatName,levelId:this.levelsId});
+  //    }else{
+  //      this.presentToast("Please select level");
+  //    }
+  // }
+
   subCateSelect(id,name){
     this.levelsId = id;
     if(this.levelsId){
-      this.navCtrl.push(SubjectDetail,{categoryId:this.catId,subCateId:this.subCatId,catName:this.catName,subCateName:this.subCatName,levelId:this.levelsId});
-     }else{
-       this.presentToast("Please select level");
-     }
-  }
-
-  goToSubjectDetail(){
-    if(this.levelsId){
-     this.navCtrl.push(SubjectDetail,{categoryId:this.catId,subCateId:this.subCatId,catName:this.catName,subCateName:this.subCatName,levelId:this.levelsId});
+      if(this.userIdSkip){
+        this.getDetaildata = {
+          user_id : this.userIdSkip,
+          login_token:this.loginTokenSkip,
+          category_id:this.catId,
+          subcategory_id:this.subCatId
+        }
+      }else{
+        this.getDetaildata = {
+          user_id : this.userId,
+          login_token:this.token,
+          category_id:this.catId,
+          subcategory_id:this.subCatId
+        }
+      }
+      this.spinner.show();
+      this.StudentServices.getSubDetailApi(this.getDetaildata).then((result) => {
+        console.log(result);
+        this.spinner.hide();
+        this.data1 = result;
+        this.getDetailData = this.data1.data;
+        if(this.data1.status == 200){
+          if(this.getDetailData.image != 'NA'){
+            this.navCtrl.push(SubjectDetail,{categoryId:this.catId,subCateId:this.subCatId,catName:this.catName,subCateName:this.subCatName,levelId:this.levelsId});
+          }else{
+            this.navCtrl.push(TutorList,{
+              categoryId :this.catId,
+              subCateId : this.subCatId,
+              levelId:this.levelsId
+            });
+          }
+        }else{
+          this.presentToast(this.data1.message);
+        }
+      }, (err) => {
+        this.spinner.hide();
+        console.log(err);
+      })
     }else{
       this.presentToast("Please select level");
     }

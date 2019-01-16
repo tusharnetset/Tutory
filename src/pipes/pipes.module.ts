@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { KeepHtmlPipe } from './keep-html/keep-html';
+import { TruncatePipe } from './truncate/truncate';
 @NgModule({
-	declarations: [KeepHtmlPipe],
+	declarations: [],
 	imports: [],
-	exports: [KeepHtmlPipe]
+	exports: []
 })
 export class PipesModule {}

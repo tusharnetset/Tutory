@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { MapSearchPage } from './map-search';
 
 @NgModule({
-  declarations: [
-    MapSearchPage,
-  ],
+  // declarations: [
+  //   MapSearchPage,
+  // ],
   imports: [
     IonicPageModule.forChild(MapSearchPage),
   ],

@@ -7,7 +7,8 @@
 <ion-content padding class="appointment_details">
 	<div class="white_box">
 		<div class="user_detail">
-			<img src="{{detailData?.profile_pic}}" class="user_img" (click)="goToProfile(detailData?.student_id)">
+      <img *ngIf="detailData?.profile_pic" src="{{detailData?.profile_pic}}" class="user_img" (click)="goToProfile(detailData?.student_id)">
+      <img *ngIf="!detailData?.profile_pic" src="img/gender_icon1.png" class="user_img" (click)="goToProfile(detailData?.student_id)">
 			<h2 (click)="goToProfile(detailData?.student_id)" >{{detailData?.first_name}} {{detailData?.last_name}}, {{detailData?.gender}}, {{detailData?.age}}</h2>
 			<p (click)="goToProfile(detailData?.student_id)" class="location"><img src="img/location_icon.png" alt="" />{{detailData?.address}}</p>
 			<p class="bold_font underline view_map" (click)="viewMap(detailData?.latitude,detailData?.longitude)" >View on map</p>
@@ -99,7 +100,7 @@
 		<button *ngIf=" detailData?.student_status == 'R_SE_BS'" class="btn btn-text" ion-button full (click)="actionClickAccept(detailData?.appointment_id,'accept')">Accept</button>
         <button  *ngIf=" detailData?.student_status == 'R_SE_BS'" class="btn btn-text blue_btn" ion-button full (click)="goToReject(detailData?.appointment_id,'reject');">Reject</button>
 
-        <button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text" ion-button full (click)="actionClickSTart(detailData?.appointment_id,'start')" >Start</button>
+        <button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text" ion-button full (click)="actionClickSTart(detailData?.appointment_id,'start','detailData?.start_time','detailData?.date')" >Start</button>
 		<button *ngIf=" detailData?.student_status == 'R_AC_BT'" class="btn btn-text blue_btn" ion-button full (click)="cancelClick(detailData?.appointment_id,'cancel')">Cancel</button>
 
 

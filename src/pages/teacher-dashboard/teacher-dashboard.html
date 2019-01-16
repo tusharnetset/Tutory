@@ -115,11 +115,11 @@
               <ion-avatar (click)="goToDetailSubmit(nextWeekApp.appointment_id)" item-start>
                 <img src="{{nextWeekApp.profile_pic}}">
               </ion-avatar>
-             <h2 (click)="goToDetailSubmit(nextWeekApp.appointment_id)" class="bold_font">{{nextWeekApp.first_name}} {{nextWeekApp.last_name}}, {{nextWeekApp.gender}}, {{nextWeekApp.age}}</h2>
-               <p (click)="goToDetailSubmit(nextWeekApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{nextWeekApp.start_time}} to {{nextWeekApp.end_time}}, {{nextWeekApp.date | date:'dd/MM/yyyy'}}</p>
+              <h2 (click)="goToDetailSubmit(nextWeekApp.appointment_id)" class="bold_font">{{nextWeekApp.first_name}} {{nextWeekApp.last_name}}, {{nextWeekApp.gender}}, {{nextWeekApp.age}}</h2>
+              <p (click)="goToDetailSubmit(nextWeekApp.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{nextWeekApp.start_time}} to {{nextWeekApp.end_time}}, {{nextWeekApp.date | date:'dd/MM/yyyy'}}</p>
               <p (click)="goToDetailSubmit(nextWeekApp.appointment_id)" >{{nextWeekApp.category_name}} - <span>{{nextWeekApp.subcategory_name}}</span> <span *ngIf="nextWeekApp.level_name"> - {{nextWeekApp.level_name}}</span></p>
 
-             <p *ngIf="nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
+              <p *ngIf="nextWeekApp.student_status == 'R_AC_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_AC_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="blue">Appointment accepted by you.</p>
               <p *ngIf="nextWeekApp.student_status == 'R_RJ_BT' && nextWeekApp.prev_student_status == 'R_SE_BS' && nextWeekApp.tutor_status ==  'R_RJ_BT' && nextWeekApp.prev_tutor_status == 'R_RE_BT'" class="green" >Appointment Rejected by you.</p>
               <p *ngIf="nextWeekApp.student_status == 'A_ST_BT' && nextWeekApp.prev_student_status == 'R_AC_BT' && nextWeekApp.tutor_status ==  'A_ST_BT' && nextWeekApp.prev_tutor_status == 'R_AC_BT'" class="blue">Request sent to student for start appointment.</p>
               <p *ngIf="nextWeekApp.student_status == 'R_CA_BT' && nextWeekApp.prev_student_status == 'R_AC_BT' && nextWeekApp.tutor_status ==  'R_CA_BT' && nextWeekApp.prev_tutor_status == 'R_AC_BT'" class="pink_color">Appointment cancelled by you.</p>

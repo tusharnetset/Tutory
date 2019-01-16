@@ -7,5 +7,7 @@ import 'rxjs/add/operator/map';
 export class ConfigProvider {
   readonly baseUrl: string = 'http://207.154.223.142/tutory/api/v1/';
   readonly appVersion:string = '1.0';
-  constructor() {}
+  constructor() {
+
+  }
 }

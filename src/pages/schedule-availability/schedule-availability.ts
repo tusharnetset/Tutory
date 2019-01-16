@@ -55,6 +55,8 @@ export class ScheduleAvailability {
   };
   dateArr: any[];
   fromTimeSend: any;
+  fromTimeSendMinutes: any;
+  toTimeSendMinutes: any;
   constructor(public zone:NgZone,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public tutorservices:TutorservicesProvider,public navCtrl:NavController,public navParams:NavParams,public toastCtrl:ToastController) {
 
   }
@@ -137,8 +139,6 @@ export class ScheduleAvailability {
             'from' : first,
             'to' : last
           };
-          console.log(this.dateRange);
-
           this.zone.run(() => {
             // for (let i = 0; i < this.getdates.length; i++) {
             //   let dat = this.getdates[i].split('-');
@@ -149,7 +149,6 @@ export class ScheduleAvailability {
             //     month: check.format('M'),
             //     date: check.format('D')
             //   }
-
             //   this.eventsDouble = {
             //     year:this.events.year,
             //     month:this.events.month-1,
@@ -170,6 +169,7 @@ export class ScheduleAvailability {
             if(this.getViewAvailbilityData.length == 0){
               this.check = true;
             }else{
+              console.log("this.check = false;");
               this.check = false;
             }
           })
@@ -178,7 +178,7 @@ export class ScheduleAvailability {
         }
       }, (err) => {
         this.spinner.hide();
-          console.log(err);
+        console.log(err);
       })
     }
 
@@ -288,12 +288,13 @@ export class ScheduleAvailability {
 
   fromTime(event,i){
     this.fromTimeSend = event.hour;
+    this.fromTimeSendMinutes = event.minute;
     console.log("eventevent",event,i);
     if(i != 0) {
       console.log("this.slotArr.length", this.slotArr.length);
       var lastTotime = this.slotArr[i-1].to_time;
       console.log("hii lastTotime ",lastTotime, this.slotArr[i-1].to_time)
-      if(lastTotime <= event.hour) {
+      if(lastTotime.split(':')[0] <= event.hour) {
         console.log("if lastTotime <= event.hour");
         this.frTime = event.hour;
       }else {
@@ -307,10 +308,11 @@ export class ScheduleAvailability {
 
   toTime(event,idi){
     this.toTimeVal = event.hour;
+    this.toTimeSendMinutes = event.minute;
     if(this.toTimeVal > this.frTime) {
       this.newAttri = {
-        from_time: this.frTime,
-        to_time:this.toTimeVal
+        from_time: this.frTime+':'+this.fromTimeSendMinutes,
+        to_time:this.toTimeVal+':'+this.toTimeSendMinutes
       };
       console.log('this.newAttri',this.newAttri)
       this.slotArr[idi]=this.newAttri;
@@ -369,16 +371,23 @@ export class ScheduleAvailability {
 
     for (let k = 0; k < this.dateArr.length; k++) {
       for(var j in this.slotArr) {
-        var from = parseInt(this.slotArr[j].from_time);
-        var to = parseInt(this.slotArr[j].to_time);
+        var from = parseInt(this.slotArr[j].from_time.split(':')[0]);
+        var to = parseInt(this.slotArr[j].to_time.split(':')[0]);
         var to_time = from;
-        for(var i=from; i < to; i++) {
+        var endMins = '';
+        if(this.slotArr[j].from_time.split(':')[1] == '0'){
+          endMins = ':00';
+        }
+        else{
+          endMins = ':30';
+        }
+        for (var i = from; i < to; i++) {
           from = to_time;
           to_time = from + 1;
           this.newAttri2 = {
-            from_time: from,
-            to_time:to_time,
-            date:moment(this.dateArr[k]).format('YYYY-MM-DD')
+            from_time: from+endMins,
+            to_time: to_time+endMins,
+            date: moment(this.dateArr[k]).format('YYYY-MM-DD')
           };
           if(this.slotArr[j].from_time == "" || this.slotArr[j].from_time == undefined || this.slotArr[j].from_time == null){
             this.presentToast('Please select from time');
@@ -388,13 +397,25 @@ export class ScheduleAvailability {
             this.presentToast('Please select to time');
             return;
           }
-          if(this.newAttri2.from_time > this.newAttri2.to_time){
-            this.presentToast('Please select time greater than from time');
-            return;
-          }
+          // if(this.fromTimeSend > this.toTimeVal){
+          //   this.presentToast('Please select time greater than from time');
+          //   return;
+          // }
           console.log('this.newAttri2',this.newAttri2)
           this.slotArr2.push(this.newAttri2);
         }
+      }
+    }
+    if(this.newAttri.from_time.split(':')[1] != this.newAttri.to_time.split(':')[1]){
+      if (this.newAttri.from_time.split(':')[1] == '0' && this.newAttri.to_time.split(':')[1] == '30') {
+        var lastHour = this.slotArr2[this.slotArr2.length-1].to_time.split(':')[0];
+        let lastFrom = this.slotArr2[this.slotArr2.length-1].to_time;
+        for (let k = 0; k < this.dateArr.length; k++) {
+          this.slotArr2.push({from_time: lastFrom, to_time: lastHour+':30', date: moment(this.dateArr[k]).format('YYYY-MM-DD')});
+        }
+      } else {
+        var lastHour2 = this.slotArr2[this.slotArr2.length-1].to_time.split(':')[0];
+        this.slotArr2[this.slotArr2.length-1].to_time = lastHour2 + ':00';
       }
     }
 
@@ -418,18 +439,19 @@ export class ScheduleAvailability {
     this.submitSlotData = {
       user_id : this.userId,
       login_token:this.token,
-      // date:this.dateSend,
+      //date:this.dateSend,
       slots:JSON.stringify(this.slotArr2)
     }
     this.spinner.show();
     this.tutorservices.addSlotsApi(this.submitSlotData).then((result) => {
-      console.log(result);
+      console.log('result is coming', result);
       this.spinner.hide();
       this.anArray = [];
       this.show = true;
       this.hide = false;
       this.data1 = result;
       if(this.data1.status == 200){
+        this.presentToast(this.data1.message);
         this.zone.run(() => {
           this.slotArr2 = []
           this.anArray = [];
@@ -451,6 +473,7 @@ export class ScheduleAvailability {
           }
         })
       }else if(this.data1.status == 204){
+        this.presentToast(this.data1.message);
         this.slotArr2 = []
         this.anArray = [];
         this.slotArr = [];

@@ -10,10 +10,8 @@ export class KeepHtmlPipe implements PipeTransform {
   constructor(
   	private sanitizer: DomSanitizer
   ) {
-  	
+
 	}
-
-
   transform(content) {
     return this.sanitizer.bypassSecurityTrustHtml(content);
   }

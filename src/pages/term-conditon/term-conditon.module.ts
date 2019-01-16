@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { TermConditonPage } from './term-conditon';
 
 @NgModule({
-  declarations: [
-    TermConditonPage,
-  ],
+  // declarations: [
+  //   TermConditonPage,
+  // ],
   imports: [
     IonicPageModule.forChild(TermConditonPage),
   ],

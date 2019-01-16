@@ -46,7 +46,7 @@ export class Search {
     login_token:any;
     subcategory_id:any;
     search_count:any;
-  } 
+  }
 
   constructor(public ref: ChangeDetectorRef,public alertCtrl:AlertController,public viewCtrl:ViewController,public platform:Platform,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public studentServices:StudentservicesProvider,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
     this.search="academic";
@@ -67,6 +67,9 @@ export class Search {
       this.loginTokenSkip = data.login_token;
       this.getCategories();
     })
+    // this.nativeStorage.getItem('cateId').then((data) => {
+    //   this.catSelId = data
+    // })
     this.connectSubscription = this.network.onConnect().subscribe(() => {
       this.getCategories();
     });
@@ -74,13 +77,13 @@ export class Search {
       if(this.navCtrl.canGoBack()){
         this.navCtrl.pop();
       }else{
-        if(this.alert){ 
+        if(this.alert){
           this.alert.dismiss();
-          this.alert = null;     
+          this.alert = null;
         }else{
           this.showAlert();
         }
-      }        
+      }
     })
     this.ref.markForCheck();
   }
@@ -118,7 +121,7 @@ export class Search {
       this.sendCategorydata = {
         user_id : this.userIdSkip,
         login_token:this.loginTokenSkip
-      } 
+      }
     }else{
       this.sendCategorydata = {
         user_id : this.userId,
@@ -129,9 +132,9 @@ export class Search {
       console.log(result);
       this.spinner.hide();
       this.data1 = result;
-      this.cateD = this.data1.data; 
+      this.cateD = this.data1.data;
       if(this.data1.status == 200){
-        this.getCategory = this.cateD; 
+        this.getCategory = this.cateD;
         this.search = this.getCategory[0].id;
         this.searchSel = this.getCategory[0].name;
         this.pushSubData = [];
@@ -151,7 +154,7 @@ export class Search {
 
   public setOption(index,event,id,name,_isLevPresent) {
     if (this.getCategory[index] != null) {
-      this.selectedSegment = this.getCategory[index]; 
+      this.selectedSegment = this.getCategory[index];
       let segments = event.target.parentNode.children;
       let len = segments.length;
       for (let i=0; i < len; i++) {
@@ -162,12 +165,17 @@ export class Search {
       this.subPush = [];
       this.cateData = [];
       this.catSelId = id;
+      // this.nativeStorage.setItem('cateId', this.catSelId).then(
+      //   (result) => {
+      //     this.catSelId = result
+      //   }
+      // );
       this.catName = name;
       this.searchSel = name;
       this._levPresent = _isLevPresent;
       this.pushSubData = [];
       for (let i = 0; i < this.getCategory.length; i++) {
-        if(this.catSelId == this.getCategory[i].id){
+        if (this.catSelId == this.getCategory[i].id){
           for (let j = 0; j < this.getCategory[i].subcategories.length; j++) {
             this.pushSubData.push(this.getCategory[i].subcategories[j])
           }
@@ -190,19 +198,22 @@ export class Search {
         console.log("catD.subcategory_name",catD.subcategory_name);
         return (catD.subcategory_name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
-    } 
+    }
   }
 
   clickSeach(subCatId,subCatName,_searchCount){
-
-   this.spinner.show();
+    if(!this.catSelId){
+      this.catSelId = "1";
+      this.catName = "Acadmic";
+    }
+    this.spinner.show();
     if(this.userIdSkip){
       this.sendSearchCount = {
         user_id : this.userId,
         login_token:this.token,
         subcategory_id:subCatId,
         search_count:_searchCount
-      } 
+      }
     }else{
       this.sendSearchCount = {
         user_id : this.userId,
@@ -215,13 +226,13 @@ export class Search {
       console.log(result);
       this.spinner.hide();
       this.data1 = result;
-      this.cateD = this.data1.data; 
+      this.cateD = this.data1.data;
       if(this.data1.status == 200){
         if(this._levPresent == 0){
           this.levelId = 0;
           this.navCtrl.push(SubjectDetail,{categoryId: this.catSelId,subCateId:subCatId,subCateName:subCatName,catName:this.catName,levelId:this.levelId});
         }else{
-          this.navCtrl.push(SubCategoryLevel,{categoryId: this.catSelId,subCateId:subCatId,subCateName:subCatName,cateName:this.catName});
+          this.navCtrl.push(SubCategoryLevel,{categoryId: this.catSelId,subCateId:subCatId,subCateName:subCatName,cateName:this.catName, levelId:this.levelId});
         }
       }else{
         this.presentToast(this.data1.message);
@@ -247,7 +258,7 @@ export class Search {
       duration: 3000,
       position: 'bottom'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });

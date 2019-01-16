@@ -23,11 +23,13 @@ export class Notifications {
   data1:any;
   notificationD:any;
   alert: any;
+  show: boolean = false;
 
   constructor(public alertCtrl:AlertController, public platform:Platform, public toastCtrl:ToastController,public nativeStorage:NativeStorage,public spinner:NgxSpinnerService,public network:Network,public studentservices:StudentservicesProvider,public modalCtrl:ModalController,public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidEnter() {
+    console.log("notification controller");
     this.nativeStorage.getItem('userData').then((data) => {
       this.userType = data.user_type;
       this.userId = data.id;
@@ -47,7 +49,7 @@ export class Notifications {
           this.alert = null;
         }else{
           this.showAlert();
-         }
+        }
       }
     })
   }
@@ -93,6 +95,13 @@ export class Notifications {
       this.data1 = result;
       if(this.data1.status == 200){
         this.notificationD = this.data1.data;
+        if(this.notificationD.length == 0){
+          console.log("if statement");
+          this.show = true;
+        }else{
+          console.log("else statement");
+          this.show = false;
+        }
       }else{
         this.presentToast(this.data1.message);
       }

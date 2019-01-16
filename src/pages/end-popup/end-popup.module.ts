@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { EndPopup } from './end-popup';
 
 @NgModule({
-  declarations: [
-    EndPopup,
-  ],
+  // declarations: [
+  //   EndPopup,
+  // ],
   imports: [
     IonicPageModule.forChild(EndPopup),
   ],

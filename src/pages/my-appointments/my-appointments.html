@@ -9,7 +9,7 @@
         </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-segment [(ngModel)]="appointments" class="appointments_tab">
+  <ion-segment [(ngModel)]="appointments" class="appointments_tab appointments_tab2">
     <ion-segment-button value="submitted">
       Submitted
     </ion-segment-button>
@@ -19,6 +19,9 @@
     <ion-segment-button value="completed">
       Completed
     </ion-segment-button>
+    <ion-segment-button value="cancelled">
+      cancelled
+    </ion-segment-button>
   </ion-segment>
 </ion-header>
 <ion-content padding class="appointments_box">
@@ -27,7 +30,8 @@
 			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let submittedA of submittedData" >
 			        <ion-avatar (click)="goToDetailSubmit(submittedA.appointment_id)" item-start>
-			        	<img src="{{submittedA.profile_pic}}">
+                <img *ngIf="submittedA.profile_pic" src="{{submittedA.profile_pic}}">
+                <img *ngIf="!submittedA.profile_pic" src="img/gender_icon1.png">
 			        </ion-avatar>
 			        <h2 (click)="goToDetailSubmit(submittedA.appointment_id)" class="bold_font">{{submittedA.first_name}} {{submittedA.last_name}},{{submittedA.gender}}, {{submittedA.age}}</h2>
 			        <p (click)="goToDetailSubmit(submittedA.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{submittedA.start_time}} to {{submittedA.end_time}}, {{submittedA.date | date:'dd/MM/yyyy'}} </p>
@@ -47,16 +51,17 @@
 			        <button *ngIf=" submittedA.student_status == 'R_SE_BS'" class="btn btn-text" ion-button (click)="cancelAction(submittedA.appointment_id,'cancel')">Cancel Appointment</button>
 			        <button *ngIf=" submittedA.student_status == 'R_AC_BT'" class="btn btn-text" ion-button (click)="cancelAction(submittedA.appointment_id,'cancel')">Cancel Appointment</button>
 			    </ion-item>
-			    <p style="text-align: center;" *ngIf="submitS">There is no data found</p>
-			</ion-list>
+      </ion-list>
+      <p style="text-align: center;" *ngIf="submitS">No appointments found.</p>
 		</div>
 		<div *ngSwitchCase="'scheduled'">
 			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let shedule of sheduledData">
           <ion-avatar  (click)="goToDetailSubmit(shedule.appointment_id)" item-start>
-            <img src="{{shedule.profile_pic}}">
+            <img *ngIf="shedule.profile_pic" src="{{shedule.profile_pic}}">
+            <img *ngIf="!shedule.profile_pic" src="img/gender_icon1.png">
           </ion-avatar>
-          <h2  (click)="goToDetailSubmit(shedule.appointment_id)" class="bold_font">{{shedule.first_name}} {{shedule.last_name}}, {{shedule.gender}}, {{shedule.age}}</h2>
+          <h2 (click)="goToDetailSubmit(shedule.appointment_id)" class="bold_font">{{shedule.first_name}} {{shedule.last_name}}, {{shedule.gender}}, {{shedule.age}}</h2>
           <p  (click)="goToDetailSubmit(shedule.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{shedule.start_time}} to {{shedule.end_time}}, {{shedule.date | date:'dd/MM/yyyy'}} </p>
           <p  (click)="goToDetailSubmit(shedule.appointment_id)">{{shedule.category_name}} - <span>{{shedule.subcategory_name}}</span> <span *ngIf="shedule.level_name"> - {{shedule.level_name}}</span></p>
 
@@ -80,21 +85,21 @@
 
 					<button *ngIf="shedule.student_status == 'A_EN_BT'" class="btn btn-text" ion-button (click)="actionClick(shedule.appointment_id,'end_yes')">Yes</button>
           <button *ngIf="shedule.student_status == 'A_EN_BT'" class="btn btn-text blue_btn" ion-button (click)="noClick(shedule.appointment_id,'end_no')">No</button>
-
 			    </ion-item>
-			    <p style="text-align: center;" *ngIf="shedulS">There is no data found.</p>
-			</ion-list>
+      </ion-list>
+      <p style="text-align: center;" *ngIf="shedulS">No appointments found. </p>
 		</div>
 
 		<div *ngSwitchCase="'completed'">
 			<ion-list no-lines style="margin-bottom:60px;">
 				<ion-item *ngFor="let complete of completeAppoint" (click)="goToDetailSubmit(complete.appointment_id)">
 			        <ion-avatar item-start>
-			        	<img src="{{complete.profile_pic}}">
+                <img *ngIf="complete.profile_pic" src="{{complete.profile_pic}}">
+                <img *ngIf="!complete.profile_pic" src="img/gender_icon1.png">
 			        </ion-avatar>
 			        <h2 class="bold_font">{{complete.first_name}} {{complete.last_name}}, {{complete.gender}}, {{complete.age}}</h2>
 			        <p class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{complete.start_time}} to {{complete.end_time}}, {{complete.date | date:'dd/MM/yyyy'}} </p>
-              <p>{{complete.category_name}} - <span>{{complete.subcategory_name}}</span> - <span>{{complete.level_name}}</span> <span *ngIf="complete.level_name"> - {{complete.level_name}}</span></p>
+              <p>{{complete.category_name}} - <span>{{complete.subcategory_name}}</span> - <span *ngIf="complete.level_name"> - {{complete.level_name}}</span></p>
 					    <p *ngIf=" complete.student_status == 'END'"  class="green">Your appointment has been completed</p>
 
 			        <button *ngIf=" complete.student_status == 'END' && complete.feedback_given == 'N'"  class="btn btn-text" ion-button (click)="giveFeedBack(complete.appointment_id,complete.tutor_id)">Give Feedback</button>
@@ -110,8 +115,30 @@
 			        	<p>{{complete.feedback}}</p>
 			        </div>
 			    </ion-item>
-			    <p style="text-align: center;" *ngIf="completeS">There is no data found</p>
-			</ion-list>
+      </ion-list>
+      <p style="text-align: center;" *ngIf="completeS">No appointments found.</p>
+    </div>
+
+    <div *ngSwitchCase="'cancelled'">
+			<ion-list no-lines style="margin-bottom:60px;">
+				<ion-item *ngFor="let cancel of cancelledData" >
+			        <ion-avatar (click)="goToDetailSubmit(cancel.appointment_id)" item-start>
+                <img *ngIf="cancel.profile_pic" src="{{cancel.profile_pic}}">
+                <img *ngIf="!cancel.profile_pic" src="img/gender_icon1.png">
+			        </ion-avatar>
+			        <h2 (click)="goToDetailSubmit(cancel.appointment_id)" class="bold_font">{{cancel.first_name}} {{cancel.last_name}},{{cancel.gender}}, {{cancel.age}}</h2>
+			        <p (click)="goToDetailSubmit(cancel.appointment_id)" class="appointment_schedule"><img src="img/appointments_icon_active.png" alt="" />{{cancel.start_time}} to {{cancel.end_time}}, {{cancel.date | date:'dd/MM/yyyy'}} </p>
+			        <p (click)="goToDetailSubmit(cancel.appointment_id)">{{cancel.category_name}} - <span>{{cancel.subcategory_name}}</span> - <span>{{cancel.level_name}}</span></p>
+
+              <p *ngIf=" cancel.student_status == 'R_RJ_BT'"  class="pink_color">Your appointment has been rejected by your tutor.</p>
+              <p *ngIf=" cancel.student_status == 'R_CA_BS'"  class="green">Appointment cancelled by you.</p>
+              <p *ngIf=" cancel.student_status == 'R_CA_BT'"  class="pink_color">Appointment cancelled by your tutor.</p>
+              <p *ngIf=" cancel.student_status == 'S_NCN_BS'"  class="green">You are not ready for this appointment</p>
+              <p *ngIf=" cancel.student_status == 'EXP' && cancel.tutor_status ==  'EXP'" class="pink_color">Your appointment has expired</p>
+			    </ion-item>
+      </ion-list>
+      <p style="text-align: center;" *ngIf="cancelD">No appointments found.</p>
 		</div>
+
 	</div>
 </ion-content>

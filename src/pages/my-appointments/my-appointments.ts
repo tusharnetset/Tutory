@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController, Platform, ModalController, App } from 'ionic-angular';
 import { AppointmentDetailSubmited } from '../appointment-detail-submited/appointment-detail-submited';
-import { AppointmentDetailRejected } from '../appointment-detail-rejected/appointment-detail-rejected';
-import { AppointmentDetailProgress } from '../appointment-detail-progress/appointment-detail-progress';
-import { AppointmentDetailAccepted } from '../appointment-detail-accepted/appointment-detail-accepted';
-import { AppointmentDetailCompleted } from '../appointment-detail-completed/appointment-detail-completed';
-import { AppointmentDetailCompletedFeedback } from '../appointment-detail-completed-feedback/appointment-detail-completed-feedback';
 import { Notifications } from '../notifications/notifications';
 import { StudentservicesProvider } from './../../providers/studentservices/studentservices';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -39,9 +34,11 @@ export class MyAppointments {
   getAppointmentsData:{user_id:any;login_token:any;user_type:any;}
   actionData:{student_id:any;login_token:any;appointment_id:any;action:any;}
   public appointments: string = 'submitted';
-  public categories: Array<string> = ['submitted', 'scheduled', 'completed']
+  public categories: Array<string> = ['submitted', 'scheduled', 'completed','cancelled']
   getBadgeCount:any;
   logoutDataSend: { user_id: any; login_token: any; };
+  cancelledData: any;
+  cancelD: boolean = false;
 
   constructor(public app:App, public authservices:AuthservicesProvider, public modalCtrl:ModalController,public platform:Platform,public alertCtrl:AlertController,public network:Network,public toastCtrl: ToastController,public spinner: NgxSpinnerService,public studentServices:StudentservicesProvider,public navCtrl: NavController, public navParams:NavParams,public nativeStorage:NativeStorage) {
     // this.appointments="submitted";
@@ -142,6 +139,7 @@ export class MyAppointments {
         this.submittedData = this.myAppoint.submitted;
         this.sheduledData = this.myAppoint.scheduled;
         this.completeAppoint =  this.myAppoint.completed;
+        this.cancelledData = this.myAppoint.cancelled;
         if(this.submittedData.length == 0){
           this.submitS = true;
         }else{
@@ -156,6 +154,11 @@ export class MyAppointments {
           this.completeS = true;
         }else{
           this.completeS = false;
+        }
+        if(this.cancelledData.length == 0){
+          this.cancelD = true;
+        }else{
+          this.cancelD = false;
         }
       }else{
         if(this.data1.message == 'Wrong token entered!.Please try again.'){
@@ -243,21 +246,6 @@ export class MyAppointments {
 
   goToDetailSubmit(id){
     this.navCtrl.push(AppointmentDetailSubmited,{appointment_id:id});
-  }
-  goToDetailReject(){
-  	this.navCtrl.push(AppointmentDetailRejected);
-  }
-  goToDetailProgress(){
-    this.navCtrl.push(AppointmentDetailProgress);
-  }
-  goToDetailAccepted(){
-    this.navCtrl.push(AppointmentDetailAccepted);
-  }
-  goToDetailCompleted(){
-    this.navCtrl.push(AppointmentDetailCompleted);
-  }
-  goToDetailCompletedFeedback(){
-    this.navCtrl.push(AppointmentDetailCompletedFeedback);
   }
 
   goToNotifications(){

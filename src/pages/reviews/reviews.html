@@ -1,4 +1,3 @@
-
 <ion-header class="with_back">
   <ion-navbar>
     <ion-title>Reviews</ion-title>
@@ -6,19 +5,20 @@
 </ion-header>
 <ion-content padding>
 	<div class="white_box">
-			<ion-list no-lines>
-				<ion-item *ngFor="let reviews of getReviewData">
-			        <ion-avatar item-start>
-			        	<img src="{{reviews.profile_pic}}">
-			        </ion-avatar>
-			        <h2 (click)="goToTutorProfile()">{{reviews.first_name}} {{reviews.last_name}}, {{reviews.gender}}, {{reviews.age}} <span class="date">{{reviews.created_at | timeAgo}}</span></h2>
-			        <span class="rating">
-		        		<rating [(ngModel)]="reviews.rating"
-			        readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
-					</rating>
-		        	</span>
-		        	<p>{{reviews.feedback}}</p>
-			    </ion-item>
-			</ion-list>
-		</div>
+    <ion-list no-lines>
+      <ion-item *ngFor="let reviews of getReviewData">
+        <ion-avatar item-start>
+          <img *ngIf="reviews.profile_pic" src="{{reviews.profile_pic}}">
+          <img *ngIf="!reviews.profile_pic" src="img/gender_icon1.png">
+        </ion-avatar>
+        <h2 (click)="goToTutorProfile()">{{reviews.first_name}} {{reviews.last_name}}, {{reviews.gender}}, {{reviews.age}} <span class="date">{{reviews.created_at | timeAgo}}</span></h2>
+        <span class="rating">
+          <rating [(ngModel)]="reviews.rating"
+            readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
+          </rating>
+        </span>
+        <p>{{reviews.feedback}}</p>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>

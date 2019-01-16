@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { ViewAvailability } from './view-availability';
 
 @NgModule({
-  declarations: [
-    ViewAvailability,
-  ],
+  // declarations: [
+  //   ViewAvailability,
+  // ],
   imports: [
     IonicPageModule.forChild(ViewAvailability),
   ],

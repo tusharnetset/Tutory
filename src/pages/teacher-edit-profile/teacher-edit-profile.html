@@ -1,20 +1,16 @@
 
 <ion-header class="with_back">
-
   <ion-navbar>
     <ion-title>Edit Profile</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content>
-
 	<div class="upload_outer center">
 		<div class="upload_inner">
 			<!-- <img *ngIf="!getProfileData?.profile_image" (click)="imagePopOver()" src="img/camera_icon.png" alt="" class="camera_icon" /> -->
 			<img *ngIf="!imgData" src="{{getProfileData?.profile_pic}}" (click)="imagePopOver()" class="upload_inner">
-			<img *ngIf="imgData" src="{{imgData}}" (click)="imagePopOver()" class="upload_inner">
+      <img *ngIf="imgData" src="{{imgData}}" (click)="imagePopOver()" class="upload_inner">
+      <!-- <img *ngIf="!imgData && !getProfileData?.profile_pic" src="img/camera_icon.png" (click)="imagePopOver()" class="upload_inner"> -->
 		</div>
 		<p>Update Profile Picture</p>
 	</div>
@@ -60,7 +56,7 @@
 
 
 			<ion-item (tap)="addressMap()">
-				<ion-input id="txtHome1" type="text" placeholder="Address" formControlName="address"></ion-input>
+				<ion-input readonly id="txtHome1" type="text" placeholder="Address" formControlName="address"></ion-input>
 				<div style="color: red" *ngIf="authForm.controls['address'].hasError('required') && authForm.controls['address'].touched">* Address is required!</div>
 
 		    </ion-item>
@@ -152,7 +148,6 @@
 			<ion-item>
 		    	<ion-textarea placeholder="Other Information" formControlName="other_info"></ion-textarea>
 			</ion-item>
-			<div style="color: red" *ngIf="authForm.controls['other_info'].hasError('required') && authForm.controls['other_info'].touched">* Other Information is required!</div>
 
 		</ion-list>
 		<button class="btn btn-text" ion-button full type="submit" >Update profile</button>

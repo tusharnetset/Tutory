@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,ToastController,AlertController ,Platform } from 'ionic-angular';
+import { NavController,NavParams,ToastController,AlertController ,Platform ,Toast} from 'ionic-angular';
 import { TutorList } from '../tutor-list/tutor-list';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { Network } from '@ionic-native/network';
@@ -12,6 +12,8 @@ import { SignupType } from '../signup-type/signup-type';
   templateUrl: 'subject-detail.html',
 })
 export class SubjectDetail {
+  showPage:boolean = false;
+  toast: Toast;
   catId:any;
   subId:any;
   catName:any;
@@ -27,6 +29,7 @@ export class SubjectDetail {
   userIdSkip:any;
   loginTokenSkip:any;
   constructor(public spinner:NgxSpinnerService,public toastCtrl:ToastController,public studentservices:StudentservicesProvider,public alertCtrl:AlertController,public platform:Platform,public network:Network,public nativeStorage:NativeStorage,public navParams:NavParams,public navCtrl: NavController) {
+
   }
 
   ionViewDidLoad() {
@@ -35,7 +38,6 @@ export class SubjectDetail {
     this.levelId = this.navParams.get('levelId');
     this.catName = this.navParams.get('catName');
     this.subCatName = this.navParams.get('subCateName');
-
     this.nativeStorage.getItem('userData').then((data) => {
       this.userId = data.id;
       this.token = data.login_token;
@@ -47,19 +49,20 @@ export class SubjectDetail {
       this.getSubDetail();
     })
     this.connectSubscription = this.network.onConnect().subscribe(() => {
+      this.getSubDetail();
     });
     console.log('ionViewDidLoad SubjectDetail');
      this.platform.registerBackButtonAction(() => {
       if(this.navCtrl.canGoBack()){
         this.navCtrl.pop();
       }else{
-        if(this.alert){ 
+        if(this.alert){
           this.alert.dismiss();
-          this.alert = null;     
+          this.alert = null;
         }else{
           this.showAlert();
-         }
-      }        
+        }
+      }
     })
   }
 
@@ -70,7 +73,7 @@ export class SubjectDetail {
         login_token:this.loginTokenSkip,
         category_id:this.catId,
         subcategory_id:this.subId
-      } 
+      }
     }else{
       this.getDetaildata = {
         user_id : this.userId,
@@ -84,9 +87,9 @@ export class SubjectDetail {
       console.log(result);
       this.spinner.hide();
       this.data1 = result;
-      this.getDetailData = this.data1.data; 
+      this.getDetailData = this.data1.data;
       if(this.data1.status == 200){
-        this.getDetailData = this.data1.data; 
+        this.getDetailData = this.data1.data;
       }else{
         this.presentToast(this.data1.message);
       }
@@ -134,13 +137,18 @@ export class SubjectDetail {
 
   presentToast(message)
   {
+    try {
+      this.toast.dismiss();
+    } catch(e) {
+      console.log('eeeeeeeeeeeee',e)
+    }
     console.log(message);
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
       position: 'bottom'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });

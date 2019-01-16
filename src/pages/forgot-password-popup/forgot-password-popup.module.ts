@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { ForgotPasswordPopup } from './forgot-password-popup';
 
 @NgModule({
-  declarations: [
-    ForgotPasswordPopup,
-  ],
+  // declarations: [
+  //   ForgotPasswordPopup,
+  // ],
   imports: [
     IonicPageModule.forChild(ForgotPasswordPopup),
   ],

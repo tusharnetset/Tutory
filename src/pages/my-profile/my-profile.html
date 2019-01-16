@@ -13,11 +13,11 @@
 <ion-content class="profile_view" >
   <div *ngIf="proShow">
   	<div class="big_profile_image">
-		<img *ngIf="!getProfileData?.profile_pic" class="profile_pic_big" src="img/user.jpg">
-		<img *ngIf="getProfileData?.profile_pic" class="profile_pic_big" src="{{getProfileData?.profile_pic}}">
+		<!-- <img *ngIf="!getProfileData?.profile_pic" class="profile_pic_big" src="img/gender_icon.png"> -->
+		<img class="profile_pic_big" src="{{getProfileData?.profile_pic}}">
 	</div>
 	<div class="name_image_area center">
-		<img  *ngIf="!getProfileData?.profile_pic" src="img/ash.jpg" alt="" class="user_image" />
+		<img  *ngIf="!getProfileData?.profile_pic" src="img/gender_icon1.png" alt="" class="user_image" />
 		<img  *ngIf="getProfileData?.profile_pic" src="{{getProfileData?.profile_pic}}" alt="" class="user_image" />
 		<h1>{{getProfileData?.first_name}} {{getProfileData?.last_name}}, {{getProfileData?.gender}}, {{getProfileData?.age}}</h1>
 
@@ -93,8 +93,6 @@
 					<h3>Qualification</h3>
 					<p>{{getProfileData?.qualification}}</p>
 				</li>
-
-
 				<li>
 					<img src="img/appointments_icon_active.png" alt="" />
 					<h3>Date of Birth</h3>
@@ -120,5 +118,5 @@
 		</div>
   </div>
 </div>
-  <p style="text-align: center;margin-top: 50%;" *ngIf="skipShow">Please create a account first.</p>
+  <p style="text-align: center;margin-top: 50%;" *ngIf="skipShow">Please create an account to access and update this section of your profile.</p>
 </ion-content>

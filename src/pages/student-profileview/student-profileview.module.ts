@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { StudentProfileview } from './student-profileview';
 
 @NgModule({
-  declarations: [
-    StudentProfileview,
-  ],
+  // declarations: [
+  //   StudentProfileview,
+  // ],
   imports: [
     IonicPageModule.forChild(StudentProfileview),
   ],

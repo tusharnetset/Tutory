@@ -15,6 +15,7 @@ export class AutocompletePage {
   geo: any
 
   service = new google.maps.places.AutocompleteService();
+  sheduledData: string;
 
   constructor(public loadingCtrl:LoadingController,public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController, private zone: NgZone,public menuCtrl:MenuController,public nativeStorage:NativeStorage) {
     this.autocompleteItems = [];

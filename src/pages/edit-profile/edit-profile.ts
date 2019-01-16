@@ -282,7 +282,7 @@ export class EditProfile {
         }
 
       }else{
-          this.presentToast(this.data1.message);
+        this.presentToast(this.data1.message);
       }
     }, (err) => {
       console.log(err);
@@ -302,6 +302,7 @@ export class EditProfile {
       this.GR = false;
       this.US = false;
     }else if(val == 'WP'){
+      console.log("val WP");
       this.WP = true;
       this.GR = false;
       this.US = false;
@@ -366,7 +367,7 @@ export class EditProfile {
   }
 
 
-    clickImage(){
+  clickImage(){
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Add picture with',
       buttons: [
@@ -425,7 +426,7 @@ export class EditProfile {
       allowEdit :true,
       correctOrientation: true
     };
-   this.camera.getPicture(options).then(imageData => {
+    this.camera.getPicture(options).then(imageData => {
       if (this.platform.is('ios'))
         this.imgData = normalizeURL(imageData);
       else

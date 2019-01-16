@@ -84,7 +84,7 @@ export class Signup {
       event.target.value = event.target.value.trim();
       console.log("trim",  event.target.value);
       return;
-    } else{
+    }else{
       console.log("right");
     }
   }

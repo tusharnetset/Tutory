@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { MyAppointments } from './my-appointments';
 
 @NgModule({
-  declarations: [
-    MyAppointments,
-  ],
+  // declarations: [
+  //   MyAppointments,
+  // ],
   imports: [
     IonicPageModule.forChild(MyAppointments),
   ],

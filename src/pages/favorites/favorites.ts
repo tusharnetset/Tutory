@@ -11,7 +11,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment-timezone';
 import 'moment-timezone';
 import { AuthservicesProvider } from './../../providers/authservices/authservices';
-
 @Component({
   selector: 'page-favorites',
   templateUrl: 'favorites.html',
@@ -34,9 +33,7 @@ export class Favorites {
   favArr :any[];
   getBadgeCount:any;
   logoutDataSend: { user_id: any; login_token: any; };
-
   constructor(public app:App, public authservices:AuthservicesProvider, public zone:NgZone,public platform:Platform,public alertCtrl:AlertController,public toastCtrl:ToastController,public spinner:NgxSpinnerService,public studentservices:StudentservicesProvider,public network:Network,public nativeStorage:NativeStorage,public navCtrl: NavController, public modalCtrl: ModalController) {
-
   }
 
   ionViewDidEnter() {
@@ -53,17 +50,17 @@ export class Favorites {
       this.getFavorites();
     });
     this.platform.registerBackButtonAction(() => {
-        if(this.navCtrl.canGoBack()){
-          this.navCtrl.pop();
+      if(this.navCtrl.canGoBack()){
+        this.navCtrl.pop();
+      }else{
+        if(this.alert){
+          this.alert.dismiss();
+          this.alert = null;
         }else{
-          if(this.alert){
-            this.alert.dismiss();
-            this.alert = null;
-          }else{
-            this.showAlert();
-          }
+          this.showAlert();
         }
-      })
+      }
+    })
   }
 
   showAlert() {
@@ -121,45 +118,44 @@ export class Favorites {
     }
     this.spinner.show();
     this.studentservices.getfavTutorApi(this.favData).then((result) => {
-        console.log(result);
-        this.spinner.hide();
-        this.data1 = result;
-        if(this.data1.status == 200){
-          this.zone.run(() => {
-              this.getFavData = this.data1.data;
-              for (let i = 0; i < this.getFavData.length; i++) {
-                this.favArr.push({
-                  first_name:this.getFavData[i].first_name,
-                  last_name:this.getFavData[i].last_name,
-                  age:this.getFavData[i].age,
-                  address:this.getFavData[i].address,
-                  tutor_id:this.getFavData[i].tutor_id,
-                  fav_status:this.getFavData[i].fav_status,
-                  profile_pic:this.getFavData[i].profile_pic,
-                  distance:this.getFavData[i].distance.toFixed(0),
-                  avg_rating:this.getFavData[i].avg_rating,
-                  categories:this.getFavData[i].categories,
-                  rate:this.getFavData[i].rate,
-                  gender:this.getFavData[i].gender,
-                  catLength:this.getFavData[i].categories.length-1
-                })
-              }
-
-              if(this.getFavData.length == 0){
-                this.show = true;
-              }else{
-                this.show = false;
-              }
-              console.log(this.getFavData);
-          })
-        }else{
-          if(this.data1.message == 'Wrong token entered!.Please try again.'){
-            this.presentToast("Session expired Please login again");
-            this.sessionExpired();
-          }else{
-            this.presentToast(this.data1.message);
+      console.log(result);
+      this.spinner.hide();
+      this.data1 = result;
+      if(this.data1.status == 200){
+        this.zone.run(() => {
+          this.getFavData = this.data1.data;
+          for (let i = 0; i < this.getFavData.length; i++) {
+            this.favArr.push({
+              first_name:this.getFavData[i].first_name,
+              last_name:this.getFavData[i].last_name,
+              age:this.getFavData[i].age,
+              address:this.getFavData[i].address,
+              tutor_id:this.getFavData[i].tutor_id,
+              fav_status:this.getFavData[i].fav_status,
+              profile_pic:this.getFavData[i].profile_pic,
+              distance:this.getFavData[i].distance.toFixed(0),
+              avg_rating:this.getFavData[i].avg_rating,
+              categories:this.getFavData[i].categories,
+              rate:this.getFavData[i].rate,
+              gender:this.getFavData[i].gender,
+              catLength:this.getFavData[i].categories.length-1
+            })
           }
+          if(this.getFavData.length == 0){
+            // this.presentToast("You have no favourited tutors yet. Any favourited tutors shall appear in this section.");
+            this.show = true;
+          }else{
+            this.show = false;
+          }
+        })
+      }else{
+        if(this.data1.message == 'Wrong token entered!.Please try again.'){
+          this.presentToast("Session expired Please login again");
+          this.sessionExpired();
+        }else{
+          this.presentToast(this.data1.message);
         }
+      }
     }, (err) => {
       this.spinner.hide();
       console.log(err);
@@ -177,9 +173,9 @@ export class Favorites {
 
   goToNotifications(){
     let dataSend = {
-        user_id : this.userId,
-        login_token:this.token
-      }
+      user_id : this.userId,
+      login_token:this.token
+    }
     this.studentservices.badgeCountReadStatus(dataSend).then((result) => {
       console.log(result);
       this.spinner.hide();

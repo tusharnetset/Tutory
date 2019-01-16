@@ -1,4 +1,5 @@
 <ion-header>
+
   <ion-navbar>
     <ion-title>My Favorites</ion-title>
     <ion-buttons right>
@@ -14,11 +15,12 @@
 	<div class="white_box">
 		<ion-list no-lines>
 			<ion-item *ngFor="let review of favArr" >
-		        <ion-avatar item-start (click)="goToTutorProfile(review.tutor_id)">
-		        	<img src="{{review.profile_pic}}" />
+		        <ion-avatar item-start  (click)="goToTutorProfile(review.tutor_id)">
+              <img *ngIf="review.profile_pic" src="{{review.profile_pic}}" />
+              <img *ngIf="!review.profile_pic" src="img/gender_icon1.png" />
 		        	<img *ngIf="review.fav_status == 'F'" src="img/heartfill_icon.png" alt="" class="heart" />
 						</ion-avatar>
-		        <h2 (click)="goToTutorProfile(review.tutor_id)">{{review.first_name}} {{review.last_name}}, {{review.gender}}, {{review.age}}
+		        <h2 (click)="goToTutorProfile(review.tutor_id)"><span>{{review.first_name}}</span> <span [innerHTML]="review.last_name | truncate : 3"></span>, {{review.gender}}, {{review.age}}
 		        	<span class="rating" (click)="goToTutorProfile(review.tutor_id)">
 		        		<rating *ngIf="review.avg_rating != null" [(ngModel)]="review.avg_rating" readOnly="true" max="5"  emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)"></rating>
 	        			<rating *ngIf="review.avg_rating == null" readOnly="true" max="5"  emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star" nullable="false"(ngModelChange)="onModelChange($event)">
@@ -27,12 +29,13 @@
 		        </h2>
 		        <p (click)="goToTutorProfile(review.tutor_id)" class="location"><img src="img/location_icon.png" alt="" />{{review.address}} <span>{{review.distance}} km</span></p>
 		        <h4 (click)="goToTutorProfile(review.tutor_id)" class="bold_font">{{review.rate}} Q.R/hr</h4>
-		        <div class="services bold_font" (click)="goToServicesPopup(review.categories)">
+		        <div *ngIf="review.categories[0].category_name" class="services bold_font" (click)="goToServicesPopup(review.categories)">
 		        	<span>{{review.categories[0].category_name}}</span> - {{review.categories[0].subcategories[0]}}
 		        	<span class="more">+{{review.catLength}} more</span>
 		        </div>
-		    </ion-item>
+        </ion-item>
     </ion-list>
-    <!-- <p *ngIf="show" style="text-align: center;margin-top: 50%;" >There is no data in your favorite list.</p> -->
-	</div>
+    <p *ngIf="show" style="text-align: center;padding-top: 50%;" >You have no favourited tutors yet. Any favourited tutors shall appear in this section.</p>
+
+  </div>
 </ion-content>

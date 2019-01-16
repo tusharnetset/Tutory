@@ -1,19 +1,14 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>Services Offered</ion-title>
     <ion-buttons right class="only_text">
-        <button ion-button (click)="dismiss(data)">
+        <button ion-button (click)="dismiss()">
           <ion-label>Done</ion-label>
         </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content>
-
 	<div class="blue_box">
 		<form [formGroup]="authForm" (ngSubmit)="submitForm(authForm.value,authForm.valid)">
 			<ion-list class="input_forms" no-lines>
@@ -46,16 +41,6 @@
 	</div>
 	<div padding>
 		<div class="white_box">
-			<!-- when no services-->
-			<!--<div class="no_services">
-				<div class="inner_services">
-					<h1 class="bold_font">OOPS!</h1>
-					<p>Please add services using the drop down menus above, and they will appear here.</p>
-				</div>
-			</div>-->
-			<!-- when no services-->
-
-			<!-- when services-->
 			<div class="services_box">
 				<h3 class="bold_font"><img src="img/service_icon.png" alt="" />My Services</h3>
 				<ion-list no-lines>
@@ -66,8 +51,6 @@
 					<p *ngIf="show" style="text-align: center;">Please add service using the drop down menus above, and they will appear here.</p>
 				</ion-list>
 			</div>
-			<!-- when services-->
-
 		</div>
 	</div>
 </ion-content>

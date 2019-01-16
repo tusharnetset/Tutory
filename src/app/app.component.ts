@@ -5,19 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TabsStudentPage } from '../pages/tabs-student/tabs-student';
 import { SignupType } from '../pages/signup-type/signup-type';
-import { Signin } from '../pages/signin/signin';
-import { ForgotPassword } from '../pages/forgot-password/forgot-password';
-import { ForgotPasswordPopup } from '../pages/forgot-password-popup/forgot-password-popup';
-import { Signup } from '../pages/signup/signup';
-import { PhoneVerification } from '../pages/phone-verification/phone-verification';
 import { CreateProfile } from '../pages/create-profile/create-profile';
-import { SubCategory } from '../pages/sub-category/sub-category';
-import { SubCategoryLevel } from '../pages/sub-category-level/sub-category-level';
-import { SubjectDetail } from '../pages/subject-detail/subject-detail';
-import { Search } from '../pages/search/search';
-import { TutorList } from '../pages/tutor-list/tutor-list';
-import { ServicesPopup } from '../pages/services-popup/services-popup';
-import { Filters } from '../pages/filters/filters';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -26,10 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Network } from '@ionic-native/network';
 import { AppointmentDetailSubmited } from '../pages/appointment-detail-submited/appointment-detail-submited';
 import { TeacherAppointmentDetailSubmited } from '../pages/teacher-appointment-detail-submited/teacher-appointment-detail-submited';
-import { Subscription } from '../pages/subscription/subscription';
 import { TeacherCreateProfile } from '../pages/teacher-create-profile/teacher-create-profile';
-import { Deeplinks } from '@ionic-native/deeplinks';
-import { TutorProfileview } from '../pages/tutor-profileview/tutor-profileview';
 
 @Component({
   templateUrl: 'app.html'
@@ -48,7 +33,7 @@ export class MyApp {
   rootPage:any = SignupType;
   eventsFire: { lat: number; lng: number; };
 
-  constructor(public deeplinks: Deeplinks, public events:Events,public toastCtrl:ToastController,public network:Network,public alertCtrl:AlertController,public spinner :NgxSpinnerService,public diagnostic:Diagnostic,public geolocation:Geolocation,public nativeStorage:NativeStorage,public push:Push,public platform: Platform,public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public events:Events,public toastCtrl:ToastController,public network:Network,public alertCtrl:AlertController,public spinner :NgxSpinnerService,public diagnostic:Diagnostic,public geolocation:Geolocation,public nativeStorage:NativeStorage,public push:Push,public platform: Platform,public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
@@ -68,16 +53,6 @@ export class MyApp {
           this.splashScreen.hide();
         }, 500);
       }
-
-      this.deeplinks.routeWithNavController(this.nav, {
-        '/items': TutorProfileview
-      }).subscribe((match) => {
-        console.log('Successfully routed', match);
-      }, (nomatch) => {
-        console.log('Unmatched Route', nomatch);
-      });
-
-
       this.ionViewDidLoadCom();
       this.pushNoti();
         this.diagnostic.isLocationEnabled().then(
@@ -165,7 +140,6 @@ export class MyApp {
     this.alert.present();
   }
 
-
   getLat()
   {
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -234,6 +208,7 @@ export class MyApp {
     const options: PushOptions = {
       android: {
         senderID: '987410780081',
+        sound:'default'
       },
       ios: {
         alert: 'true',
@@ -246,12 +221,6 @@ export class MyApp {
       }
     };
     const pushObject: PushObject = this.push.init(options);
-    // pushObject.on('Accept').subscribe((data: any) =>{
-    //   console.log('accept',data);
-    // });
-    // pushObject.on('Reject').subscribe((data: any) =>{
-    //   console.log('reject',data);
-    // });
     pushObject.on('notification').subscribe((notification: any) =>{
       console.log('Received a notification', notification);
 
@@ -557,6 +526,77 @@ export class MyApp {
           ]
         });
         this.alert.present();
+      }else if(notification.additionalData.label == 'Appointment expired'){
+        this.alert = this.alertCtrl.create({
+          title: notification.title,
+          message: notification.additionalData.text,
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+              }
+            },
+            {
+              text: 'View',
+              handler: () => {
+                if(this.loggedIn.user_type == 'S'){
+                  this.nav.push(AppointmentDetailSubmited,{appointment_id:notification.additionalData.appointment_id})
+                }else{
+                  this.nav.push(TeacherAppointmentDetailSubmited,{appointment_id:notification.additionalData.appointment_id})
+                }
+              }
+            }
+          ]
+        });
+        this.alert.present();
+      }else if(notification.additionalData.label == 'Slot expired'){
+        this.alert = this.alertCtrl.create({
+          title: notification.title,
+          message: notification.additionalData.text,
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+              }
+            },
+            {
+              text: 'View',
+              handler: () => {
+
+              }
+            }
+          ]
+        });
+        this.alert.present();
+      }else if(notification.additionalData.label == 'Appointment alert'){
+        this.alert = this.alertCtrl.create({
+          title: notification.title,
+          message: notification.additionalData.text,
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+              }
+            },
+            {
+              text: 'View',
+              handler: () => {
+                if(this.loggedIn.user_type == 'S'){
+                  this.nav.push(AppointmentDetailSubmited,{appointment_id:notification.additionalData.appointment_id})
+                }else{
+                  this.nav.push(TeacherAppointmentDetailSubmited,{appointment_id:notification.additionalData.appointment_id})
+                }
+              }
+            }
+          ]
+        });
+        this.alert.present();
       } else {
         this.alert = this.alertCtrl.create({
           title: notification.title,
@@ -604,6 +644,14 @@ export class MyApp {
     });
     toast.present();
   }
-
-
 }
+
+//   (_) ___  _ __ (_) ___
+//   | |/ _ \| '_ \| |/ __|
+//   | | (_) | | | | | (__
+//   |_|\___/|_| |_|_|\___|
+
+//   (_) ___  _ __ (_) ___
+//   | |/ _ \| '_ \| |/ __|
+//   | | (_) | | | | | (__
+//   |_|\___/|_| |_|_|\___|

@@ -41,14 +41,12 @@ export class TeacherMyProfile {
 
   ionViewDidEnter() {
     this.nativeStorage.getItem('userData').then((data) => {
-      console.log("localstorage data", data);
       this.userType = data.user_type;
       this.userId = data.id;
       this.token = data.login_token;
       this.mobileNumber = data.mobile_number;
       this.getNotificationCounts();
       this.getProfile();
-
     })
     this.connectSubscription = this.network.onConnect().subscribe(() => {
       this.getNotificationCounts();
@@ -126,7 +124,6 @@ export class TeacherMyProfile {
       console.log(err);
     })
   }
-
   goToServices(){
     this.navCtrl.push(ServicesOffered,{tutorId:this.userId});
   }

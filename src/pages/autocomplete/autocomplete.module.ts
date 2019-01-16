@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { AutocompletePage } from './autocomplete';
 
 @NgModule({
-  declarations: [
-    AutocompletePage,
-  ],
+  // declarations: [
+  //   AutocompletePage,
+  // ],
   imports: [
     IonicPageModule.forChild(AutocompletePage),
   ],
